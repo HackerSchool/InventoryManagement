@@ -1,19 +1,35 @@
 <template>
     <div>
-        <v-row justify="center" v-for="(item,index) in itemList" :key="index">
+        <v-row justify="center">
             <v-col cols=12 lg=8 md=10>
-                <!--
-                <RequestItem
-                    name="test"
-                    askedQuantity="1"
-                    quantity="3"
-                > </RequestItem>
-                -->
-                <RequestItem
-                    :name="item.name"
-                    :askedQuantity="item.askedQuantity"
-                    :quantity="item.quantity"
-                > </RequestItem>
+                <v-row>
+                    <v-col cols=10 lg=6 md=8>
+                        <v-text-field
+                            v-model="searchText"
+                            placeholder="Pesquisa por nome"
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+                <div :key="updateKey">
+                    <v-row v-for="(item,index) in filteredItemList" :key="index">
+                        <v-col>
+                            <!--
+                            <RequestItem
+                                name="test"
+                                askedQuantity="1"
+                                quantity="3"
+                            > </RequestItem>
+                            :askedQuantity="item.askedQuantity"
+                            -->
+                            <RequestItem
+                                :name="item.name"
+                                v-model="item.askedQuantity"
+                                :quantity="item.quantity"
+                                @changeQuantity="item.askedQuantity = $event"
+                            > </RequestItem>
+                        </v-col>
+                    </v-row>
+                </div>
             </v-col>
         </v-row>
     </div>
@@ -31,6 +47,8 @@ export default {
 
     data() {
         return {
+            updateKey: 0,
+            searchText: "",
             itemList: [ {
                 name: "test",
                 quantity: 1,
@@ -42,6 +60,22 @@ export default {
             },],
         }
     },
+
+    methods: {
+        
+    },
+
+    computed: {
+        filteredItemList() {
+            return this.itemList.filter(item => item.name.includes(this.searchText));
+        }
+    },
+
+    watch: {
+        searchText() {
+            this.updateKey++;
+        }
+    }
 }
 
 </script>

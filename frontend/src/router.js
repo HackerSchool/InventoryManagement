@@ -15,7 +15,7 @@ const routes = [
 
 let router = new Router({
     base: '/frontend/',
-    redirect: "/",
+    redirect: "/test", //change to '/'
     routes: routes,
 });
 
