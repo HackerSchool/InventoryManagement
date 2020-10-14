@@ -22,18 +22,19 @@
                 </v-col>
                 <v-col>
                     <v-row justify="center" no-gutters>
-                        <v-btn 
-                            style="margin-right:20px;"
-                            @click.native="addQuantity(1)"
-                            :disabled="askedQuantity == quantity"
-                        > 
-                            <i class="fas fa-plus-circle fa-lg"></i> 
-                        </v-btn>
                         <v-btn
+                            style="margin-right:20px;"
                             @click.native="addQuantity(-1)"
                             :disabled="askedQuantity == 0"
                         > 
                             <i class="fas fa-minus-circle fa-lg"></i> 
+                        </v-btn>
+
+                        <v-btn 
+                            @click.native="addQuantity(1)"
+                            :disabled="askedQuantity == quantity"
+                        > 
+                            <i class="fas fa-plus-circle fa-lg"></i> 
                         </v-btn>
                         <!-- v icon v icon -->
                     </v-row>
