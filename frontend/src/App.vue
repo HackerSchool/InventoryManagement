@@ -11,6 +11,7 @@
 <script>
     import HeaderBar from './components/HeaderAndFooter/HeaderBar.vue';
     import FooterBar from './components/HeaderAndFooter/FooterBar.vue';
+    
     export default {
         name: "App",
 
