@@ -1,0 +1,21 @@
+{
+  "extends": ["prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
+  "overrides": [
+    {
+      "files": ["backend/**"],
+      "extends": ["eslint:recommended", "prettier", "plugin:node/recommended"],
+      "env": {
+        "es6": true,
+        "node": true
+      }
+    },
+    {
+      "files": ["frontend/**"],
+      "extends": ["eslint:recommended", "prettier", "plugin:vue/vue3-recommended"]
+    }
+  ]
+}

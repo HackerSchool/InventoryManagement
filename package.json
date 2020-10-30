@@ -1,0 +1,34 @@
+{
+  "name": "hs-inventory",
+  "version": "0.0.1",
+  "description": "Inventory Management for HackerSchool",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier \"**/*.{js,vue}\" --write",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HackerSchool/InventoryManagement.git"
+  },
+  "keywords": [
+    "vue",
+    "expressjs",
+    "inventory-management"
+  ],
+  "author": "HackerSchool",
+  "bugs": {
+    "url": "https://github.com/HackerSchool/InventoryManagement/issues"
+  },
+  "homepage": "https://github.com/HackerSchool/InventoryManagement#readme",
+  "devDependencies": {
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-vue": "^7.1.0",
+    "prettier": "^2.1.2"
+  }
+}
