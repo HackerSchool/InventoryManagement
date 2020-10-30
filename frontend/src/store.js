@@ -5,16 +5,16 @@ Vue.use(Vuex);
 let state = {};
 
 let store = new Vuex.Store({
-    state: state,
-    mutations: {
-        //for example change the state to login
-    },
-    actions: {
-        //for example login
-    },
-    getters: {
-        //for example isLoggedIn
-    }
+  state: state,
+  mutations: {
+    //for example change the state to login
+  },
+  actions: {
+    //for example login
+  },
+  getters: {
+    //for example isLoggedIn
+  },
 });
 
-export default store
+export default store;

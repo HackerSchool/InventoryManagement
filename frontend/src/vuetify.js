@@ -1,4 +1,3 @@
-  
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
@@ -10,7 +9,7 @@ Vue.use(Vuetify);
 
 const vuetify = new Vuetify({
   icons: {
-    iconfont: 'mdi'
+    iconfont: 'mdi',
   },
   iconfont: 'fa',
   theme: {
@@ -19,10 +18,10 @@ const vuetify = new Vuetify({
         primary: 'blue',
         secondary: '#b0bec5',
         accent: '#8c9eff',
-        error: '#b71c1c'
-      }
-    }
-  }
+        error: '#b71c1c',
+      },
+    },
+  },
 });
 
 export default vuetify;

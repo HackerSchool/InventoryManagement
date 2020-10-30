@@ -4,13 +4,15 @@
   "rules": {
     "prettier/prettier": ["error"]
   },
+  "env": {
+    "node": true
+  },
   "overrides": [
     {
       "files": ["backend/**"],
       "extends": ["eslint:recommended", "prettier", "plugin:node/recommended"],
       "env": {
-        "es6": true,
-        "node": true
+        "es6": true
       }
     },
     {
