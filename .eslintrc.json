@@ -17,7 +17,12 @@
     },
     {
       "files": ["frontend/**"],
-      "extends": ["eslint:recommended", "prettier", "plugin:vue/vue3-recommended"]
+      "extends": [
+        "plugin:vue/recommended",
+        "eslint:recommended",
+        "prettier/vue",
+        "plugin:prettier/recommended"
+      ]
     }
   ]
 }
