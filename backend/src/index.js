@@ -1,7 +1,7 @@
 require('dotenv').config();
 
+require('./database'); // Init database
 const express = require('express');
-const knex = require('./database');
 const app = express();
 
 const port = process.env.PORT || 5000;
