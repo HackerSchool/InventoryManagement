@@ -1,10 +1,15 @@
 require('dotenv').config();
 
-require('./database'); // Init database
+const { knexMiddleware } = require('./middleware/database'); // Init database
 const express = require('express');
+const { authenticateJWT } = require('./middleware/authentication');
+
 const app = express();
 
 const port = process.env.PORT || 5000;
+
+app.use(knexMiddleware);
+app.use(authenticateJWT);
 
 app.get('/', (_req, res) => {
   res.send('Hello World!');
