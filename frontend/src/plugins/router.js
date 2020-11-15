@@ -3,7 +3,7 @@ import or const
 */
 import Vue from 'vue';
 import Router from 'vue-router';
-import MyRequests from './components/pages/MyRequests.vue';
+import MyRequests from '@/components/pages/MyRequests.vue';
 
 Vue.use(Router);
 
