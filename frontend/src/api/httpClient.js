@@ -17,7 +17,6 @@ const authInterceptor = (config) => {
 
 // interceptor to catch errors
 const errorInterceptor = (error) => {
-  console.log(Vue.notify);
   // check if it's a server error
   if (!error.response) {
     Vue.notify({ type: 'warn', title: 'Network/Server error' });
