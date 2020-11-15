@@ -1,5 +1,6 @@
 <template>
   <v-app id="app" style="width: 100%; height: 100%">
+    <notifications />
     <HeaderBar> </HeaderBar>
 
     <router-view> </router-view>

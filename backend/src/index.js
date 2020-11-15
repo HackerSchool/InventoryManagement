@@ -21,6 +21,12 @@ api.init(app);
 // Handler any non-handled errors
 app.use(errorHandler);
 
+// TODO remove after implementing other routes
+app.get('/hello', (req, res) => {
+  //res.status(400);
+  res.send('HELLOOO :)');
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
