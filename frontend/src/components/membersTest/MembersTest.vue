@@ -3,7 +3,7 @@
     <p v-if="isLoading">Loading...</p>
     <ul v-else>
       <p>Loaded</p>
-      <li v-for="member in members" :key="member.id">{{ member.name }} - {{ member.ist_id }}</li>
+      <li v-for="member in members" :key="member.id">{{ member.name }} - {{ member.istId }}</li>
     </ul>
   </div>
 </template>
