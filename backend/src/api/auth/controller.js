@@ -9,7 +9,7 @@ module.exports = {
     if (!fenixAccessToken) return {};
 
     const result = await database
-      .select('id', 'name', 'ist_id', 'active')
+      .select('id', 'name', 'ist_id', 'active', 'role')
       .from('members')
       .where({ ist_id: fenixUsername, active: true });
     // User does not belong to HackerSchool
@@ -20,7 +20,7 @@ module.exports = {
       name: result[0].name,
       istId: result[0].ist_id,
       active: result[0].active,
-      role: 'admin',
+      role: result[0].role,
     };
 
     const jwt = generateJWT(user);
