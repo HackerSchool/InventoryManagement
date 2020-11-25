@@ -48,6 +48,10 @@ export default {
           text: 'Gerir',
           link: '/test',
         },
+        {
+          text: 'Login',
+          link: '/login',
+        }
       ],
     };
   },
