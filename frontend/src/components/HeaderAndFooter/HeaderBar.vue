@@ -51,7 +51,7 @@ export default {
         {
           text: 'Login',
           link: '/login',
-        }
+        },
       ],
     };
   },
