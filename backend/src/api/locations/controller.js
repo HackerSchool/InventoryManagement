@@ -8,4 +8,20 @@ module.exports = {
       description: location.description,
     }));
   },
+
+  findOne: async (database, id) => {
+    // TODO
+  },
+
+  create: async (database, data) => {
+    // TODO
+  },
+
+  remove: async (database, id) => {
+    // TODO
+  },
+
+  update: async (database, id, data) => {
+    // TODO
+  },
 };
