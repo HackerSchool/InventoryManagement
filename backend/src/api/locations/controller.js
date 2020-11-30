@@ -10,11 +10,18 @@ module.exports = {
   },
 
   findOne: async (database, id) => {
-    // TODO
+    const result = await database
+      .select('id', 'name', 'description')
+      .where('id', id)
+      .from('locations');
+
+    if (result.length === 0) return;
+    return result[0];
   },
 
-  create: async (database, data) => {
-    // TODO
+  create: async (database, { name, description }) => {
+    const result = await database.insert({ name, description });
+    return result;
   },
 
   remove: async (database, id) => {
