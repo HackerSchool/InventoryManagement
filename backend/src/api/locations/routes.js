@@ -26,7 +26,9 @@ module.exports = {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
     const { id } = req.params;
-    // TODO
+    const affectedRows = await controller.delete(req.db, id);
+    if (affectedRows === 0) return res.sendStatus(404);
+    res.sendStatus(204);
   },
 
   update: async (req, res) => {

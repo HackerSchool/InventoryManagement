@@ -25,7 +25,8 @@ module.exports = {
   },
 
   remove: async (database, id) => {
-    // TODO
+    const result = await database.where('id', id).from('locations').delete();
+    return result;
   },
 
   update: async (database, id, data) => {
