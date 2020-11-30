@@ -1,6 +1,8 @@
 <template>
   <div id="loginbutton">
-    <v-btn elevation="2" @click="handleButtonClick">Login com o Utilizador do Fénix</v-btn>
+    <v-btn elevation="2" :disabled="loading" @click="handleButtonClick"
+      >Login com o Utilizador do Fénix</v-btn
+    >
     <p v-if="loading">Loading...</p>
   </div>
 </template>
@@ -33,7 +35,7 @@ export default {
 
       if (data.jwt) {
         localStorage.setItem('token', data.jwt);
-        this.$router.push('/test');
+        this.$router.push('/');
       }
     },
   },

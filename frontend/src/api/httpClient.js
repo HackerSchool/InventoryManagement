@@ -1,5 +1,6 @@
-import Vue from 'vue';
+import router from '@/plugins/router';
 import axios from 'axios';
+import Vue from 'vue';
 
 const httpClient = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL || 'http://localhost:5000',
@@ -8,7 +9,7 @@ const httpClient = axios.create({
   },
 });
 
-const getAuthToken = () => localStorage.getItem('token');
+export const getAuthToken = () => localStorage.getItem('token');
 
 const authInterceptor = (config) => {
   config.headers['Authorization'] = getAuthToken();
@@ -33,7 +34,7 @@ const errorInterceptor = (error) => {
     case 401: // authentication error, logout the user
       Vue.notify({ type: 'warn', title: 'Please login again', text: 'Session Expired' });
       localStorage.removeItem('token');
-      // TODO router.push('/auth');
+      router.push('login');
       break;
 
     default:
