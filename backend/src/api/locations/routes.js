@@ -35,6 +35,8 @@ module.exports = {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
     const { id } = req.params;
-    // TODO
+    const location = await controller.update(req.db, id, req.body);
+    if (!location) return res.sendStatus(404);
+    res.json(location);
   },
 };

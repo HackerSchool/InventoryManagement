@@ -30,6 +30,7 @@ module.exports = {
   },
 
   update: async (database, id, data) => {
-    // TODO
+    const result = await database.where('id', id).update(data, ['id', 'name', 'description']);
+    return result[0];
   },
 };
