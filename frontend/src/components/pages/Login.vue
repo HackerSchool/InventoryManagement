@@ -1,6 +1,11 @@
 <template>
   <div id="loginbutton">
-    <v-btn elevation="2" @click="handleButtonClick">Login com o Utilizador do Fénix</v-btn>
+    <v-btn id="btn"
+      elevation="2"
+      :loading="loading"
+      :disabled="loading"
+      @click="handleButtonClick"
+    >Login Fénix</v-btn>
     <p v-if="loading">Loading...</p>
   </div>
 </template>
@@ -39,3 +44,19 @@ export default {
   },
 };
 </script>
+
+<style>
+#loginbutton {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#btn {
+  background: #009de0;
+  color: white;
+}
+</style>
