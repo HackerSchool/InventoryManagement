@@ -2,7 +2,7 @@ const controller = require('./controller');
 
 module.exports = {
   findAll: async (req, res) => {
-    if (!req.user || !req.user.hasPermission('admin')) {
+    if (!req.user?.hasPermission('admin')) {
       res.sendStatus(401);
       return;
     }
