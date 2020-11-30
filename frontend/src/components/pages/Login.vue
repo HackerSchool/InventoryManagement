@@ -3,7 +3,6 @@
     <v-btn id="btn" elevation="2" :loading="loading" :disabled="loading" @click="handleButtonClick"
       >Login Fénix</v-btn
     >
-    <p v-if="loading">Loading...</p>
   </div>
 </template>
 

@@ -5,14 +5,26 @@ import { getAuthToken } from '@/api/httpClient';
 import Dashboard from '@/components/pages/Dashboard.vue';
 import Login from '@/components/pages/Login.vue';
 import MyRequests from '@/components/pages/MyRequests.vue';
+import Header from '@/components/HeaderAndFooter/HeaderBar.vue';
+import Footer from '@/components/HeaderAndFooter/FooterBar.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
 
 Vue.use(Router);
 
 const routes = [
-  { path: '/', name: 'dashboard', component: Dashboard },
-  { path: '/test', name: 'requisitions', component: MyRequests },
+  {
+    path: '/',
+    name: 'dashboard',
+    component: Dashboard,
+    meta: { layout_h: Header, layout_f: Footer },
+  },
+  {
+    path: '/test',
+    name: 'requisitions',
+    component: MyRequests,
+    meta: { layout_h: Header, layout_f: Footer },
+  },
   { path: '/login', name: 'login', component: Login, meta: { noAuth: true } },
 ];
 
