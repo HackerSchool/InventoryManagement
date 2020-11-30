@@ -27,7 +27,8 @@ export default {
     if (this.members.length === 0) {
       // set loading screen
       this.isLoading = true;
-      await this.fetchMembers();
+      // disable while admin check is not done
+      // TODO await this.fetchMembers();
       this.isLoading = false;
     }
   },
