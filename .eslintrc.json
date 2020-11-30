@@ -13,6 +13,9 @@
       "extends": ["eslint:recommended", "prettier", "plugin:node/recommended"],
       "env": {
         "es6": true
+      },
+      "parserOptions": {
+        "ecmaVersion": 2020
       }
     },
     {
