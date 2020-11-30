@@ -29,13 +29,24 @@ export default {
       window.location = `${process.env.VUE_APP_FENIX_BASE_URL}oauth/userdialog?client_id=${process.env.VUE_APP_FENIX_CLIENT_ID}&redirect_uri=${process.env.VUE_APP_FENIX_REDIRECT_URL}`;
     },
     authWithBackend: async function (code) {
-      this.loading = true;
-      const { data } = await fenixLogin(code);
-      this.loading = false;
+      try {
+        this.loading = true;
+        const { data } = await fenixLogin(code);
+        this.loading = false;
 
-      if (data.jwt) {
-        localStorage.setItem('token', data.jwt);
-        this.$router.push('/');
+        if (data.jwt) {
+          localStorage.setItem('token', data.jwt);
+          this.$router.push('/');
+        }
+      } catch (e) {
+        // user not allowed to access the app
+        this.$notify({
+          type: 'error',
+          title: 'Unauthorized user',
+          text: "You don't have permission to access this ",
+          duration: -1,
+        });
+        this.loading = false;
       }
     },
   },
