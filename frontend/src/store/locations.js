@@ -1,5 +1,5 @@
 // import the api endpoints
-import locationApi from '@/api/locations.api';
+import * as locationApi from '@/api/locations.api';
 
 const state = {
   locations: [],
