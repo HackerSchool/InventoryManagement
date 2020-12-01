@@ -1,6 +1,12 @@
 <template>
   <div id="loginbutton">
-    <v-btn id="btn" elevation="2" :loading="loading" :disabled="loading" @click="handleButtonClick"
+    <v-btn
+      id="btn"
+      elevation="2"
+      color="secondary"
+      :loading="loading"
+      :disabled="loading"
+      @click="handleButtonClick"
       >Login Fénix</v-btn
     >
   </div>
@@ -63,7 +69,6 @@ export default {
 }
 
 #btn {
-  background: #009de0;
   color: white;
 }
 </style>

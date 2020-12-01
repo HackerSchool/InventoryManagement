@@ -14,9 +14,9 @@ const vuetify = new Vuetify({
   iconfont: 'fa',
   theme: {
     themes: {
-      dark: {
-        primary: 'blue',
-        secondary: '#b0bec5',
+      light: {
+        primary: '#000000',
+        secondary: '#6dba83',
         accent: '#8c9eff',
         error: '#b71c1c',
       },

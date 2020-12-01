@@ -52,6 +52,10 @@ export default {
           text: 'Login',
           link: '/login',
         },
+        {
+          text: 'Locations',
+          link: '/locations',
+        },
       ],
     };
   },
