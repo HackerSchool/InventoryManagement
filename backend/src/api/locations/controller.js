@@ -1,5 +1,5 @@
 module.exports = {
-  findAll: async (database) => {
+  async findAll(database) {
     const result = await database.select('id', 'name', 'description').from('locations');
 
     return result.map((location) => ({
@@ -9,19 +9,31 @@ module.exports = {
     }));
   },
 
-  findOne: async (database, id) => {
-    // TODO
+  async findOne(database, id) {
+    const result = await database
+      .select('id', 'name', 'description')
+      .where('id', id)
+      .from('locations');
+
+    if (result.length === 0) return;
+    return result[0];
   },
 
-  create: async (database, data) => {
-    // TODO
+  async create(database, { name, description }) {
+    const result = await database.insert({ name, description }).into('locations');
+
+    // Knex returns the inserted id, so we get the object from the database.
+    return this.findOne(database, result[0]);
   },
 
-  remove: async (database, id) => {
-    // TODO
+  async remove(database, id) {
+    const affectedRows = await database.where('id', id).from('locations').delete();
+    return affectedRows > 0;
   },
 
-  update: async (database, id, data) => {
-    // TODO
+  async update(database, id, data) {
+    const affectedRows = await database('locations').where('id', id).update(data);
+    if (affectedRows > 0) return this.findOne(database, id);
+    // else return undefined
   },
 };
