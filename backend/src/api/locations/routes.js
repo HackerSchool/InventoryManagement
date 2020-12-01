@@ -1,4 +1,5 @@
 const controller = require('./controller');
+const models = require('./models');
 
 module.exports = {
   findAll: async (req, res) => {
@@ -10,32 +11,64 @@ module.exports = {
   findOne: async (req, res) => {
     if (!req.user?.hasPermission('user')) return res.sendStatus(401);
 
-    const { id } = req.params;
+    let id;
+    try {
+      id = await models.locationId.validateAsync(req.params.id);
+    } catch (e) {
+      return res.sendStatus(400); // invalid ID format
+    }
+
     const location = await controller.findOne(req.db, id);
+
+    // If location doesn't exist, return 404
     if (!location) return res.sendStatus(404);
     res.json(location);
   },
 
   create: async (req, res) => {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
-    const data = req.body;
+
+    let data;
+    try {
+      data = await models.locationCreate.validateAsync(req.body);
+    } catch (e) {
+      return res.sendStatus(400); // invalid location object
+    }
+
     res.json(await controller.create(req.db, data));
   },
 
   remove: async (req, res) => {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
-    const { id } = req.params;
-    const affectedRows = await controller.delete(req.db, id);
-    if (affectedRows === 0) return res.sendStatus(404);
+    let id;
+    try {
+      id = await models.locationId.validateAsync(req.params.id);
+    } catch (e) {
+      return res.sendStatus(400); // invalid ID format
+    }
+
+    const success = await controller.remove(req.db, id);
+
+    if (!success) return res.sendStatus(404);
     res.sendStatus(204);
   },
 
   update: async (req, res) => {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
-    const { id } = req.params;
+    let id, data;
+    try {
+      [id, data] = await Promise.all([
+        models.locationId.validateAsync(req.params.id),
+        models.locationUpdate.validateAsync(req.body),
+      ]);
+    } catch (e) {
+      return res.sendStatus(400); // invalid ID or location object format
+    }
+
     const location = await controller.update(req.db, id, req.body);
+
     if (!location) return res.sendStatus(404);
     res.json(location);
   },

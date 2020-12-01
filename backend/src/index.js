@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const { authenticateJWT } = require('./middleware/authentication');
 const { knexMiddleware } = require('./middleware/database'); // Init database
@@ -14,6 +15,7 @@ const port = process.env.PORT || 5000;
 
 app.use(knexMiddleware);
 app.use(authenticateJWT);
+app.use(bodyParser.json());
 
 // Initiate all API routes
 api.init(app);
