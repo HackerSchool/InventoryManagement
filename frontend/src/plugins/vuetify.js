@@ -13,10 +13,15 @@ const vuetify = new Vuetify({
   },
   iconfont: 'fa',
   theme: {
+    dark: true,
+    options: {
+      customProperties: true,
+    },
     themes: {
-      light: {
-        primary: '#000000',
-        secondary: '#6dba83',
+      dark: {
+        background: '#2B2A29',
+        primary: 'blue',
+        secondary: '#b0bec5',
         accent: '#8c9eff',
         error: '#b71c1c',
       },

@@ -31,4 +31,7 @@ html {
   width: 100%;
   min-height: 100vh;
 }
+#app {
+  background-color: var(--v-background-base);
+}
 </style>

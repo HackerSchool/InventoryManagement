@@ -1,19 +1,34 @@
 <template>
-  <div id="loginbutton">
-    <v-btn
-      id="btn"
-      elevation="2"
-      color="secondary"
-      :loading="loading"
-      :disabled="loading"
-      @click="handleButtonClick"
-      >Login Fénix</v-btn
-    >
-  </div>
+  <v-container fill-height>
+    <v-row align-content="center">
+      <v-col align-self="center">
+        <v-sheet
+          elevation="5"
+          class="pa-6 d-flex flex-column align-center"
+          rounded
+          width="fit-content"
+          style="margin: auto"
+        >
+          <v-img :src="logoSrc" max-height="100" contain class="mb-4" />
+          <h1 class="mb-1">Login | HS-Inventory</h1>
+          <p class="mb-8">This is an internal application that requires logging in.</p>
+          <v-btn
+            id="btn"
+            elevation="2"
+            :loading="loading"
+            :disabled="loading"
+            @click="handleButtonClick"
+            >Login With Fénix</v-btn
+          >
+        </v-sheet>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import { fenixLogin } from '@/api/auth.api';
+import logoSrc from '@/assets/logo_hs.svg';
 
 export default {
   name: 'LoginPage',
@@ -21,6 +36,7 @@ export default {
   data: function () {
     return {
       loading: false,
+      logoSrc,
     };
   },
 
@@ -59,16 +75,8 @@ export default {
 </script>
 
 <style>
-#loginbutton {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
 #btn {
+  background: #009de0;
   color: white;
 }
 </style>
