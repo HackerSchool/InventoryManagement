@@ -12,7 +12,10 @@ const httpClient = axios.create({
 export const getAuthToken = () => localStorage.getItem('token');
 
 const authInterceptor = (config) => {
-  config.headers['Authorization'] = getAuthToken();
+  const token = getAuthToken();
+
+  if (token) config.headers['Authorization'] = `Bearer ${getAuthToken()}`;
+
   return config;
 };
 
