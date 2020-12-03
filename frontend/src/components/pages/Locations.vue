@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-progress-linear v-if="loading" indeterminate />
+    <v-progress-linear v-if="loading" indeterminate color="#6dba83" />
     <v-container>
       <!-- TODO Add refresh button that triggers the refresh function -->
       <LocationTable v-if="!loading" />

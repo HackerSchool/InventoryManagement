@@ -22,7 +22,7 @@
                   <v-col cols="12" sm="8" md="8">
                     <v-textarea
                       v-model="editedItem.description"
-                      label="description"
+                      label="Description"
                       filled
                     ></v-textarea>
                   </v-col>
