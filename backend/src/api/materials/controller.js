@@ -1,57 +1,66 @@
+const fields = [
+  'material.id',
+  'material.name',
+  'material.description',
+  'stock',
+  'state',
+  'type',
+  { locationId: 'location_id' },
+  { locationName: 'locations.name' },
+  { locationDesc: 'locations.description' },
+];
+
+const formatResponse = (response) => ({
+  id: response.id,
+  name: response.name,
+  description: response.description,
+  stock: response.stock,
+  state: response.state,
+  type: response.type,
+  location: {
+    id: response.locationId,
+    name: response.locationName,
+    description: response.locationDesc,
+  },
+});
+
 module.exports = {
   async findAll(database) {
     const result = await database
-      .select(
-        'id',
-        'name',
-        'description',
-        'stock',
-        'state',
-        'type',
-        { locationId: 'location_id' },
-        { locationName: 'locations.name' },
-        { locationDesc: 'locations.description' }
-      )
-      .from('materials')
+      .select(...fields)
+      .from('material')
       .leftJoin('locations', 'material.location_id', 'locations.id');
 
-    return result.map((material) => ({
-      id: material.id,
-      name: material.name,
-      description: material.description,
-      stock: material.stock,
-      state: material.state,
-      type: material.type,
-      location_id: material.location_id,
-    }));
+    return result.map(formatResponse);
   },
 
   async findOne(database, id) {
     const result = await database
-      .select('id', 'name', 'description', 'stock', 'state', 'type', 'location_id')
-      .where('id', id)
-      .from('locations');
+      .select(...fields)
+      .where('material.id', id)
+      .leftJoin('locations', 'material.location_id', 'locations.id')
+      .from('material');
 
     if (result.length === 0) return;
-    return result[0];
+    return formatResponse(result[0]);
   },
 
-  async create(database, { name, description, stock, state, type, location_id }) {
+  async create(database, { name, description, stock, state, type, locationId }) {
     const result = await database
-      .insert({ name, description, stock, state, type, location_id })
-      .into('materials');
+      .insert({ name, description, stock, state, type, location_id: locationId })
+      .into('material');
 
     // Knex returns the inserted id, so we get the object from the database.
     return this.findOne(database, result[0]);
   },
 
   async remove(database, id) {
-    const affectedRows = await database.where('id', id).from('materials').delete();
+    const affectedRows = await database.where('id', id).from('material').delete();
     return affectedRows > 0;
   },
 
   async update(database, id, data) {
-    const affectedRows = await database('materials').where('id', id).update(data);
+    const affectedRows = await database('material').where('id', id).update(data);
     if (affectedRows > 0) return this.findOne(database, id);
     // else return undefined
   },
