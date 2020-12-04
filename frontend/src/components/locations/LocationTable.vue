@@ -20,11 +20,7 @@
                     <v-text-field v-model="editedItem.name" label="Location"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="8" md="8">
-                    <v-textarea
-                      v-model="editedItem.description"
-                      label="Description"
-                      filled
-                    ></v-textarea>
+                    <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>
@@ -104,13 +100,11 @@ export default {
 
     deleteItem(item) {
       this.editedIndex = this.locations.indexOf(item);
-      this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      // TODO call this.deleteLocation(id)
-      this.locations.splice(this.editedIndex, 1);
+      this.deleteLocation(this.locations[this.editedIndex].id);
       this.closeDelete();
     },
 
@@ -132,6 +126,11 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
+        let data = this.editedItem;
+        this.updateLocation({
+          id: this.locations[this.editedIndex].id,
+          data,
+        });
         // TODO call this.updateLocation({id, data})
         Object.assign(this.locations[this.editedIndex], this.editedItem);
       } else {
