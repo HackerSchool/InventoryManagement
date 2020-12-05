@@ -111,7 +111,14 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.deleteLocation(this.locations[this.editedIndex].id);
+      this.deleteLocation(this.locations[this.editedIndex].id).catch((e) => {
+        if (e.response.status === 403)
+          this.$notify({
+            type: 'error',
+            title: 'Cannot delete location',
+            text: 'It is not possible to delete locations that have linked items',
+          });
+      });
       this.closeDelete();
     },
 
