@@ -1,3 +1,5 @@
+process.env.VUE_APP_VERSION = process.env.npm_package_version || 'unknown';
+
 module.exports = {
   publicPath: '/',
   runtimeCompiler: true,

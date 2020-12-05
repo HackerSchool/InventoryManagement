@@ -18,19 +18,19 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: Dashboard,
-    meta: { title: 'Dashboard', layout_h: Header, layout_f: Footer },
+    meta: { title: 'Dashboard', layoutHeader: Header, layoutFooter: Footer },
   },
   {
     path: '/test',
     name: 'requisitions',
     component: MyRequests,
-    meta: { layout_h: Header, layout_f: Footer },
+    meta: { layoutHeader: Header, layoutFooter: Footer },
   },
   {
     path: '/locations',
     name: 'locations',
     component: Locations,
-    meta: { title: 'Locations', layout_h: Header, layout_f: Footer },
+    meta: { title: 'Locations', layoutHeader: Header, layoutFooter: Footer },
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];
