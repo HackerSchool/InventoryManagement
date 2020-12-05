@@ -18,7 +18,7 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: Dashboard,
-    meta: { layout_h: Header, layout_f: Footer },
+    meta: { title: 'Dashboard', layout_h: Header, layout_f: Footer },
   },
   {
     path: '/test',
@@ -30,9 +30,9 @@ const routes = [
     path: '/locations',
     name: 'locations',
     component: Locations,
-    meta: { layout_h: Header, layout_f: Footer },
+    meta: { title: 'Locations', layout_h: Header, layout_f: Footer },
   },
-  { path: '/login', name: 'login', component: Login, meta: { noAuth: true } },
+  { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];
 
 const router = new Router({
@@ -43,6 +43,14 @@ const router = new Router({
 });
 
 router.beforeEach((to, _from, next) => {
+  // Change the document title
+  const nearestWithTitle = to.matched
+    .slice()
+    .reverse()
+    .find((r) => r.meta && r.meta.title);
+  if (nearestWithTitle) document.title = `${nearestWithTitle.meta.title} | Hackerschool Inventory`;
+  else document.title = 'Hackerschool Inventory';
+
   if (to.matched.some((record) => !record.meta.noAuth) && !getAuthToken()) {
     next({
       path: '/login',
