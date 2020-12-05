@@ -75,15 +75,6 @@ export default {
 </script>
 
 <style>
-#center-vertical {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
 #btn {
   background: #009de0;
   color: white;

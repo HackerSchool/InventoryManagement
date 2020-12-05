@@ -21,7 +21,7 @@ const vuetify = new Vuetify({
       dark: {
         background: '#2B2A29',
         primary: 'blue',
-        secondary: '#b0bec5',
+        secondary: '#6dba83',
         accent: '#8c9eff',
         error: '#b71c1c',
       },

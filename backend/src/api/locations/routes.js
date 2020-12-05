@@ -67,7 +67,7 @@ module.exports = {
       return res.sendStatus(400); // invalid ID or location object format
     }
 
-    const location = await controller.update(req.db, id, req.body);
+    const location = await controller.update(req.db, id, data);
 
     if (!location) return res.sendStatus(404);
     res.json(location);
