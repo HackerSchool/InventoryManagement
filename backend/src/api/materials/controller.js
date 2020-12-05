@@ -46,12 +46,18 @@ module.exports = {
   },
 
   async create(database, { name, description, stock, state, type, locationId }) {
-    const result = await database
-      .insert({ name, description, stock, state, type, location_id: locationId })
-      .into('material');
+    try {
+      const result = await database
+        .insert({ name, description, stock, state, type, location_id: locationId })
+        .into('material');
 
-    // Knex returns the inserted id, so we get the object from the database.
-    return this.findOne(database, result[0]);
+      // Knex returns the inserted id, so we get the object from the database.
+      return this.findOne(database, result[0]);
+    } catch (e) {
+      // Return null if provided location does not exist
+      if (e.code != 'ER_NO_REFERENCED_ROW_2') throw e;
+      return null;
+    }
   },
 
   async remove(database, id) {
@@ -60,8 +66,14 @@ module.exports = {
   },
 
   async update(database, id, data) {
-    const affectedRows = await database('material').where('id', id).update(data);
-    if (affectedRows > 0) return this.findOne(database, id);
-    // else return undefined
+    try {
+      const affectedRows = await database('material').where('id', id).update(data);
+      if (affectedRows > 0) return this.findOne(database, id);
+      // else return undefined
+    } catch (e) {
+      // Return undefined if provided location does not exist
+      if (e.code != 'ER_NO_REFERENCED_ROW_2') throw e;
+      return null;
+    }
   },
 };

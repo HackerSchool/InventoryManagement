@@ -13,7 +13,7 @@ module.exports = {
 
     let id;
     try {
-      id = await models.locationId.validateAsync(req.params.id);
+      id = await models.materialId.validateAsync(req.params.id);
     } catch (e) {
       return res.sendStatus(400); // invalid ID format
     }
@@ -30,12 +30,16 @@ module.exports = {
 
     let data;
     try {
-      data = await models.locationCreate.validateAsync(req.body);
+      data = await models.materialCreate.validateAsync(req.body);
     } catch (e) {
       return res.sendStatus(400); // invalid location object
     }
 
-    res.json(await controller.create(req.db, data));
+    const material = await controller.create(req.db, data);
+
+    // Return 404 if location does not exist.
+    if (!material) return res.sendStatus(400);
+    res.json(material);
   },
 
   remove: async (req, res) => {
@@ -43,7 +47,7 @@ module.exports = {
 
     let id;
     try {
-      id = await models.locationId.validateAsync(req.params.id);
+      id = await models.materialId.validateAsync(req.params.id);
     } catch (e) {
       return res.sendStatus(400); // invalid ID format
     }
@@ -60,16 +64,18 @@ module.exports = {
     let id, data;
     try {
       [id, data] = await Promise.all([
-        models.locationId.validateAsync(req.params.id),
-        models.locationUpdate.validateAsync(req.body),
+        models.materialId.validateAsync(req.params.id),
+        models.materialUpdate.validateAsync(req.body),
       ]);
     } catch (e) {
+      console.log(e);
       return res.sendStatus(400); // invalid ID or location object format
     }
 
-    const location = await controller.update(req.db, id, req.body);
+    const location = await controller.update(req.db, id, data);
 
-    if (!location) return res.sendStatus(404);
+    // update controller returns null if provider location does not exist
+    if (!location) return res.sendStatus(location === null ? 400 : 404);
     res.json(location);
   },
 };
