@@ -49,8 +49,8 @@ module.exports = {
     }
 
     const success = await controller.remove(req.db, id);
-
-    if (!success) return res.sendStatus(404);
+    // Return forbidden if location has materials linked to it
+    if (!success) return res.sendStatus(success === null ? 403 : 404);
     res.sendStatus(204);
   },
 

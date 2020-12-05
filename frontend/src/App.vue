@@ -1,11 +1,11 @@
 <template>
   <v-app id="app" style="width: 100%; height: 100%">
     <notifications />
-    <component :is="$route.meta.layout_h"> </component>
+    <component :is="$route.meta.layoutHeader"> </component>
 
     <router-view> </router-view>
 
-    <component :is="$route.meta.layout_f"> </component>
+    <component :is="$route.meta.layoutFooter"> </component>
   </v-app>
 </template>
 

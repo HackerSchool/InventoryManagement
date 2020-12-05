@@ -20,8 +20,8 @@ const vuetify = new Vuetify({
     themes: {
       dark: {
         background: '#2B2A29',
-        primary: 'blue',
-        secondary: '#6dba83',
+        primary: '#6dba83',
+        secondary: '#33874b',
         accent: '#8c9eff',
         error: '#b71c1c',
       },

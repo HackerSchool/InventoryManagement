@@ -20,21 +20,26 @@
                     <v-col cols="12">
                       <v-text-field
                         v-model="editedItem.name"
+                        filled
                         :rules="[(v) => !!v || 'Location name is required']"
                         label="Name"
                         required
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
+                      <v-textarea
+                        v-model="editedItem.description"
+                        filled
+                        label="Description"
+                      ></v-textarea>
                     </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn color="primary" text @click="close"> Cancel </v-btn>
+                <v-btn color="primary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-form>
           </v-card>
@@ -111,7 +116,14 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.deleteLocation(this.locations[this.editedIndex].id);
+      this.deleteLocation(this.locations[this.editedIndex].id).catch((e) => {
+        if (e.response.status === 403)
+          this.$notify({
+            type: 'error',
+            title: 'Cannot delete location',
+            text: 'It is not possible to delete locations that have linked items',
+          });
+      });
       this.closeDelete();
     },
 
