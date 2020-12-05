@@ -3,17 +3,17 @@
     <v-progress-linear v-if="loading" indeterminate color="secondary" />
     <v-container>
       <!-- TODO Add refresh button that triggers the refresh function -->
-      <LocationTable v-if="!loading" />
+      <MaterialTable v-if="!loading" />
     </v-container>
   </div>
 </template>
 
 <script>
-import LocationTable from '@/components/locations/LocationTable';
+import MaterialTable from '@/components/materials/materialstable';
 import { mapActions, mapState } from 'vuex';
 
 export default {
-  components: { LocationTable },
+  components: { MaterialTable },
 
   data() {
     return {

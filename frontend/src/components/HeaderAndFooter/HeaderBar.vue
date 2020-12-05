@@ -60,6 +60,10 @@ export default {
           text: 'Locations',
           link: '/locations',
         },
+        {
+          text: 'Materials',
+          link: '/materials',
+        },
       ],
     };
   },
