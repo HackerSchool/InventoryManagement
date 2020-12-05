@@ -1,4 +1,5 @@
 <template>
+  <!--
   <div style="background-color: orange; text-color: white; width: 100%; height: 70px">
     <v-row align="center" style="height: 70px">
       <v-col cols="2"> </v-col>
@@ -25,7 +26,29 @@
         </v-row>
       </v-col>
     </v-row>
-  </div>
+  </div>-->
+  <v-card flat tile>
+    <v-toolbar>
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <div v-for="(route, index) in routes" :key="index">
+        <v-btn :to="route.link" text color="primary">
+          <v-icon v-if="route.icon" left>
+            {{ route.icon }}
+          </v-icon>
+          {{ route.text }}
+        </v-btn>
+
+        <v-divider style="margin-left: 5px; margin-right: 5px" vertical> </v-divider>
+      </div>
+
+      <v-btn icon color="primary" class="mr-1" @click="onLogout">
+        <v-icon>mdi-logout</v-icon>
+      </v-btn>
+    </v-toolbar>
+  </v-card>
 </template>
 
 <script>
@@ -37,34 +60,30 @@ export default {
       loading: false,
       routes: [
         {
+          text: 'Dashboard',
+          icon: 'mdi-view-dashboard',
+          link: '/',
+        },
+        {
           text: 'Requisições', //Minhas Requesições
-          link: '/test',
-        },
-        {
-          text: 'Pedir', //Nova Requisição
-          link: '/test',
-        },
-        {
-          text: 'Global', //Requisições gerais
-          link: '/test',
-        },
-        {
-          text: 'Pendentes',
-          link: '/test',
-        },
-        {
-          text: 'Gerir',
+          icon: 'mdi-format-list-bulleted-type',
           link: '/test',
         },
         {
           text: 'Locations',
+          icon: 'mdi-map-marker',
           link: '/locations',
         },
       ],
     };
   },
+  computed: {
+    title() {
+      return this.$route.meta.title || 'Inventory';
+    },
+  },
   methods: {
-    LogoutClick: function () {
+    onLogout: function () {
       this.loading = true;
       localStorage.removeItem('token');
       this.$router.push('login');
