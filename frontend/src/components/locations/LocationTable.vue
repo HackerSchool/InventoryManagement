@@ -16,10 +16,10 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12">
                     <v-text-field v-model="editedItem.name" label="Location"></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="8" md="8">
+                  <v-col cols="12">
                     <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
                   </v-col>
                 </v-row>
@@ -37,15 +37,15 @@
             <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
+              <v-btn color="error" text @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
-    <template #item.actions="{ item }">
+    <template #[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
@@ -77,7 +77,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item';
+      return this.editedIndex === -1 ? 'New Location' : 'Edit Location';
     },
     ...mapState('locations', ['locations']),
   },
@@ -126,13 +126,10 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        let data = this.editedItem;
         this.updateLocation({
           id: this.locations[this.editedIndex].id,
-          data,
+          data: this.editedItem,
         });
-        // TODO call this.updateLocation({id, data})
-        Object.assign(this.locations[this.editedIndex], this.editedItem);
       } else {
         this.createLocation(this.editedItem);
       }

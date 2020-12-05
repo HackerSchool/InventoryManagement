@@ -44,8 +44,8 @@ const mutations = {
     if (index === -1) state.locations.push(data);
     else state.locations[index] = data;
   },
-  REMOVE_LOCATION(state, data) {
-    const index = state.locations.findIndex((location) => location.id == data.id);
+  REMOVE_LOCATION(state, id) {
+    const index = state.locations.findIndex((location) => location.id == id);
     state.locations.splice(index, 1); // removes element from array and shifts the others
   },
 };

@@ -11,4 +11,5 @@ export const addLocation = ({ name, description }) =>
 
 export const deleteLocation = (id) => httpClient.delete(`${ENDPOINT}/${id}`);
 
-export const updateLocation = (id, data) => httpClient.post(`${ENDPOINT}/${id}`, data);
+export const updateLocation = (id, { name, description }) =>
+  httpClient.post(`${ENDPOINT}/${id}`, { name, description });
