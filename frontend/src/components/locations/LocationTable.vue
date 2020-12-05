@@ -10,26 +10,33 @@
             <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on"> New Item </v-btn>
           </template>
           <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.name" label="Location"></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-            </v-card-actions>
+            <v-form ref="form" lazy-validation @submit.prevent="save">
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="editedItem.name"
+                        :rules="[(v) => !!v || 'Location name is required']"
+                        label="Name"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              </v-card-actions>
+            </v-form>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
@@ -110,6 +117,7 @@ export default {
 
     close() {
       this.dialog = false;
+      this.$refs.form.resetValidation();
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -125,6 +133,9 @@ export default {
     },
 
     save() {
+      // Don't save if validation is unsuccessful
+      if (!this.$refs.form.validate()) return;
+
       if (this.editedIndex > -1) {
         this.updateLocation({
           id: this.locations[this.editedIndex].id,

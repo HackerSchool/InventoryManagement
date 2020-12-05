@@ -30,7 +30,7 @@ const actions = {
   },
   async updateLocation({ commit }, { id, data }) {
     const response = await locationApi.updateLocation(id, data);
-    commit('SET_LOCATION', response.data);
+    commit('SET_LOCATION', { ...response.data, id });
   },
 };
 
@@ -42,7 +42,8 @@ const mutations = {
     const index = state.locations.findIndex((location) => location.id == data.id);
 
     if (index === -1) state.locations.push(data);
-    else state.locations[index] = data;
+    // editing the array doesn't trigger DOM refresh, but splice does
+    else state.locations.splice(index, 1, data);
   },
   REMOVE_LOCATION(state, id) {
     const index = state.locations.findIndex((location) => location.id == id);
