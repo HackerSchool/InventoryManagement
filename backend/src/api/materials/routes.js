@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const controller = require('./controller');
 const models = require('./models');
 
@@ -30,7 +31,7 @@ module.exports = {
 
     let data;
     try {
-      data = await models.materialCreate.validateAsync(req.body);
+      data = await models.materialCreate.validateAsync(req.body, { stripUnknown: true });
     } catch (e) {
       return res.sendStatus(400); // invalid location object
     }
@@ -65,10 +66,9 @@ module.exports = {
     try {
       [id, data] = await Promise.all([
         models.materialId.validateAsync(req.params.id),
-        models.materialUpdate.validateAsync(req.body),
+        models.materialUpdate.validateAsync(req.body, { stripUnknown: true }),
       ]);
     } catch (e) {
-      console.log(e);
       return res.sendStatus(400); // invalid ID or location object format
     }
 
