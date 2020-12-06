@@ -23,22 +23,27 @@
                         :rules="[(v) => !!v || 'Material name is required']"
                         label="Name"
                         required
+                        filled
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
+                      <v-textarea
+                        v-model="editedItem.description"
+                        label="Description"
+                        filled
+                      ></v-textarea>
                     </v-col>
                     <v-col cols="6">
-                      <v-text-field v-model="editedItem.stock" label="Stock"></v-text-field>
+                      <v-text-field v-model="editedItem.stock" label="Stock" filled></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                      <v-text-field v-model="editedItem.state" label="State"></v-text-field>
+                      <v-text-field v-model="editedItem.state" label="State" filled></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                      <v-text-field v-model="editedItem.type" label="Type"></v-text-field>
+                      <v-text-field v-model="editedItem.type" label="Type" filled></v-text-field>
                     </v-col>
                     <v-col cols="6">
-                      <v-text-field v-model="editedItem.value" label="Value"></v-text-field>
+                      <v-text-field v-model="editedItem.value" label="Value" filled></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       <v-select
@@ -49,6 +54,7 @@
                         return-object
                         :rules="[(v) => !!v || 'Material location is required']"
                         required
+                        filled
                       >
                       </v-select>
                     </v-col>
@@ -57,8 +63,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn color="primary" text @click="close"> Cancel </v-btn>
+                <v-btn color="primary" text @click="save"> Save </v-btn>
               </v-card-actions>
             </v-form>
           </v-card>
