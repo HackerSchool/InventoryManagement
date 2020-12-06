@@ -30,7 +30,7 @@ module.exports = {
 
     let data;
     try {
-      data = await models.locationCreate.validateAsync(req.body);
+      data = await models.locationCreate.validateAsync(req.body, { stripUnknown: true });
     } catch (e) {
       return res.sendStatus(400); // invalid location object
     }
@@ -61,7 +61,7 @@ module.exports = {
     try {
       [id, data] = await Promise.all([
         models.locationId.validateAsync(req.params.id),
-        models.locationUpdate.validateAsync(req.body),
+        models.locationUpdate.validateAsync(req.body, { stripUnknown: true }),
       ]);
     } catch (e) {
       return res.sendStatus(400); // invalid ID or location object format
