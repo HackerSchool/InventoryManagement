@@ -18,7 +18,6 @@
 <script>
 import RequestItemList from '@/components/elements/RequestItemList.vue';
 import MembersTest from '@/components/membersTest/MembersTest.vue';
-import { getHelloWorld } from '@/api/helloWorld.api';
 
 export default {
   name: 'MyRequestsComponent',
@@ -32,10 +31,6 @@ export default {
     return {
       hello: 'Nothing :(',
     };
-  },
-
-  async mounted() {
-    this.hello = (await getHelloWorld()).data;
   },
 };
 </script>
