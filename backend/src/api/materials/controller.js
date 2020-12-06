@@ -1,7 +1,7 @@
 const fields = [
-  'material.id',
-  'material.name',
-  'material.description',
+  'materials.id',
+  'materials.name',
+  'materials.description',
   'stock',
   'state',
   'type',
@@ -28,8 +28,8 @@ module.exports = {
   async findAll(database) {
     const result = await database
       .select(...fields)
-      .from('material')
-      .leftJoin('locations', 'material.location_id', 'locations.id');
+      .from('materials')
+      .leftJoin('locations', 'materials.location_id', 'locations.id');
 
     return result.map(formatResponse);
   },
@@ -37,9 +37,9 @@ module.exports = {
   async findOne(database, id) {
     const result = await database
       .select(...fields)
-      .where('material.id', id)
-      .leftJoin('locations', 'material.location_id', 'locations.id')
-      .from('material');
+      .where('materials.id', id)
+      .leftJoin('locations', 'materials.location_id', 'locations.id')
+      .from('materials');
 
     if (result.length === 0) return;
     return formatResponse(result[0]);
@@ -49,7 +49,7 @@ module.exports = {
     try {
       const result = await database
         .insert({ name, description, stock, state, type, location_id: locationId })
-        .into('material');
+        .into('materials');
 
       // Knex returns the inserted id, so we get the object from the database.
       return this.findOne(database, result[0]);
@@ -61,13 +61,13 @@ module.exports = {
   },
 
   async remove(database, id) {
-    const affectedRows = await database.where('id', id).from('material').delete();
+    const affectedRows = await database.where('id', id).from('materials').delete();
     return affectedRows > 0;
   },
 
   async update(database, id, data) {
     try {
-      const affectedRows = await database('material').where('id', id).update(data);
+      const affectedRows = await database('materials').where('id', id).update(data);
       if (affectedRows > 0) return this.findOne(database, id);
       // else return undefined
     } catch (e) {
