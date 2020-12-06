@@ -28,13 +28,14 @@ export default {
   async mounted() {
     if (this.locations.length == 0) {
       this.loading = true;
-      await this.fetchLocations();
+      await Promise.all([this.fetchLocations(), this.fetchMaterials()]);
       this.loading = false;
     }
   },
 
   methods: {
     ...mapActions('locations', ['fetchLocations']),
+    ...mapActions('materials', ['fetchMaterials']),
   },
 };
 </script>
