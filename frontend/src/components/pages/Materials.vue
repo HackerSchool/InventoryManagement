@@ -22,11 +22,11 @@ export default {
   },
 
   computed: {
-    ...mapState('locations', ['locations']),
+    ...mapState('materials', ['materials']),
   },
 
   async mounted() {
-    if (this.locations.length == 0) {
+    if (this.materials.length == 0) {
       this.loading = true;
       await Promise.all([this.fetchLocations(), this.fetchMaterials()]);
       this.loading = false;

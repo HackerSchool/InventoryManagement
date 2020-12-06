@@ -46,7 +46,7 @@
                         label="Location"
                         :items="locations"
                         item-text="name"
-                        item-value="id"
+                        return-object
                         :rules="[(v) => !!v || 'Material location is required']"
                         required
                       >
@@ -103,12 +103,6 @@ export default {
     editedIndex: -1,
     editedItem: {
       name: '',
-      description: '',
-      stock: '',
-      state: '',
-      type: '',
-      location: '',
-      value: '',
     },
     defaultItem: {
       name: '',
