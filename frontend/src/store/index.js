@@ -1,7 +1,9 @@
-import members from './members';
 import locations from './locations';
+import materials from './materials';
+import members from './members';
 
 export default {
-  members,
   locations,
+  materials,
+  members,
 };
