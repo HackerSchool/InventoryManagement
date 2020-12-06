@@ -74,6 +74,11 @@ export default {
           icon: 'mdi-map-marker',
           link: '/locations',
         },
+        {
+          text: 'Materials',
+          icon: 'mdi-package-variant',
+          link: '/materials',
+        },
       ],
     };
   },

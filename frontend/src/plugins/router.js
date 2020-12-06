@@ -8,6 +8,7 @@ import MyRequests from '@/components/pages/MyRequests.vue';
 import Header from '@/components/HeaderAndFooter/HeaderBar.vue';
 import Footer from '@/components/HeaderAndFooter/FooterBar.vue';
 import Locations from '@/components/pages/Locations.vue';
+import Materials from '@/components/pages/Materials.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -31,6 +32,12 @@ const routes = [
     name: 'locations',
     component: Locations,
     meta: { title: 'Locations', layoutHeader: Header, layoutFooter: Footer },
+  },
+  {
+    path: '/materials',
+    name: 'materials',
+    component: Materials,
+    meta: { title: 'Materials', layoutHeader: Header, layoutFooter: Footer },
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];
