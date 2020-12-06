@@ -28,16 +28,16 @@
                     <v-col cols="12">
                       <v-textarea v-model="editedItem.description" label="Description"></v-textarea>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="6">
                       <v-text-field v-model="editedItem.stock" label="Stock"></v-text-field>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="6">
                       <v-text-field v-model="editedItem.state" label="State"></v-text-field>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="6">
                       <v-text-field v-model="editedItem.type" label="Type"></v-text-field>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="6">
                       <v-text-field v-model="editedItem.value" label="Value"></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -97,7 +97,7 @@ export default {
       { text: 'State', value: 'state', sortable: false },
       { text: 'Type', value: 'type', sortable: false },
       { text: 'Location', value: 'location.name', sortable: false },
-      { text: 'Value', value: 'value' },
+      { text: 'Value (€)', value: 'value' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     editedIndex: -1,
