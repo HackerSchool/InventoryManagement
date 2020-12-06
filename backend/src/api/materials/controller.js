@@ -18,6 +18,7 @@ const formatResponse = (response) => ({
   stock: response.stock,
   state: response.state,
   type: response.type,
+  value: response.value,
   location: {
     id: response.locationId,
     name: response.locationName,
@@ -46,11 +47,9 @@ module.exports = {
     return formatResponse(result[0]);
   },
 
-  async create(database, { name, description, stock, state, type, locationId }) {
+  async create(database, data) {
     try {
-      const result = await database
-        .insert({ name, description, stock, state, type, location_id: locationId })
-        .into('materials');
+      const result = await database.insert(data).into('materials');
 
       // Knex returns the inserted id, so we get the object from the database.
       return this.findOne(database, result[0]);
