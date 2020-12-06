@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import MaterialTable from '@/components/materials/materialstable';
+import MaterialTable from '@/components/materials/MaterialsTable';
 import { mapActions, mapState } from 'vuex';
 
 export default {
