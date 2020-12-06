@@ -38,6 +38,9 @@
                       <v-text-field v-model="editedItem.type" label="Type"></v-text-field>
                     </v-col>
                     <v-col cols="12">
+                      <v-text-field v-model="editedItem.value" label="Value"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
                       <v-select
                         v-model="editedItem.location"
                         label="Location"
@@ -93,7 +96,8 @@ export default {
       { text: 'Stock', value: 'stock' },
       { text: 'State', value: 'state', sortable: false },
       { text: 'Type', value: 'type', sortable: false },
-      { text: 'Location', value: 'location', sortable: false },
+      { text: 'Location', value: 'location.name', sortable: false },
+      { text: 'Value', value: 'value' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     editedIndex: -1,
@@ -104,6 +108,7 @@ export default {
       state: '',
       type: '',
       location: '',
+      value: '',
     },
     defaultItem: {
       name: '',
@@ -112,6 +117,7 @@ export default {
       state: '',
       type: '',
       location: '',
+      value: '',
     },
   }),
 
