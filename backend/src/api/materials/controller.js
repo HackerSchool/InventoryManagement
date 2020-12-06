@@ -5,6 +5,7 @@ const fields = [
   'stock',
   'state',
   'type',
+  'value',
   { locationId: 'location_id' },
   { locationName: 'locations.name' },
   { locationDesc: 'locations.description' },
