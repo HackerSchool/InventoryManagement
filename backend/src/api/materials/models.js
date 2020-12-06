@@ -8,8 +8,10 @@ const materialCreate = Joi.object({
   stock: Joi.number().integer().min(0).default(1),
   state: Joi.string().equal('good', 'damaged', 'retired').default('good'),
   type: Joi.string().equal('item', 'tool').default('item'),
-  locationId: Joi.number().integer().positive().required(),
-}).required();
+  location_id: Joi.number().integer().positive().required(),
+})
+  .rename('locationId', 'location_id')
+  .required();
 
 const materialUpdate = Joi.object({
   name: Joi.string().max(255),
