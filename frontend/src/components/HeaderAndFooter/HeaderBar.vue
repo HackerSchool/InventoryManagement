@@ -65,7 +65,7 @@ export default {
           link: '/',
         },
         {
-          text: 'Requisições', //Minhas Requesições
+          text: 'Requisitions',
           icon: 'mdi-format-list-bulleted-type',
           link: '/test',
         },
