@@ -34,13 +34,23 @@
                       ></v-textarea>
                     </v-col>
                     <v-col cols="6">
+                      <v-select
+                        v-model="editedItem.state"
+                        label="State"
+                        :items="states"
+                        filled
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-select
+                        v-model="editedItem.type"
+                        label="Type"
+                        :items="types"
+                        filled
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="6">
                       <v-text-field v-model="editedItem.stock" label="Stock" filled></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field v-model="editedItem.state" label="State" filled></v-text-field>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field v-model="editedItem.type" label="Type" filled></v-text-field>
                     </v-col>
                     <v-col cols="6">
                       <v-text-field v-model="editedItem.value" label="Value" filled></v-text-field>
@@ -137,7 +147,18 @@ export default {
     typeColors: {
       item: 'teal',
       tool: 'indigo',
+      other: 'grey',
     },
+    types: [
+      { text: 'Item', value: 'item' },
+      { text: 'Tool', value: 'tool' },
+      { text: 'Other', value: 'other' },
+    ],
+    states: [
+      { text: 'Good', value: 'good' },
+      { text: 'Damaged', value: 'damaged' },
+      { text: 'Retired', value: 'retired' },
+    ],
   }),
 
   computed: {
