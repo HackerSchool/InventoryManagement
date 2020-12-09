@@ -86,6 +86,16 @@
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
+    <template #[`item.state`]="{ item }">
+      <v-chip :color="stateColors[item.state]" dark class="capitalized">
+        {{ item.state }}
+      </v-chip>
+    </template>
+    <template #[`item.type`]="{ item }">
+      <v-chip :color="typeColors[item.type]" dark class="capitalized">
+        {{ item.type }}
+      </v-chip>
+    </template>
   </v-data-table>
 </template>
 
@@ -118,6 +128,15 @@ export default {
       type: '',
       location: '',
       value: '',
+    },
+    stateColors: {
+      good: 'green',
+      damaged: 'orange',
+      retired: 'red',
+    },
+    typeColors: {
+      item: 'teal',
+      tool: 'indigo',
     },
   }),
 
@@ -191,3 +210,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.capitalized {
+  text-transform: capitalize;
+}
+</style>
