@@ -1,6 +1,6 @@
 {
   "name": "hs-inventory",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "HackerSchool project for inventory management",
   "private": true,
   "scripts": {
