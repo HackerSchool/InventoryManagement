@@ -1,32 +1,4 @@
 <template>
-  <!--
-  <div style="background-color: orange; text-color: white; width: 100%; height: 70px">
-    <v-row align="center" style="height: 70px">
-      <v-col cols="2"> </v-col>
-      <v-col cols="10">
-        <v-row justify="start">
-          <div v-for="(route, index) in routes" :key="index">
-            <router-link :to="route.link">
-              {{ route.text }}
-            </router-link>
-
-            <v-divider style="margin-left: 5px; margin-right: 5px" vertical> </v-divider>
-          </div>
-          <div>
-            <v-btn
-              small
-              color="secondary"
-              elevation="2"
-              :loading="loading"
-              :disabled="loading"
-              @click="LogoutClick"
-              >Logout</v-btn
-            >
-          </div>
-        </v-row>
-      </v-col>
-    </v-row>
-  </div>-->
   <v-card flat tile>
     <v-toolbar>
       <v-toolbar-title>{{ title }}</v-toolbar-title>
@@ -34,7 +6,12 @@
       <v-spacer></v-spacer>
 
       <div v-for="(route, index) in routes" :key="index">
-        <v-btn :to="route.link" text color="primary">
+        <v-btn
+          v-if="getPermissionLevel >= (route.permission || 0)"
+          :to="route.link"
+          text
+          color="primary"
+        >
           <v-icon v-if="route.icon" left>
             {{ route.icon }}
           </v-icon>
@@ -52,12 +29,13 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: 'HeaderComponent',
 
   data() {
     return {
-      loading: false,
       routes: [
         {
           text: 'Dashboard',
@@ -73,11 +51,13 @@ export default {
           text: 'Locations',
           icon: 'mdi-map-marker',
           link: '/locations',
+          permission: 1, // admin only
         },
         {
           text: 'Materials',
           icon: 'mdi-package-variant',
           link: '/materials',
+          permission: 1, // admin only
         },
       ],
     };
@@ -86,14 +66,16 @@ export default {
     title() {
       return this.$route.meta.title || 'Inventory';
     },
+    ...mapGetters('user', ['getPermissionLevel']),
   },
   methods: {
     onLogout: function () {
-      this.loading = true;
       localStorage.removeItem('token');
+      this.logoutUser();
       this.$router.push('login');
-      this.loading = false;
     },
+
+    ...mapActions('user', ['logoutUser']),
   },
 };
 </script>

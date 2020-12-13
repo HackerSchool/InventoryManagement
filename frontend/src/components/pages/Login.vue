@@ -23,6 +23,7 @@
 <script>
 import { fenixLogin } from '@/api/auth.api';
 import logoSrc from '@/assets/logo_hs.svg';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'LoginPage',
@@ -51,6 +52,7 @@ export default {
 
         if (data.jwt) {
           localStorage.setItem('token', data.jwt);
+          this.loginUser(data.jwt);
           this.$router.push('/');
         }
       } catch (e) {
@@ -64,6 +66,8 @@ export default {
         this.loading = false;
       }
     },
+
+    ...mapActions('user', ['loginUser']),
   },
 };
 </script>

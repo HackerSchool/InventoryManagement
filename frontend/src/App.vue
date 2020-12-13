@@ -12,6 +12,7 @@
 <script>
 import HeaderBar from './components/HeaderAndFooter/HeaderBar.vue';
 import FooterBar from './components/HeaderAndFooter/FooterBar.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
@@ -19,6 +20,15 @@ export default {
   components: {
     HeaderBar,
     FooterBar,
+  },
+
+  mounted() {
+    const jwt = localStorage.getItem('token');
+    if (jwt) this.loginUser(jwt);
+  },
+
+  methods: {
+    ...mapActions('user', ['loginUser']),
   },
 };
 </script>
