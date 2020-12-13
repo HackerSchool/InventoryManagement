@@ -7,7 +7,7 @@ const materialCreate = Joi.object({
   description: Joi.string().max(65535).allow('', null), // max database TEXT length
   stock: Joi.number().integer().min(0).default(1),
   state: Joi.string().equal('good', 'damaged', 'retired').default('good'),
-  type: Joi.string().equal('item', 'tool').default('item'),
+  type: Joi.string().equal('item', 'tool', 'other').default('item'),
   value: Joi.number().max(0).precision(2),
   location_id: Joi.number().integer().positive().required(),
 })
@@ -19,7 +19,7 @@ const materialUpdate = Joi.object({
   description: Joi.string().max(65535).allow('', null), // max database TEXT length
   stock: Joi.number().integer().min(0),
   state: Joi.string().equal('good', 'damaged', 'retired'),
-  type: Joi.string().equal('item', 'tool'),
+  type: Joi.string().equal('item', 'tool', 'other'),
   value: Joi.number().max(0).precision(2),
   location_id: Joi.number().integer().positive(),
 })
