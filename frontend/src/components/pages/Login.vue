@@ -1,27 +1,21 @@
 <template>
   <v-container fill-height>
     <v-row align-content="center">
-      <v-col align-self="center">
-        <v-sheet
-          elevation="5"
-          class="pa-6 d-flex flex-column align-center"
-          rounded
-          width="fit-content"
-          style="margin: auto"
+      <v-spacer />
+      <v-sheet elevation="5" class="pa-6 d-flex flex-column align-center" rounded>
+        <v-img :src="logoSrc" height="100" width="100" contain class="mb-4" />
+        <h1 class="mb-1">Login | HS-Inventory</h1>
+        <p class="mb-8">This is an internal application that requires logging in.</p>
+        <v-btn
+          id="btn"
+          elevation="2"
+          :loading="loading"
+          :disabled="loading"
+          @click="handleButtonClick"
+          >Login With Fénix</v-btn
         >
-          <v-img :src="logoSrc" max-height="100" contain class="mb-4" />
-          <h1 class="mb-1">Login | HS-Inventory</h1>
-          <p class="mb-8">This is an internal application that requires logging in.</p>
-          <v-btn
-            id="btn"
-            elevation="2"
-            :loading="loading"
-            :disabled="loading"
-            @click="handleButtonClick"
-            >Login With Fénix</v-btn
-          >
-        </v-sheet>
-      </v-col>
+      </v-sheet>
+      <v-spacer />
     </v-row>
   </v-container>
 </template>
