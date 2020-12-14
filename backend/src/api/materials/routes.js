@@ -1,4 +1,3 @@
-const Joi = require('joi');
 const controller = require('./controller');
 const models = require('./models');
 
@@ -19,11 +18,11 @@ module.exports = {
       return res.sendStatus(400); // invalid ID format
     }
 
-    const location = await controller.findOne(req.db, id);
+    const material = await controller.findOne(req.db, id);
 
     // If location doesn't exist, return 404
-    if (!location) return res.sendStatus(404);
-    res.json(location);
+    if (!material) return res.sendStatus(404);
+    res.json(material);
   },
 
   create: async (req, res) => {
@@ -56,6 +55,7 @@ module.exports = {
     const success = await controller.remove(req.db, id);
 
     if (!success) return res.sendStatus(404);
+    // TODO add linked requisitions check and return 403 if so
     res.sendStatus(204);
   },
 
