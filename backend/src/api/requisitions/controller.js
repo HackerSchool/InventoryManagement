@@ -30,4 +30,15 @@ module.exports = {
       .leftJoin('members', 'requisitions.id_members', 'members.id');
     return result.map(formatResponse);
   },
+
+  async findOne(database, id) {
+    const result = await database
+      .select(...fields)
+      .where('requisitions.id', id)
+      .leftJoin('materials', 'requistions.id_materials', 'materials.id')
+      .leftJoin('members', 'requisitions.id_members', 'members.id')
+      .from('requisitions');
+
+    if (result.length === 0) return;
+    return formatResponse(result[0]);
 };
