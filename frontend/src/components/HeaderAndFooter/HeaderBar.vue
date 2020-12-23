@@ -59,6 +59,12 @@ export default {
           link: '/materials',
           permission: 1, // admin only
         },
+        {
+          text: 'Members',
+          icon: 'mdi-account-multiple',
+          link: '/members',
+          permission: 1, //admin only
+        },
       ],
     };
   },
