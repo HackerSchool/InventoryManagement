@@ -1,5 +1,14 @@
 const Joi = require('joi');
 
+const materialsQuery = Joi.object({
+  _q: Joi.string(),
+  _sort: Joi.string().regex(/^(?:name|stock|value):(?:asc|desc)$/),
+  _limit: Joi.number().positive(),
+  _start: Joi.number().min(0),
+  state: Joi.string(),
+  type: Joi.string(),
+}).default({});
+
 const materialId = Joi.number().integer().positive();
 
 const materialCreate = Joi.object({
@@ -28,6 +37,7 @@ const materialUpdate = Joi.object({
   .min(1); // require at least one object
 
 module.exports = {
+  materialsQuery,
   materialId,
   materialCreate,
   materialUpdate,
