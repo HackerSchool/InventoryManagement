@@ -41,4 +41,17 @@ module.exports = {
 
     if (result.length === 0) return;
     return formatResponse(result[0]);
+  },
+
+  async findSelf(database, id, memberId) {
+    const result = await database
+      .select(...fields)
+      .where({ 'requisitions.id': id, 'requisitions.member.id': memberId })
+      .leftJoin('materials', 'requistions.id_materials', 'materials.id')
+      .leftJoin('members', 'requisitions.id_members', 'members.id')
+      .from('requisitions');
+
+    if (result.length === 0) return;
+    return formatResponse(result[0]);
+  },
 };
