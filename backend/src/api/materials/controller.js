@@ -33,12 +33,12 @@ module.exports = {
       .from('materials')
       .leftJoin('locations', 'materials.location_id', 'locations.id');
     if (query)
-      result = result
-        .whereRaw(
+      result = result.andWhere(function () {
+        this.whereRaw(
           'MATCH (`materials`.`name`, `materials`.`description`) AGAINST(? IN BOOLEAN MODE)',
           [query]
-        )
-        .orWhere('materials.name', 'like', `%${query}%`);
+        ).orWhere('materials.name', 'like', `%${query}%`);
+      });
     if (sort) {
       const [col, order] = sort.split(':');
       result = result.orderBy(`materials.${col}`, order);
@@ -49,6 +49,21 @@ module.exports = {
     if (type) result = result.andWhere('materials.type', 'in', type.split(','));
 
     return (await result).map(formatResponse);
+  },
+
+  async countAll(database, { query, state, type }) {
+    let result = database.count('*').from('materials').debug();
+    if (query)
+      result = result.andWhere(function () {
+        this.whereRaw(
+          'MATCH (`materials`.`name`, `materials`.`description`) AGAINST(? IN BOOLEAN MODE)',
+          [query]
+        ).orWhere('materials.name', 'like', `%${query}%`);
+      });
+    if (state) result = result.andWhere('materials.state', 'in', state.split(','));
+    if (type) result = result.andWhere('materials.type', 'in', type.split(','));
+
+    return (await result)[0]['count(*)'];
   },
 
   async findOne(database, id) {

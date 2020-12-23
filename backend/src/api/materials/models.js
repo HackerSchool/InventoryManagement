@@ -5,7 +5,7 @@ const materialsQuery = Joi.object({
   _sort: Joi.string().regex(/^(?:name|stock|value):(?:asc|desc)$/),
   _limit: Joi.number().positive(),
   _start: Joi.number().min(0),
-  state: Joi.string().default('good,damaged'),
+  state: Joi.string(),
   type: Joi.string(),
 }).default({});
 
