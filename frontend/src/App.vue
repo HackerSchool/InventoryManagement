@@ -1,25 +1,26 @@
 <template>
   <v-app id="app" style="width: 100%; height: 100%">
     <notifications />
-    <component :is="$route.meta.layoutHeader"> </component>
-
-    <router-view> </router-view>
-
+    <component :is="$route.meta.layoutNav"> </component>
+    <v-main>
+      <router-view> </router-view>
+    </v-main>
     <component :is="$route.meta.layoutFooter"> </component>
   </v-app>
 </template>
 
 <script>
-import HeaderBar from './components/HeaderAndFooter/HeaderBar.vue';
 import FooterBar from './components/HeaderAndFooter/FooterBar.vue';
+import NavBar from './components/HeaderAndFooter/NavBar.vue';
+
 import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
 
   components: {
-    HeaderBar,
     FooterBar,
+    NavBar,
   },
 
   mounted() {
