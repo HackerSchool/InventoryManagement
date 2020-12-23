@@ -34,7 +34,10 @@ module.exports = {
       return res.sendStatus(400);
     }
 
-    res.json(await controller.create(req.db, data));
+    const member = await controller.create(req.db, data);
+
+    if (!member) return res.sendStatus(400); // Duplicate user
+    res.json(member);
   },
 
   remove: async (req, res) => {

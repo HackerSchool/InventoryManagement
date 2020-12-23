@@ -25,8 +25,13 @@ module.exports = {
   },
 
   async create(database, data) {
-    const result = await database.insert(data).into('members');
-    return this.findOne(database, result[0]);
+    try {
+      const result = await database.insert(data).into('members');
+      return this.findOne(database, result[0]);
+    } catch (e) {
+      if (e.code !== 'ER_DUP_ENTRY') throw e;
+      return null;
+    }
   },
 
   async update(database, id, data) {
