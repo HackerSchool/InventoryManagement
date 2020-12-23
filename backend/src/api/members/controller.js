@@ -1,10 +1,10 @@
-const fields = ['id', 'name', 'role', 'active', 'istId'];
+const fields = ['id', 'name', 'role', 'active', 'ist_id'];
 
 const formatResponse = (response) => ({
   id: response.id,
   name: response.name,
   istId: response.ist_id,
-  active: response.active,
+  active: response.active === 1 ? true : false,
   role: response.role,
 });
 
@@ -24,7 +24,7 @@ module.exports = {
     return formatResponse(result[0]);
   },
 
-  async add(database, data) {
+  async create(database, data) {
     const result = await database.insert(data).into('members');
     return this.findOne(database, result[0]);
   },
@@ -35,7 +35,7 @@ module.exports = {
     return null;
   },
 
-  async delete(database, id) {
+  async remove(database, id) {
     try {
       const affectedRows = await database.where('id', id).from('members').delete();
       return affectedRows > 0;

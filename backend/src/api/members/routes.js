@@ -3,10 +3,7 @@ const models = require('./models');
 
 module.exports = {
   findAll: async (req, res) => {
-    if (!req.user?.hasPermission('admin')) {
-      res.sendStatus(401);
-      return;
-    }
+    if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
     res.json(await controller.findAll(req.db));
   },
@@ -27,7 +24,7 @@ module.exports = {
     res.json(member);
   },
 
-  add: async (req, res) => {
+  create: async (req, res) => {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
     let data;
