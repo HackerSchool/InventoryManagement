@@ -33,10 +33,7 @@ module.exports = {
       .from('materials')
       .leftJoin('locations', 'materials.location_id', 'locations.id');
 
-    return result.map(formatResponse);
-  },
-
-  async findOne(database, id) {
+    return result.map(formatResponse);  async findOne(database, id) {
     const result = await database
       .select(...fields)
       .where('materials.id', id)
@@ -45,6 +42,9 @@ module.exports = {
 
     if (result.length === 0) return;
     return formatResponse(result[0]);
+  },
+
+
   },
 
   async create(database, data) {

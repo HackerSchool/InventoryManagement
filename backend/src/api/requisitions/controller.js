@@ -1,3 +1,5 @@
+const { create } = require("../locations/routes");
+
 const fields = [
   'requisitions.id',
   'requisitions.quantity',
@@ -54,4 +56,13 @@ module.exports = {
     if (result.length === 0) return;
     return formatResponse(result[0]);
   },
+
+  async create(database, data) {
+    try {
+      const result = await database.insert(data).into('requisitions');
+      return this.findOne(database, result[0]);
+    } catch (e) {
+      if (e.code != 'ER_NO_REFERENCED_ROW_2') throw e;
+      return null;
+    }
 };

@@ -39,4 +39,20 @@ module.exports = {
 
     res.json(await controller.findSelf(req.db, req.user.id));
   },
+
+  create: async (req, res) => {
+    if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
+
+    let data;
+    try {
+      data = await models.requisitionCreate.validateAsync(req.body, { stripUnknown: true });
+    } catch (e) {
+      return res.sendStatus(400);
+    }
+
+    const requisition = await controller.create(req.db, data);
+
+    if (!requisition) return res.sendStatus(400);
+    res.json(requisition);
+  },
 };
