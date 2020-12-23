@@ -3,9 +3,27 @@ const models = require('./models');
 
 module.exports = {
   findAll: async (req, res) => {
+    let query;
+    try {
+      query = await models.materialsQuery.validateAsync(req.query, { stripUnknown: true });
+    } catch (e) {
+      return res.sendStatus(400); // invalid query format
+    }
+
+    let { _q, _sort, _start, _limit, state, type } = query;
+
     if (!req.user?.hasPermission('user')) return res.sendStatus(401);
 
-    res.json(await controller.findAll(req.db));
+    res.json(
+      await controller.findAll(req.db, {
+        query: _q,
+        sort: _sort,
+        limit: _limit,
+        offset: _start,
+        state: state,
+        type: type,
+      })
+    );
   },
 
   findOne: async (req, res) => {
