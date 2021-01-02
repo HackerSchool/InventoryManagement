@@ -5,23 +5,14 @@
     <v-main>
       <router-view> </router-view>
     </v-main>
-    <component :is="$route.meta.layoutFooter"> </component>
   </v-app>
 </template>
 
 <script>
-import FooterBar from './components/HeaderAndFooter/FooterBar.vue';
-import NavBar from './components/HeaderAndFooter/NavBar.vue';
-
 import { mapActions } from 'vuex';
 
 export default {
   name: 'App',
-
-  components: {
-    FooterBar,
-    NavBar,
-  },
 
   mounted() {
     const jwt = localStorage.getItem('token');

@@ -1,13 +1,14 @@
 <template>
-  <v-card class="overflow-hidden">
-    <v-app-bar app>
-      <v-app-bar-nav-icon color="primary" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-spacer></v-spacer>
-      <v-btn icon color="primary" class="mr-1" @click="onLogout">
-        <v-icon>mdi-logout</v-icon>
-      </v-btn>
+  <div>
+    <v-app-bar clipped-left app>
+      <v-app-bar-nav-icon
+        v-if="$vuetify.breakpoint.mdAndDown"
+        color="primary"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+      <img :src="logoSrc" style="height: 100%" />
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" app temporary>
+    <v-navigation-drawer v-model="drawer" clipped :permanent="$vuetify.breakpoint.lgAndUp" app>
       <v-list nav>
         <v-list-item-group v-for="(route, index) in routes" :key="index" v-model="group">
           <v-list-item
@@ -15,6 +16,7 @@
             :to="route.link"
             text
             color="primary"
+            class="mb-1"
           >
             <v-icon v-if="route.icon" left>
               {{ route.icon }}
@@ -23,17 +25,34 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+      <template #append>
+        <div class="pa-2">
+          <v-btn block color="primary" outlined @click="onLogout">
+            <v-icon left>mdi-logout</v-icon>Logout
+          </v-btn>
+          <div class="py-2 grey--text text--lighten-2 text-center">
+            Created with
+            <v-icon color="primary">mdi-heart</v-icon> by <strong>Hackerschool</strong> <br />
+            <v-icon x-small>mdi-copyright</v-icon>
+            {{ new Date().getFullYear() }} - v{{ version }}
+          </div>
+        </div>
+      </template>
     </v-navigation-drawer>
-  </v-card>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import logoSrc from '@/assets/logo_navbar.png';
+
 export default {
   data() {
     return {
       drawer: false,
       group: null,
+      logoSrc,
+      version: process.env.VUE_APP_VERSION,
       routes: [
         {
           text: 'Dashboard',
@@ -76,7 +95,7 @@ export default {
 
   watch: {
     group() {
-      this.drawer = false;
+      this.drawer = true;
     },
   },
 
