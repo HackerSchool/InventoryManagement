@@ -15,12 +15,16 @@ const requisitionCreate = Joi.object({
 
 const requisitionUpdate = Joi.object({
   id_project: Joi.number().integer().positive(),
-  date_out: Joi.date(),
-  date_in: Joi.date(),
+  state: Joi.string().equal(
+    'pending',
+    'cancelled',
+    'can_pickup',
+    'active',
+    'returned',
+    'not_returning'
+  ),
 })
   .rename('projectId', 'id_project')
-  .rename('dateOut', 'date_out')
-  .rename('dateIn', 'date_in')
   .required()
   .min(1); // require at least one object
 

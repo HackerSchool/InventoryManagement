@@ -8,7 +8,7 @@ module.exports.up = async (knex) => {
     table.integer('id_member').unsigned().notNullable().alter();
     table.integer('id_material').unsigned().notNullable().alter();
 
-    // enum: "pending", "can_pickup", "active", "returned", "not_returning"
+    // enum: "pending", "cancelled", "can_pickup", "active", "returned", "not_returning"
     table.string('state', 25).notNullable().default('pending');
   });
 };

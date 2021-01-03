@@ -53,4 +53,32 @@ module.exports = {
 
     res.json(requisition);
   },
+
+  update: async (req, res) => {
+    if (!req.user?.hasPermission('user')) return res.sendStatus(401);
+
+    let id, data;
+    try {
+      [id, data] = await Promise.all([
+        models.requisitionId.validateAsync(req.params.id),
+        models.requisitionUpdate.validateAsync(req.body, { stripUnknown: true }),
+      ]);
+    } catch (e) {
+      return res.sendStatus(400); // invalid ID or requisition object format
+    }
+
+    const requisition = await controller.update(
+      req.db,
+      id,
+      data,
+      !!req.user?.hasPermission('admin'),
+      req.user?.id
+    );
+
+    // update controller returns null if provided requisition does not exist
+    // returns false if user has no permission
+    if (!requisition)
+      return res.sendStatus(requisition === null ? 400 : requisition === false ? 401 : 404);
+    res.json(requisition);
+  },
 };

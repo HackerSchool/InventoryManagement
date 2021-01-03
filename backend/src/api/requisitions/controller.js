@@ -1,3 +1,5 @@
+const REQ_STATUS = ['pending', 'cancelled', 'can_pickup', 'active', 'returned', 'not_returning'];
+
 const fields = [
   'requisitions.id',
   'requisitions.quantity',
@@ -40,6 +42,7 @@ module.exports = {
     const result = await database
       .select(...fields)
       .from('requisitions')
+      .orderBy('requisitions.created_at', 'desc')
       .leftJoin('materials', 'requisitions.id_material', 'materials.id')
       .leftJoin('members', 'requisitions.id_member', 'members.id')
       .leftJoin('projects', 'requisitions.id_project', 'projects.id');
@@ -64,6 +67,7 @@ module.exports = {
       .select(...fields)
       .where({ 'requisitions.id_member': memberId })
       .from('requisitions')
+      .orderBy('requisitions.created_at', 'desc')
       .leftJoin('materials', 'requisitions.id_material', 'materials.id')
       .leftJoin('members', 'requisitions.id_member', 'members.id')
       .leftJoin('projects', 'requisitions.id_project', 'projects.id');
@@ -71,10 +75,9 @@ module.exports = {
   },
 
   async create(database, data) {
-    let result;
     try {
-      result = await database.transaction(async (trx) => {
-        // UPDATE materials SET stock = stock - qnt WHERE id = 10 AND stock >= qnt
+      const result = await database.transaction(async (trx) => {
+        // UPDATE materials SET stock = stock - qnt WHERE id = id AND stock >= qnt
         const affectedRows = await trx('materials')
           .decrement('stock', data.quantity)
           .where('id', data.id_material)
@@ -85,11 +88,77 @@ module.exports = {
 
         return trx.insert(data).into('requisitions');
       });
+      return this.findOne(database, result[0]);
     } catch (e) {
       // foreign key constraint fails while inserting (one or more relations are incorrect)
       if (e.code != 'ER_NO_REFERENCED_ROW_2' && e.code != 'NO_STOCK') throw e;
       return null;
     }
-    return this.findOne(database, result[0]);
+  },
+
+  async update(database, id, data, isAdmin, memberId) {
+    // Normal users should only be able to change state
+    if (!isAdmin && (Object.keys(data).length > 1 || Object.keys(data).indexOf('state') == -1))
+      return;
+    try {
+      await database.transaction(async (trx) => {
+        if (data.state) {
+          const oldReq = await trx
+            .select('state', 'quantity', 'id_material', 'id_member')
+            .from('requisitions')
+            .where('id', id);
+          if (oldReq.length == 0) throw { code: 'NOT_FOUND' };
+          const { state: oldState, quantity, id_material, id_member } = oldReq[0];
+
+          if (data.state != oldState) {
+            if (
+              !isAdmin &&
+              (memberId != id_member || (data.state != 'active' && oldState != 'can_pickup'))
+            )
+              throw { code: 'NO_PERMISSION' };
+
+            // don't allow returned requisitions to change state; client should create a new one if needed
+            if (oldState == 'returned' || oldState == 'cancelled') throw { code: 'NOT_ALLOWED' };
+
+            // handle stock update
+            if (data.state == 'returned' || data.state == 'cancelled') {
+              // UPDATE materials SET stock = stock + qnt WHERE id = id
+              await trx('materials').increment('stock', quantity).where('id', id_material);
+              if (data.state == 'returned') data.date_in = database.fn.now();
+            }
+
+            const activeIndex = REQ_STATUS.indexOf('active');
+            // if new state is 'active' or after that, set date out
+            if (
+              REQ_STATUS.indexOf(data.state) >= activeIndex &&
+              REQ_STATUS.indexOf(oldState) < activeIndex
+            )
+              data.date_out = database.fn.now();
+
+            // if new state is before 'after', remove date out
+            if (
+              REQ_STATUS.indexOf(data.state) < activeIndex &&
+              REQ_STATUS.indexOf(oldState) >= activeIndex
+            )
+              data.date_out = null;
+          }
+        }
+        const affectedRows = await database('requisitions').where('id', id).update(data);
+        if (affectedRows == 0) throw { code: 'NOT_FOUND' };
+      });
+      return this.findOne(database, id);
+    } catch (e) {
+      if (e.code == 'NOT_FOUND') return; // return undefined
+      if (e.code == 'NO_PERMISSION') return false;
+
+      // foreign key constraint fails while inserting (one or more relations are incorrect)
+      if (
+        e.code != 'ER_NO_REFERENCED_ROW_2' &&
+        e.code != 'NOT_ALLOWED' &&
+        e.code != 'INVALID_NEW_STATE'
+      )
+        throw e;
+      return null;
+    }
   },
 };

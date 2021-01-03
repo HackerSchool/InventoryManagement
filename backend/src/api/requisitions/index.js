@@ -1,4 +1,4 @@
-const { findAll, findOne, findSelf, create } = require('./routes');
+const { findAll, findOne, findSelf, create, update } = require('./routes');
 const { asyncHandler } = require('../../middleware/error');
 
 module.exports = {
@@ -8,5 +8,6 @@ module.exports = {
     app.get('/requisition/:id', asyncHandler(findOne));
     app.get('/requisitions/self', asyncHandler(findSelf));
     app.post('/requisitions', asyncHandler(create));
+    app.post('/requisition/:id', asyncHandler(update));
   },
 };
