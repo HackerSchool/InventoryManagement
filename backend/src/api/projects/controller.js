@@ -2,10 +2,10 @@ module.exports = {
   async findAll(database) {
     const result = await database.select('id', 'name', 'description').from('projects');
 
-    return result.map((location) => ({
-      id: location.id,
-      name: location.name,
-      description: location.description,
+    return result.map((project) => ({
+      id: project.id,
+      name: project.name,
+      description: project.description,
     }));
   },
 
@@ -31,7 +31,7 @@ module.exports = {
       const affectedRows = await database.where('id', id).from('projects').delete();
       return affectedRows > 0;
     } catch (e) {
-      // Handle logic if location is being used
+      // Handle logic if project is being used
       if (e.code !== 'ER_ROW_IS_REFERENCED_2') throw e;
       return null;
     }

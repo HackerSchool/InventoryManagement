@@ -2,6 +2,7 @@ const auth = require('./auth');
 const locations = require('./locations');
 const materials = require('./materials');
 const members = require('./members');
+const projects = require('./projects');
 
 module.exports = {
   // Add all routes to express 'app'
@@ -10,5 +11,6 @@ module.exports = {
     locations.init(app);
     materials.init(app);
     members.init(app);
+    projects.init(app);
   },
 };

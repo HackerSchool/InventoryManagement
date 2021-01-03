@@ -49,7 +49,7 @@ module.exports = {
     }
 
     const success = await controller.remove(req.db, id);
-    // Return forbidden if project has materials linked to it
+    // Return forbidden if project has requisitions linked to it
     if (!success) return res.sendStatus(success === null ? 403 : 404);
     res.sendStatus(204);
   },
