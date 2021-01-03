@@ -69,13 +69,25 @@ module.exports = {
   },
 
   async create(database, data) {
+    let result;
     try {
-      const result = await database.insert(data).into('requisitions');
-      return this.findOne(database, result[0]);
+      result = await database.transaction(async (trx) => {
+        // UPDATE materials SET stock = stock - qnt WHERE id = 10 AND stock >= qnt
+        const affectedRows = await trx('materials')
+          .decrement('stock', data.quantity)
+          .where('id', data.id_material)
+          .andWhere('stock', '>=', data.quantity);
+
+        // material does not exist or does not have enough stock
+        if (affectedRows === 0) throw { code: 'NO_STOCK' };
+
+        return trx.insert(data).into('requisitions');
+      });
     } catch (e) {
       // foreign key constraint fails while inserting (one or more relations are incorrect)
-      if (e.code != 'ER_NO_REFERENCED_ROW_2') throw e;
+      if (e.code != 'ER_NO_REFERENCED_ROW_2' && e.code != 'NO_STOCK') throw e;
       return null;
     }
+    return this.findOne(database, result[0]);
   },
 };
