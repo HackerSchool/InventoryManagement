@@ -9,7 +9,7 @@ const memberCreate = Joi.object({
     .regex(/^ist\d+$/)
     .required(),
   active: Joi.boolean().default(true),
-  role: Joi.string().equal('admin', 'admin').default('user'),
+  role: Joi.string().equal('admin', 'user').default('user'),
 })
   .rename('istId', 'ist_id')
   .required();
@@ -20,7 +20,7 @@ const memberUpdate = Joi.object({
     .max(12)
     .regex(/^ist\d+$/),
   active: Joi.boolean(),
-  role: Joi.string().equal('admin', 'admin'),
+  role: Joi.string().equal('admin', 'user'),
 })
   .rename('istId', 'ist_id')
   .required()

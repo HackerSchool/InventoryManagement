@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ on, attrs }">
-            <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on"> New Item </v-btn>
+            <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on"> New Member </v-btn>
           </template>
           <v-card>
             <v-form ref="form" lazy-validation @submit.prevent="save">
@@ -45,7 +45,7 @@
                     </v-col>
                     <v-col cols="4">
                       <v-select
-                        v-model="editedItem.state"
+                        v-model="editedItem.active"
                         label="State"
                         :items="states"
                         filled
@@ -84,11 +84,11 @@
         {{ item.role }}
       </v-chip>
     </template>
-    <!--<template #[`item.type`]="{ item }">
-      <v-chip :color="typeColors[item.type]" dark class="capitalized">
-        {{ item.type }}
+    <template #[`item.active`]="{ item }">
+      <v-chip :color="stateColors[item.active]" dark class="capitalized">
+        {{ (states.find((v) => v.value == item.active) || {}).text }}
       </v-chip>
-    </template>-->
+    </template>
   </v-data-table>
 </template>
 
@@ -103,6 +103,7 @@ export default {
       { text: 'Member', value: 'name' },
       { text: 'IST Id', value: 'istId' },
       { text: 'Role', value: 'role' },
+      { text: 'State', value: 'active' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     editedIndex: -1,
@@ -113,19 +114,23 @@ export default {
       name: '',
       istId: '',
       role: '',
-      state: '',
+      active: '',
     },
     roleColors: {
       admin: 'blue',
-      user: 'grey',
+      user: 'yellow darken-4',
+    },
+    stateColors: {
+      true: 'green',
+      false: 'grey',
     },
     roles: [
       { text: 'Admin', value: 'admin' },
       { text: 'User', value: 'user' },
     ],
     states: [
-      { text: 'Active', value: 'active' },
-      { text: 'Inactive', value: 'inactive' },
+      { text: 'Active', value: true },
+      { text: 'Inactive', value: false },
     ],
   }),
 
