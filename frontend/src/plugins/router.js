@@ -8,7 +8,7 @@ import MyRequests from '@/components/pages/MyRequests.vue';
 import Locations from '@/components/pages/Locations.vue';
 import Materials from '@/components/pages/Materials.vue';
 import Members from '@/components/pages/Members.vue';
-import NavBar from '@/components/NavAndFooter/NavBar.vue';
+import NavBar from '@/components/navbar/NavBar.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
 
