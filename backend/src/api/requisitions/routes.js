@@ -46,7 +46,7 @@ module.exports = {
       return res.sendStatus(400);
     }
 
-    const requisition = await controller.create(req.db, data);
+    const requisition = await controller.create(req.db, { ...data, state: 'pending' });
 
     // Key constraints failed
     if (!requisition) return res.sendStatus(400);

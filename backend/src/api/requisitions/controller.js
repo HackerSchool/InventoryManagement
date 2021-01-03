@@ -4,6 +4,7 @@ const fields = [
   'requisitions.created_at',
   'requisitions.date_out',
   'requisitions.date_in',
+  'requisitions.state',
   { memberId: 'id_member' },
   { memberName: 'members.name' },
   { memberIstId: 'members.ist_id' },
@@ -17,9 +18,10 @@ const fields = [
 const formatResponse = (response) => ({
   id: response.id,
   quantity: response.quantity,
-  created_at: response.created_at,
-  date_in: response.date_in,
-  date_out: response.date_out,
+  createdAt: response.created_at,
+  dateIn: response.date_in,
+  dateOut: response.date_out,
+  state: response.state,
   material: response.materialId ? { id: response.materialId, name: response.materialName } : null,
   member: response.memberId
     ? { id: response.memberId, istId: response.memberIstId, name: response.memberName }
