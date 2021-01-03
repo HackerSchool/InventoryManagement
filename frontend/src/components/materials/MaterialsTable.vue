@@ -191,7 +191,14 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.deleteMaterial(this.materials[this.editedIndex].id);
+      this.deleteMaterial(this.materials[this.editedIndex].id).catch((e) => {
+        if (e.response.status === 403)
+          this.$notify({
+            type: 'error',
+            title: 'Cannot delete material',
+            text: 'It is not possible to delete materials that have linked requisitions',
+          });
+      });
       this.closeDelete();
     },
 

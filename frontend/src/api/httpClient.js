@@ -35,13 +35,26 @@ const errorInterceptor = (error) => {
   switch (error.response.status) {
     case 400:
       console.error(error.response.status, error.message);
-      Vue.notify({ type: 'warn', title: 'Nothing to display', text: 'Data Not Found' });
+      Vue.notify({
+        type: 'warn',
+        title: 'Invalid request',
+        text: 'The server rejected the request',
+      });
       break;
 
     case 401: // authentication error, logout the user
       Vue.notify({ type: 'warn', title: 'Please login again', text: 'Session Expired' });
       localStorage.removeItem('token');
       router.push('login');
+      break;
+
+    case 500:
+      console.error(error.response.status, error.message);
+      Vue.notify({
+        type: 'error',
+        title: 'Server error',
+        text: 'The server threw an error while handling the request',
+      });
       break;
 
     default:

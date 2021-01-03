@@ -92,9 +92,8 @@ module.exports = {
     }
 
     const success = await controller.remove(req.db, id);
-
-    if (!success) return res.sendStatus(404);
-    // TODO add linked requisitions check and return 403 if so
+    // Return forbidden if material has requisitions linked to it
+    if (!success) return res.sendStatus(success === null ? 403 : 404);
     res.sendStatus(204);
   },
 

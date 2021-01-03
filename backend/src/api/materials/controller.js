@@ -91,8 +91,14 @@ module.exports = {
   },
 
   async remove(database, id) {
-    const affectedRows = await database.where('id', id).from('materials').delete();
-    return affectedRows > 0;
+    try {
+      const affectedRows = await database.where('id', id).from('materials').delete();
+      return affectedRows > 0;
+    } catch (e) {
+      // Handle logic if material is being used
+      if (e.code !== 'ER_ROW_IS_REFERENCED_2') throw e;
+      return null;
+    }
   },
 
   async update(database, id, data) {
