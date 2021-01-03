@@ -38,8 +38,8 @@ module.exports = {
     const result = await database
       .select(...fields)
       .from('requisitions')
-      .leftJoin('materials', 'requistions.id_material', 'materials.id')
-      .leftJoin('members', 'requisitions.id_members', 'members.id')
+      .leftJoin('materials', 'requisitions.id_material', 'materials.id')
+      .leftJoin('members', 'requisitions.id_member', 'members.id')
       .leftJoin('projects', 'requisitions.id_project', 'projects.id');
     return result.map(formatResponse);
   },
@@ -48,8 +48,9 @@ module.exports = {
     const result = await database
       .select(...fields)
       .where('requisitions.id', id)
-      .leftJoin('materials', 'requistions.id_materials', 'materials.id')
-      .leftJoin('members', 'requisitions.id_members', 'members.id')
+      .leftJoin('materials', 'requisitions.id_material', 'materials.id')
+      .leftJoin('members', 'requisitions.id_member', 'members.id')
+      .leftJoin('projects', 'requisitions.id_project', 'projects.id')
       .from('requisitions');
 
     if (result.length === 0) return;
@@ -59,10 +60,10 @@ module.exports = {
   async findSelf(database, memberId) {
     const result = await database
       .select(...fields)
-      .where({ 'requisitions.member.id': memberId })
+      .where({ 'requisitions.id_member': memberId })
       .from('requisitions')
-      .leftJoin('materials', 'requistions.id_material', 'materials.id')
-      .leftJoin('members', 'requisitions.id_members', 'members.id')
+      .leftJoin('materials', 'requisitions.id_material', 'materials.id')
+      .leftJoin('members', 'requisitions.id_member', 'members.id')
       .leftJoin('projects', 'requisitions.id_project', 'projects.id');
     return result.map(formatResponse);
   },

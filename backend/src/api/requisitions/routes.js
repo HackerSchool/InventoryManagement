@@ -37,7 +37,7 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
+    if (!req.user?.hasPermission('user')) return res.sendStatus(401);
 
     let data;
     try {
@@ -48,7 +48,9 @@ module.exports = {
 
     const requisition = await controller.create(req.db, data);
 
+    // Key constraints failed
     if (!requisition) return res.sendStatus(400);
+
     res.json(requisition);
   },
 };
