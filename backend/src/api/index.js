@@ -3,6 +3,7 @@ const locations = require('./locations');
 const materials = require('./materials');
 const members = require('./members');
 const projects = require('./projects');
+const requisitions = require('./requisitions');
 
 module.exports = {
   // Add all routes to express 'app'
@@ -12,5 +13,6 @@ module.exports = {
     materials.init(app);
     members.init(app);
     projects.init(app);
+    requisitions.init(app);
   },
 };
