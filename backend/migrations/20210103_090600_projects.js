@@ -1,3 +1,7 @@
+/*
+  This migration will add a 'projects' table as well as link it to the 'requisitions' table
+*/
+
 module.exports.up = async (knex) => {
   await knex.schema.createTable('projects', (table) => {
     table.increments('id');
