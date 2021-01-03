@@ -59,7 +59,7 @@ module.exports = {
 
     const material = await controller.findOne(req.db, id);
 
-    // If location doesn't exist, return 404
+    // If material doesn't exist, return 404
     if (!material) return res.sendStatus(404);
     res.json(material);
   },
@@ -71,7 +71,7 @@ module.exports = {
     try {
       data = await models.materialCreate.validateAsync(req.body, { stripUnknown: true });
     } catch (e) {
-      return res.sendStatus(400); // invalid location object
+      return res.sendStatus(400); // invalid material object
     }
 
     const material = await controller.create(req.db, data);
@@ -108,13 +108,13 @@ module.exports = {
         models.materialUpdate.validateAsync(req.body, { stripUnknown: true }),
       ]);
     } catch (e) {
-      return res.sendStatus(400); // invalid ID or location object format
+      return res.sendStatus(400); // invalid ID or material object format
     }
 
-    const location = await controller.update(req.db, id, data);
+    const material = await controller.update(req.db, id, data);
 
-    // update controller returns null if provider location does not exist
-    if (!location) return res.sendStatus(location === null ? 400 : 404);
-    res.json(location);
+    // update controller returns null if provided location does not exist
+    if (!material) return res.sendStatus(material === null ? 400 : 404);
+    res.json(material);
   },
 };
