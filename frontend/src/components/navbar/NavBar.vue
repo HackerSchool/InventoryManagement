@@ -17,6 +17,7 @@
             text
             color="primary"
             class="mb-1"
+            @click.stop="drawer = !drawer"
           >
             <v-icon v-if="route.icon" left>
               {{ route.icon }}
