@@ -5,7 +5,46 @@ module.exports = {
   findAll: async (req, res) => {
     if (!req.user?.hasPermission('user')) return res.sendStatus(401);
 
-    res.json(await controller.findAll(req.db));
+    let query;
+    try {
+      query = await models.materialsQuery.validateAsync(req.query, { stripUnknown: true });
+    } catch (e) {
+      return res.sendStatus(400); // invalid query format
+    }
+
+    let { _q, _sort, _start, _limit, state, type } = query;
+
+    res.json(
+      await controller.findAll(req.db, {
+        query: _q,
+        sort: _sort,
+        limit: _limit,
+        offset: _start,
+        state: state,
+        type: type,
+      })
+    );
+  },
+
+  countAll: async (req, res) => {
+    if (!req.user?.hasPermission('user')) return res.sendStatus(401);
+
+    let query;
+    try {
+      query = await models.materialsQuery.validateAsync(req.query, { stripUnknown: true });
+    } catch (e) {
+      return res.sendStatus(400); // invalid query format
+    }
+
+    let { _q, state, type } = query;
+
+    res.json({
+      count: await controller.countAll(req.db, {
+        query: _q,
+        state: state,
+        type: type,
+      }),
+    });
   },
 
   findOne: async (req, res) => {
