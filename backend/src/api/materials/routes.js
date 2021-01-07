@@ -1,4 +1,5 @@
 const controller = require('./controller');
+const { upload: uploadImage } = require('../images/controller');
 const models = require('./models');
 
 module.exports = {
@@ -115,5 +116,17 @@ module.exports = {
     // update controller returns null if provided location does not exist
     if (!material) return res.sendStatus(material === null ? 400 : 404);
     res.json(material);
+  },
+
+  setImage: async (req, res) => {
+    if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
+
+    if (!req.files?.img) return res.sendStatus(400);
+
+    const fileName = await uploadImage(req.db, req.files.img);
+
+    res.json({
+      src: `/static/${encodeURIComponent(fileName)}`,
+    });
   },
 };

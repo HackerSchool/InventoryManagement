@@ -1,4 +1,4 @@
-const { findAll, countAll, findOne, create, remove, update } = require('./routes');
+const { findAll, countAll, findOne, create, remove, update, setImage } = require('./routes');
 const { asyncHandler } = require('../../middleware/error');
 
 module.exports = {
@@ -10,5 +10,6 @@ module.exports = {
     app.post('/material', asyncHandler(create));
     app.delete('/material/:id', asyncHandler(remove));
     app.post('/material/:id', asyncHandler(update));
+    app.post('/material/:id/image', asyncHandler(setImage));
   },
 };
