@@ -9,6 +9,9 @@ module.exports = {
         target: 'http://localhost:5000/',
         pathRewrite: { '^/api': '/' },
       },
+      '^/upload': {
+        target: 'http://localhost:5000/',
+      },
     },
   },
 };
