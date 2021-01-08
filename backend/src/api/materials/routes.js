@@ -1,5 +1,5 @@
 const controller = require('./controller');
-const { upload: uploadImage } = require('../images/controller');
+const { upload: uploadImage, buildSrc: buildImageSrc } = require('../images/controller');
 const models = require('./models');
 
 module.exports = {
@@ -126,7 +126,7 @@ module.exports = {
     const fileName = await uploadImage(req.db, req.files.img);
 
     res.json({
-      src: `/static/${encodeURIComponent(fileName)}`,
+      src: buildImageSrc(encodeURIComponent(fileName)),
     });
   },
 };

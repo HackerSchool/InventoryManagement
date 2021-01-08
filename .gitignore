@@ -107,4 +107,4 @@ dist
 .vscode
 
 # Uploads
-backend/static/*
+backend/upload/*
