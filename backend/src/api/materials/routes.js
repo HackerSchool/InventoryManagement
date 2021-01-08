@@ -1,4 +1,5 @@
 const controller = require('./controller');
+const imageController = require('../images/controller');
 const models = require('./models');
 
 module.exports = {
@@ -114,6 +115,28 @@ module.exports = {
 
     // update controller returns null if provided location does not exist
     if (!material) return res.sendStatus(material === null ? 400 : 404);
+    res.json(material);
+  },
+
+  setImage: async (req, res) => {
+    if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
+    if (!req.files?.img) return res.sendStatus(400);
+    if (!req.files.img?.mimetype?.startsWith('image/')) return res.sendStatus(400);
+
+    let id;
+    try {
+      id = await models.materialId.validateAsync(req.params.id);
+    } catch (e) {
+      return res.sendStatus(400); // invalid ID format
+    }
+
+    let material = await controller.findOne(req.db, id);
+    if (!material) return res.sendStatus(404); // material not found
+
+    const image = await imageController.upload(req.db, req.files.img);
+
+    material = await controller.update(req.db, id, { image_id: image.id });
+
     res.json(material);
   },
 };

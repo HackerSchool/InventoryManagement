@@ -106,6 +106,9 @@
         {{ item.type }}
       </v-chip>
     </template>
+    <template #[`item.image.src`]="{ item }">
+      <img v-if="item.image" :src="item.image.src" class="image py-1" />
+    </template>
   </v-data-table>
 </template>
 
@@ -117,6 +120,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     headers: [
+      { text: 'Image', value: 'image.src', sortable: false },
       { text: 'Material', value: 'name' },
       { text: 'Description', value: 'description', sortable: false },
       { text: 'Stock', value: 'stock' },
@@ -242,5 +246,11 @@ export default {
 <style>
 .capitalized {
   text-transform: capitalize;
+}
+.image {
+  max-height: 64px;
+  max-width: 128px;
+  vertical-align: middle;
+  text-align: center;
 }
 </style>
