@@ -120,11 +120,23 @@ module.exports = {
 
   setImage: async (req, res) => {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
-
     if (!req.files?.img) return res.sendStatus(400);
+    if (!req.files.img?.mimetype?.startsWith('image/')) return res.sendStatus(400);
+
+    let id;
+    try {
+      id = await models.materialId.validateAsync(req.params.id);
+    } catch (e) {
+      return res.sendStatus(400); // invalid ID format
+    }
+
+    let material = await controller.findOne(req.db, id);
+    if (!material) return res.sendStatus(404); // material not found
 
     const image = await imageController.upload(req.db, req.files.img);
 
-    res.json(image);
+    material = await controller.update(req.db, id, { image_id: image.id });
+
+    res.json(material);
   },
 };

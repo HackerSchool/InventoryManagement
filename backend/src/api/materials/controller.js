@@ -1,3 +1,5 @@
+const imageController = require('../images/controller');
+
 const fields = [
   'materials.id',
   'materials.name',
@@ -9,9 +11,11 @@ const fields = [
   { locationId: 'location_id' },
   { locationName: 'locations.name' },
   { locationDesc: 'locations.description' },
+  { imageId: 'image_id' },
+  { imageSrc: 'images.src' },
 ];
 
-const formatResponse = (response) => ({
+const formatResponse = async (response) => ({
   id: response.id,
   name: response.name,
   description: response.description,
@@ -24,6 +28,10 @@ const formatResponse = (response) => ({
     name: response.locationName,
     description: response.locationDesc,
   },
+  image: {
+    id: response.imageId,
+    src: await imageController.buildSrc(response.imageSrc),
+  },
 });
 
 module.exports = {
@@ -31,7 +39,8 @@ module.exports = {
     let result = database
       .select(...fields)
       .from('materials')
-      .leftJoin('locations', 'materials.location_id', 'locations.id');
+      .leftJoin('locations', 'materials.location_id', 'locations.id')
+      .leftJoin('images', 'materials.image_id', 'images.id');
     if (query)
       result = result.andWhere(function () {
         this.whereRaw(
@@ -48,11 +57,11 @@ module.exports = {
     if (state) result = result.andWhere('materials.state', 'in', state.split(','));
     if (type) result = result.andWhere('materials.type', 'in', type.split(','));
 
-    return (await result).map(formatResponse);
+    return Promise.all((await result).map(formatResponse));
   },
 
   async countAll(database, { query, state, type }) {
-    let result = database.count('*').from('materials').debug();
+    let result = database.count('*').from('materials');
     if (query)
       result = result.andWhere(function () {
         this.whereRaw(
@@ -71,6 +80,7 @@ module.exports = {
       .select(...fields)
       .where('materials.id', id)
       .leftJoin('locations', 'materials.location_id', 'locations.id')
+      .leftJoin('images', 'materials.image_id', 'images.id')
       .from('materials');
 
     if (result.length === 0) return;
