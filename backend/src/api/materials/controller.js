@@ -28,10 +28,13 @@ const formatResponse = async (response) => ({
     name: response.locationName,
     description: response.locationDesc,
   },
-  image: {
-    id: response.imageId,
-    src: await imageController.buildSrc(response.imageSrc),
-  },
+  image:
+    response.imageId === null
+      ? null
+      : {
+          id: response.imageId,
+          src: await imageController.buildSrc(response.imageSrc),
+        },
 });
 
 module.exports = {
