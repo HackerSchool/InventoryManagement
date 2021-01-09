@@ -1,4 +1,5 @@
 const imageController = require('../images/controller');
+const requisitionsController = require('../requisitions/controller');
 
 const fields = [
   'materials.id',
@@ -87,7 +88,9 @@ module.exports = {
       .from('materials');
 
     if (result.length === 0) return;
-    return formatResponse(result[0]);
+
+    const requisitions = await requisitionsController.findForMaterial(database, id);
+    return { ...(await formatResponse(result[0])), requisitions };
   },
 
   async create(database, data) {

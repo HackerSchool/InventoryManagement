@@ -1,6 +1,6 @@
 const REQ_STATUS = ['pending', 'cancelled', 'can_pickup', 'active', 'returned', 'not_returning'];
 
-const fields = [
+const materialFetchFields = [
   'requisitions.id',
   'requisitions.quantity',
   'requisitions.created_at',
@@ -10,11 +10,15 @@ const fields = [
   { memberId: 'id_member' },
   { memberName: 'members.name' },
   { memberIstId: 'members.ist_id' },
-  { materialId: 'id_material' },
-  { materialName: 'materials.name' },
   { projectId: 'id_project' },
   { projectName: 'projects.name' },
   { projectDescription: 'projects.description' },
+];
+
+const fields = [
+  ...materialFetchFields,
+  { materialId: 'id_material' },
+  { materialName: 'materials.name' },
 ];
 
 const formatResponse = (response) => ({
@@ -60,6 +64,23 @@ module.exports = {
 
     if (result.length === 0) return;
     return formatResponse(result[0]);
+  },
+
+  async findForMaterial(database, materialId) {
+    const result = await database
+      .select(...materialFetchFields)
+      .where('materials.id', materialId)
+      .leftJoin('materials', 'requisitions.id_material', 'materials.id')
+      .leftJoin('members', 'requisitions.id_member', 'members.id')
+      .leftJoin('projects', 'requisitions.id_project', 'projects.id')
+      .orderBy('requisitions.created_at', 'desc')
+      .from('requisitions');
+
+    return result.map((v) => {
+      v = formatResponse(v);
+      delete v.material;
+      return v;
+    });
   },
 
   async findSelf(database, memberId) {
