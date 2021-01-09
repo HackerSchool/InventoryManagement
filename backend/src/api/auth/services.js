@@ -40,16 +40,16 @@ module.exports = {
   },
 
   /**
-   * Get the username of the logged in Fenix user
+   * Get the username and photo of the logged in Fenix user
    */
-  getFenixUsername: async (accessToken) => {
+  getFenixAbout: async (accessToken) => {
     try {
       const { data: fenixResponse } = await axios.get(`${FENIX_BASE_URL}api/fenix/v1/person`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      return fenixResponse.username;
+      return { username: fenixResponse.username, photo: fenixResponse.photo };
     } catch (e) {
       // unknown error
       return;
