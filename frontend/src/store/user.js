@@ -13,6 +13,8 @@ const state = {
 
 const getters = {
   getPermissionLevel: (state) => roles[state.role] || 0,
+  getAvatarUrl: (state) => state.avatar && state.avatar.src,
+  getName: (state) => state.name,
 };
 
 const actions = {

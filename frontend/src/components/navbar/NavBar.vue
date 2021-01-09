@@ -7,6 +7,7 @@
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
       <img :src="logoSrc" style="height: 100%" />
+      <v-spacer />
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" clipped :permanent="$vuetify.breakpoint.lgAndUp" app>
       <v-list nav>
@@ -28,6 +29,7 @@
       </v-list>
       <template #append>
         <div class="pa-2">
+          <nav-bar-avatar />
           <v-btn block color="primary" outlined @click="onLogout">
             <v-icon left>mdi-logout</v-icon>Logout
           </v-btn>
@@ -46,8 +48,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import logoSrc from '@/assets/logo_navbar.png';
+import NavBarAvatar from './NavBarAvatar.vue';
 
 export default {
+  components: { NavBarAvatar },
+
   data() {
     return {
       drawer: false,
