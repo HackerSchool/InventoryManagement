@@ -12,8 +12,8 @@ module.exports = {
   /**
    * Generate a JWT from a user object
    */
-  generateJWT: ({ id, istId, name, role }) => {
-    const tokenPayload = { id, istId, name, role };
+  generateJWT: ({ id, istId, name, role, avatar }) => {
+    const tokenPayload = { id, istId, name, role, avatar };
     const token = sign(tokenPayload, JWT_SECRET, { expiresIn: 60 * 60 * 24 * 7 });
     return token;
   },
