@@ -100,9 +100,24 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <v-dialog v-model="requisitions" max-width="500px" scrollable>
+          <v-card>
+            <v-card-title>Requisition History</v-card-title>
+            <v-card-text style="max-height: 600px">
+              <v-timeline v-if="req != null" dense>
+                <v-timeline-item v-for="item in req" :key="item.id">
+                  {{ item.createdAt }}
+                </v-timeline-item>
+              </v-timeline>
+              <p v-else>There are no requisitions for this material</p>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
     </template>
     <template #[`item.actions`]="{ item }">
+      <v-icon small class="mr-2" @click="seeHistory(item)"> mdi-information </v-icon>
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
@@ -123,12 +138,14 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    requisitions: false,
+    req: null,
     headers: [
       { text: 'Image', value: 'image.src', sortable: false },
       { text: 'Material', value: 'name' },
@@ -181,6 +198,7 @@ export default {
     },
     ...mapState('locations', ['locations']),
     ...mapState('materials', ['materials']),
+    ...mapGetters('materials', ['getMaterial']),
   },
 
   watch: {
@@ -189,6 +207,9 @@ export default {
     },
     dialogDelete(val) {
       val || this.closeDelete();
+    },
+    requisitions(val) {
+      val || this.closeHistory();
     },
   },
 
@@ -248,7 +269,6 @@ export default {
       this.close();
     },
     saveImage(id, image) {
-      console.log(id, image);
       if (image) {
         const formData = new FormData();
         formData.append('img', image);
@@ -258,7 +278,17 @@ export default {
         });
       }
     },
+    seeHistory(item) {
+      this.fetchMaterial(item.id);
+      this.req = this.getMaterial(item.id).requisitions;
+      this.requisitions = true;
+    },
+    closeHistory() {
+      this.requisitions = false;
+      this.req = null;
+    },
     ...mapActions('materials', [
+      'fetchMaterial',
       'updateMaterial',
       'createMaterial',
       'deleteMaterial',
