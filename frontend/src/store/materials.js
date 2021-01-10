@@ -23,6 +23,7 @@ const actions = {
   async createMaterial({ commit }, data) {
     const response = await materialApi.addMaterial(data);
     commit('SET_MATERIAL', response.data);
+    return response;
   },
   async deleteMaterial({ commit }, id) {
     await materialApi.deleteMaterial(id);
@@ -30,6 +31,11 @@ const actions = {
   },
   async updateMaterial({ commit }, { id, data }) {
     const response = await materialApi.updateMaterial(id, data);
+    commit('SET_MATERIAL', { ...response.data, id });
+    return response;
+  },
+  async updateMaterialImage({ commit }, { id, data }) {
+    const response = await materialApi.uploadImage(id, data);
     commit('SET_MATERIAL', { ...response.data, id });
   },
 };

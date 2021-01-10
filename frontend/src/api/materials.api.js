@@ -16,3 +16,5 @@ export const updateMaterial = (id, data) =>
     locationId: data && data.location && data.location.id,
     ...data,
   });
+
+export const uploadImage = (id, data) => httpClient.post(`${ENDPOINT}/${id}/image`, data);

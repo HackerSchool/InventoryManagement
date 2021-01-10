@@ -68,6 +68,16 @@
                       >
                       </v-select>
                     </v-col>
+                    <v-col cols="12">
+                      <v-file-input
+                        v-model="editedItem.imageUpload"
+                        dense
+                        prepend-icon="mdi-camera"
+                        accept="image/*"
+                        label="Image"
+                        filled
+                      ></v-file-input>
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -226,19 +236,34 @@ export default {
     save() {
       // Don't save if validation is unsuccessful
       if (!this.$refs.form.validate()) return;
-
+      const image = this.editedItem.imageUpload;
       if (this.editedIndex > -1) {
         this.updateMaterial({
           id: this.materials[this.editedIndex].id,
           data: this.editedItem,
-        });
+        }).then((v) => this.saveImage(v.data.id, image));
       } else {
-        this.createMaterial(this.editedItem);
+        this.createMaterial(this.editedItem).then((v) => this.saveImage(v.data.id, image));
       }
       this.close();
     },
-
-    ...mapActions('materials', ['updateMaterial', 'createMaterial', 'deleteMaterial']),
+    saveImage(id, image) {
+      console.log(id, image);
+      if (image) {
+        const formData = new FormData();
+        formData.append('img', image);
+        this.updateMaterialImage({
+          id,
+          data: formData,
+        });
+      }
+    },
+    ...mapActions('materials', [
+      'updateMaterial',
+      'createMaterial',
+      'deleteMaterial',
+      'updateMaterialImage',
+    ]),
   },
 };
 </script>
