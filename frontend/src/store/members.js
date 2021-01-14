@@ -6,9 +6,7 @@ const state = {
 };
 
 const getters = {
-  getMember(id) {
-    return state.members.find((member) => member.id == id);
-  },
+  getMember: (state) => (id) => state.members.find((member) => member.id == id),
 };
 
 const actions = {
