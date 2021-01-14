@@ -100,20 +100,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-
-        <v-dialog v-model="requisitions" max-width="500px" scrollable>
-          <v-card>
-            <v-card-title>Requisition History</v-card-title>
-            <v-card-text style="max-height: 600px">
-              <v-timeline v-if="req != null" dense>
-                <v-timeline-item v-for="item in req" :key="item.id">
-                  {{ item.createdAt }}
-                </v-timeline-item>
-              </v-timeline>
-              <p v-else>There are no requisitions for this material</p>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+        <material-info v-model="requisitionId" />
       </v-toolbar>
     </template>
     <template #[`item.actions`]="{ item }">
@@ -139,13 +126,14 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
+import MaterialInfo from './MaterialInfo.vue';
 
 export default {
+  components: { MaterialInfo },
   data: () => ({
     dialog: false,
     dialogDelete: false,
-    requisitions: false,
-    req: null,
+    requisitionId: null,
     headers: [
       { text: 'Image', value: 'image.src', sortable: false },
       { text: 'Material', value: 'name' },
@@ -207,9 +195,6 @@ export default {
     },
     dialogDelete(val) {
       val || this.closeDelete();
-    },
-    requisitions(val) {
-      val || this.closeHistory();
     },
   },
 
@@ -279,16 +264,9 @@ export default {
       }
     },
     seeHistory(item) {
-      this.fetchMaterial(item.id);
-      this.req = this.getMaterial(item.id).requisitions;
-      this.requisitions = true;
-    },
-    closeHistory() {
-      this.requisitions = false;
-      this.req = null;
+      this.requisitionId = item.id;
     },
     ...mapActions('materials', [
-      'fetchMaterial',
       'updateMaterial',
       'createMaterial',
       'deleteMaterial',
