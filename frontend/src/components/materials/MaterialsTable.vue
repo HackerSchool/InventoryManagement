@@ -100,9 +100,11 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <material-info v-model="requisitionId" />
       </v-toolbar>
     </template>
     <template #[`item.actions`]="{ item }">
+      <v-icon small class="mr-2" @click="seeHistory(item)"> mdi-information </v-icon>
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
@@ -123,12 +125,15 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
+import MaterialInfo from './MaterialInfo.vue';
 
 export default {
+  components: { MaterialInfo },
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    requisitionId: null,
     headers: [
       { text: 'Image', value: 'image.src', sortable: false },
       { text: 'Material', value: 'name' },
@@ -181,6 +186,7 @@ export default {
     },
     ...mapState('locations', ['locations']),
     ...mapState('materials', ['materials']),
+    ...mapGetters('materials', ['getMaterial']),
   },
 
   watch: {
@@ -248,7 +254,6 @@ export default {
       this.close();
     },
     saveImage(id, image) {
-      console.log(id, image);
       if (image) {
         const formData = new FormData();
         formData.append('img', image);
@@ -257,6 +262,9 @@ export default {
           data: formData,
         });
       }
+    },
+    seeHistory(item) {
+      this.requisitionId = item.id;
     },
     ...mapActions('materials', [
       'updateMaterial',

@@ -6,9 +6,7 @@ const state = {
 };
 
 const getters = {
-  getMaterial(id) {
-    return state.materials.find((material) => material.id == id);
-  },
+  getMaterial: (state) => (id) => state.materials.find((material) => material.id == id),
 };
 
 const actions = {
