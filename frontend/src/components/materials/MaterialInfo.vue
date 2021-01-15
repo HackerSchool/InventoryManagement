@@ -22,9 +22,9 @@
                 by {{ item.member.name }} ({{ item.member.istId }})
                 <span v-if="item.project">for project {{ item.project.name }}</span>
                 <br />
-                <v-chip small :color="reqStates[item.state].color">{{
-                  reqStates[item.state].name
-                }}</v-chip>
+                <v-chip small :color="reqStates[item.state].color">
+                  {{ reqStates[item.state].name }}
+                </v-chip>
               </v-col>
               <v-col class="text-right" cols="4">
                 {{ new Date(item.createdAt).toLocaleString('pt-PT') }}
