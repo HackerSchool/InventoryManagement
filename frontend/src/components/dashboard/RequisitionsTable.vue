@@ -9,6 +9,9 @@
         <v-card-text v-if="requisitions.length > 0">
           <v-list v-for="(item, index) in requisitions" :key="item.id" three line>
             <v-list-item>
+              <v-list-item-avatar :color="reqStates[item.state].color">
+                <span>{{ item.quantity }}</span>
+              </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>
                   {{ item.material.name }}
@@ -38,6 +41,9 @@
         <v-card-text v-if="inProgress.length > 0">
           <v-list v-for="(item, index) in inProgress" :key="item.id" three line>
             <v-list-item>
+              <v-list-item-avatar :color="reqStates[item.state].color">
+                <span>{{ item.quantity }}</span>
+              </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>
                   {{ item.material.name }}
@@ -66,6 +72,9 @@
         <v-card-text v-if="Active.length > 0">
           <v-list v-for="(item, index) in Active" :key="item.id" three line>
             <v-list-item>
+              <v-list-item-avatar :color="reqStates[item.state].color">
+                <span>{{ item.quantity }}</span>
+              </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>
                   {{ item.material.name }}
@@ -94,6 +103,9 @@
         <v-card-text v-if="Archived.length > 0">
           <v-list v-for="(item, index) in Archived" :key="item.id" three line>
             <v-list-item>
+              <v-list-item-avatar :color="reqStates[item.state].color">
+                <span>{{ item.quantity }}</span>
+              </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>
                   {{ item.material.name }}
@@ -125,7 +137,6 @@ import { mapState } from 'vuex';
 
 export default {
   data: () => ({
-    active_tab: 1,
     tabs: [
       { id: 1, name: 'All' },
       { id: 2, name: 'In progress' },
@@ -159,6 +170,9 @@ export default {
           item.state == 'cancelled' || item.state == 'returned' || item.state == 'not_returning'
         );
       });
+    },
+    active_tab() {
+      return this.inProgress.length > 0 ? 1 : 0; //if there are items inProgress it defaults to that tab, otherwise to All
     },
   },
 };
