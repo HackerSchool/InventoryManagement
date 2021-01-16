@@ -6,7 +6,7 @@
 
     <v-tab-item>
       <v-card>
-        <v-card-text>
+        <v-card-text v-if="requisitions.length > 0">
           <v-list v-for="(item, index) in requisitions" :key="item.id" three line>
             <v-list-item>
               <v-list-item-content>
@@ -29,19 +29,14 @@
             <v-divider v-if="index < requisitions.length - 1" :key="index"></v-divider>
           </v-list>
         </v-card-text>
+        <v-card-text v-else>There are no requisitions.</v-card-text>
       </v-card>
     </v-tab-item>
 
     <v-tab-item>
       <v-card>
-        <v-card-text>
-          <v-list
-            v-for="(item, index) in requisitions"
-            v-if="item.state == 'pending'"
-            :key="item.id"
-            three
-            line
-          >
+        <v-card-text v-if="inProgress.length > 0">
+          <v-list v-for="(item, index) in inProgress" :key="item.id" three line>
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
@@ -60,19 +55,66 @@
                 {{ reqStates[item.state].name }}
               </v-chip>
             </v-list-item>
-            <v-divider v-if="index < requisitions.length - 1" :key="index"></v-divider>
+            <v-divider v-if="index < inProgress.length - 1" :key="index"></v-divider>
           </v-list>
         </v-card-text>
+        <v-card-text v-else>There are no pending requisitions.</v-card-text>
       </v-card>
     </v-tab-item>
     <v-tab-item>
       <v-card>
-        <v-card-text> Active </v-card-text>
+        <v-card-text v-if="Active.length > 0">
+          <v-list v-for="(item, index) in Active" :key="item.id" three line>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ item.material.name }}
+                </v-list-item-title>
+                {{
+                  item.project
+                    ? `Project: ${item.project.name}`
+                    : 'There is no project linked to this requisition'
+                }}
+                <v-list-item-subtitle>
+                  {{ new Date(item.createdAt).toLocaleString('pt-PT') }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+              <v-chip small :color="reqStates[item.state].color">
+                {{ reqStates[item.state].name }}
+              </v-chip>
+            </v-list-item>
+            <v-divider v-if="index < Active.length - 1" :key="index"></v-divider>
+          </v-list>
+        </v-card-text>
+        <v-card-text v-else>There are no active requisitions.</v-card-text>
       </v-card>
     </v-tab-item>
     <v-tab-item>
       <v-card>
-        <v-card-text> Archived </v-card-text>
+        <v-card-text v-if="Archived.length > 0">
+          <v-list v-for="(item, index) in Archived" :key="item.id" three line>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ item.material.name }}
+                </v-list-item-title>
+                {{
+                  item.project
+                    ? `Project: ${item.project.name}`
+                    : 'There is no project linked to this requisition'
+                }}
+                <v-list-item-subtitle>
+                  {{ new Date(item.createdAt).toLocaleString('pt-PT') }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+              <v-chip small :color="reqStates[item.state].color">
+                {{ reqStates[item.state].name }}
+              </v-chip>
+            </v-list-item>
+            <v-divider v-if="index < Archived.length - 1" :key="index"></v-divider>
+          </v-list>
+        </v-card-text>
+        <v-card-text v-else>There are no archived requisitions.</v-card-text>
       </v-card>
     </v-tab-item>
   </v-tabs>
@@ -102,11 +144,20 @@ export default {
   computed: {
     ...mapState('requisitions', ['requisitions']),
     inProgress() {
-      /*filter is not working for now, needs to be fixed*/
       return this.requisitions.filter((item) => {
-        return item.reduce((acc, item) => {
-          return acc || item.state == 'pending';
-        }, false);
+        return item.state == 'can_pickup' || item.state == 'pending';
+      });
+    },
+    Active() {
+      return this.requisitions.filter((item) => {
+        return item.state == 'active';
+      });
+    },
+    Archived() {
+      return this.requisitions.filter((item) => {
+        return (
+          item.state == 'cancelled' || item.state == 'returned' || item.state == 'not_returning'
+        );
       });
     },
   },
