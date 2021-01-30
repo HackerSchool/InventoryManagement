@@ -10,7 +10,7 @@
           <v-timeline-item
             v-for="item in material.requisitions"
             :key="item.id"
-            :color="reqStates[item.state].color"
+            :color="requisitionStates[item.state].color"
             fill-dot
           >
             <template #icon>
@@ -22,8 +22,8 @@
                 by {{ item.member.name }} ({{ item.member.istId }})
                 <span v-if="item.project">for project {{ item.project.name }}</span>
                 <br />
-                <v-chip small :color="reqStates[item.state].color">
-                  {{ reqStates[item.state].name }}
+                <v-chip small :color="requisitionStates[item.state].color">
+                  {{ requisitionStates[item.state].name }}
                 </v-chip>
               </v-col>
               <v-col class="text-right" cols="4">
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { requisitionStates } from '@/constants/constants';
 import { mapActions, mapGetters } from 'vuex';
 export default {
   model: {
@@ -50,14 +51,7 @@ export default {
   },
   data: function () {
     return {
-      reqStates: {
-        pending: { color: '#D38C22', name: 'Pending' },
-        cancelled: { color: '#9E2A2B', name: 'Cancelled' },
-        can_pickup: { color: '#3685B5', name: 'Ready to Pickup' },
-        active: { color: '#65A550', name: 'Active' },
-        returned: { color: '#4B7C3C', name: 'Returned' },
-        not_returning: { color: '#325328', name: 'Not Returning' },
-      },
+      requisitionStates,
     };
   },
   computed: {

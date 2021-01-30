@@ -3,7 +3,7 @@
     <v-card-text v-if="items.length > 0">
       <v-list v-for="(item, index) in items" :key="item.id" three line>
         <v-list-item>
-          <v-list-item-avatar :color="reqStates[item.state].color">
+          <v-list-item-avatar :color="requisitionStates[item.state].color">
             <span>{{ item.quantity }}</span>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -19,8 +19,8 @@
               {{ new Date(item.createdAt).toLocaleString('pt-PT') }}
             </v-list-item-subtitle>
           </v-list-item-content>
-          <v-chip small :color="reqStates[item.state].color">
-            {{ reqStates[item.state].name }}
+          <v-chip small :color="requisitionStates[item.state].color">
+            {{ requisitionStates[item.state].name }}
           </v-chip>
         </v-list-item>
         <v-divider v-if="index < items.length - 1" :key="index"></v-divider>
@@ -31,20 +31,14 @@
 </template>
 
 <script>
+import { requisitionStates } from '@/constants/constants';
 export default {
   props: {
     items: { type: Array, default: () => [] },
     emptyMessage: { type: String, default: 'There are no items to display.' },
   },
   data: () => ({
-    reqStates: {
-      pending: { color: '#D38C22', name: 'Pending' },
-      cancelled: { color: '#9E2A2B', name: 'Cancelled' },
-      can_pickup: { color: '#3685B5', name: 'Ready to Pickup' },
-      active: { color: '#65A550', name: 'Active' },
-      returned: { color: '#4B7C3C', name: 'Returned' },
-      not_returning: { color: '#325328', name: 'Not Returning' },
-    },
+    requisitionStates,
   }),
 };
 </script>
