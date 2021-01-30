@@ -6,3 +6,15 @@ export const requisitionStates = {
   returned: { color: '#4B7C3C', name: 'Returned' },
   not_returning: { color: '#325328', name: 'Not Returning' },
 };
+
+export const materialTypes = [
+  { text: 'Item', value: 'item' },
+  { text: 'Tool', value: 'tool' },
+  { text: 'Other', value: 'other' },
+];
+
+export const materialStates = [
+  { text: 'Good condition', value: 'good' },
+  { text: 'Damaged', value: 'damaged' },
+  { text: 'Retired', value: 'retired' },
+];
