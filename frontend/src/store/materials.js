@@ -14,6 +14,10 @@ const actions = {
     const response = await materialApi.getAllMaterials();
     commit('SET_MATERIALS', response.data);
   },
+  async fetchFilteredMaterials({ commit }, query) {
+    const response = await materialApi.getFilteredMaterials(query);
+    commit('SET_MATERIALS', response.data);
+  },
   async fetchMaterial({ commit }, id) {
     const response = await materialApi.getMaterial(id);
     commit('SET_MATERIAL', response.data);

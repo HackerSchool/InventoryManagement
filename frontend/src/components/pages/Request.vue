@@ -30,12 +30,21 @@
         ></v-select>
       </v-col>
     </v-row>
+    <v-row>
+      <v-btn @click="fetchSearch">Search</v-btn>
+    </v-row>
+    <v-row v-for="material in materials" :key="material.id">
+      <request-material :material="material"></request-material>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import { materialTypes, materialStates } from '@/constants/constants';
+import RequestMaterial from '../request/RequestMaterial.vue';
 export default {
+  components: { RequestMaterial },
   data() {
     return {
       search: '',
@@ -45,7 +54,27 @@ export default {
       state: ['good', 'damaged'],
       materialTypes,
       materialStates,
+      loading: false,
     };
+  },
+  computed: {
+    ...mapState('materials', ['materials']),
+  },
+  methods: {
+    ...mapActions('materials', ['fetchFilteredMaterials']),
+    async fetchSearch() {
+      if (this.loading) return;
+      this.loading = true;
+      await this.fetchFilteredMaterials({
+        _q: this.search || undefined,
+        _sort: this.sort,
+        _limit: this.limit,
+        _start: 0,
+        state: this.state.join(',') || undefined,
+        type: this.type.join(',') || undefined,
+      });
+      this.loading = false;
+    },
   },
 };
 </script>

@@ -4,6 +4,18 @@ const ENDPOINT = '/material';
 
 export const getAllMaterials = () => httpClient.get(`${ENDPOINT}s`);
 
+export const getFilteredMaterials = ({ _q, _sort, _limit, _start, state, type }) =>
+  httpClient.get(`${ENDPOINT}s`, {
+    params: {
+      _q,
+      _sort,
+      _limit,
+      _start,
+      state,
+      type,
+    },
+  });
+
 export const getMaterial = (id) => httpClient.get(`${ENDPOINT}/${id}`);
 
 export const addMaterial = (data) =>
