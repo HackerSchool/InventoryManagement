@@ -7,7 +7,7 @@ module.exports = {
     app.get('/requisitions', asyncHandler(findAll));
     app.get('/requisition/:id', asyncHandler(findOne));
     app.get('/requisitions/self', asyncHandler(findSelf));
-    app.post('/requisitions', asyncHandler(create));
+    app.post('/requisition', asyncHandler(create));
     app.post('/requisition/:id', asyncHandler(update));
   },
 };

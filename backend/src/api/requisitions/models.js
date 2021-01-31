@@ -4,8 +4,8 @@ const requisitionId = Joi.number().integer().positive();
 
 const requisitionCreate = Joi.object({
   id_material: Joi.number().integer().positive().required(),
-  id_member: Joi.number().integer().positive().required(),
-  id_project: Joi.number().integer().positive(),
+  id_member: Joi.number().integer().positive(),
+  id_project: Joi.number().integer().positive().allow(null),
   quantity: Joi.number().integer().positive().default(1),
 })
   .rename('materialId', 'id_material')

@@ -40,7 +40,8 @@
             color="primary"
             text
             :disabled="quantity < 1 || quantity > material.stock"
-            @click="openDialog = false"
+            :loading="loading"
+            @click="request"
           >
             Request
           </v-btn>
@@ -99,6 +100,22 @@ export default {
   },
   methods: {
     ...mapActions('projects', ['fetchProjects']),
+    ...mapActions('requisitions', ['createRequisition']),
+    async request() {
+      this.loading = true;
+      await this.createRequisition({
+        materialId: this.material.id,
+        projectId: this.project,
+        quantity: this.quantity,
+      });
+      this.loading = false;
+      this.$notify({
+        type: 'success',
+        title: 'Item requested!',
+        text: `You've requested ${this.quantity} of ${this.material.name}`,
+      });
+      this.openDialog = false;
+    },
   },
 };
 </script>
