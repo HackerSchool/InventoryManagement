@@ -43,7 +43,6 @@ module.exports = {
     try {
       data = await models.requisitionCreate.validateAsync(req.body, { stripUnknown: true });
     } catch (e) {
-      console.error(e);
       return res.sendStatus(400);
     }
 

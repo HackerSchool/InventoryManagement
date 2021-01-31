@@ -40,6 +40,11 @@ const actions = {
     const response = await materialApi.uploadImage(id, data);
     commit('SET_MATERIAL', { ...response.data, id });
   },
+  async decreaseStock({ commit, getters }, { id, decreaseBy }) {
+    // to use after a requisition
+    const material = getters.getMaterial(id);
+    commit('SET_MATERIAL', { ...material, stock: material.stock - decreaseBy });
+  },
 };
 
 const mutations = {

@@ -66,6 +66,7 @@ export default {
       step: 1,
       quantity: 1,
       project: null,
+      loading: false,
       rules: {
         required: (v) => !!v || 'Required.',
         inStock: (v) => (v >= 1 && v <= this.material.stock) || 'Quantity not available.',
@@ -101,6 +102,7 @@ export default {
   methods: {
     ...mapActions('projects', ['fetchProjects']),
     ...mapActions('requisitions', ['createRequisition']),
+    ...mapActions('materials', ['decreaseStock']),
     async request() {
       this.loading = true;
       await this.createRequisition({
@@ -114,6 +116,7 @@ export default {
         title: 'Item requested!',
         text: `You've requested ${this.quantity} of ${this.material.name}`,
       });
+      this.decreaseStock({ id: this.material.id, decreaseBy: this.quantity });
       this.openDialog = false;
     },
   },
