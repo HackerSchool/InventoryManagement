@@ -34,8 +34,9 @@
       <v-btn @click="fetchSearch">Search</v-btn>
     </v-row>
     <v-row v-for="material in materials" :key="material.id">
-      <request-material :material="material"></request-material>
+      <request-material v-model="requestingMaterial" :material="material"></request-material>
     </v-row>
+    <request-modal v-model="requestingMaterial" />
   </v-container>
 </template>
 
@@ -43,8 +44,9 @@
 import { mapActions, mapState } from 'vuex';
 import { materialTypes, materialStates } from '@/constants/constants';
 import RequestMaterial from '../request/RequestMaterial.vue';
+import RequestModal from '../request/RequestModal.vue';
 export default {
-  components: { RequestMaterial },
+  components: { RequestMaterial, RequestModal },
   data() {
     return {
       search: '',
@@ -55,6 +57,7 @@ export default {
       materialTypes,
       materialStates,
       loading: false,
+      requestingMaterial: null,
     };
   },
   computed: {
