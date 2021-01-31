@@ -14,6 +14,10 @@ const actions = {
     const response = await materialApi.getAllMaterials();
     commit('SET_MATERIALS', response.data);
   },
+  async fetchFilteredMaterials({ commit }, query) {
+    const response = await materialApi.getFilteredMaterials(query);
+    commit('SET_MATERIALS', response.data);
+  },
   async fetchMaterial({ commit }, id) {
     const response = await materialApi.getMaterial(id);
     commit('SET_MATERIAL', response.data);
@@ -35,6 +39,11 @@ const actions = {
   async updateMaterialImage({ commit }, { id, data }) {
     const response = await materialApi.uploadImage(id, data);
     commit('SET_MATERIAL', { ...response.data, id });
+  },
+  async decreaseStock({ commit, getters }, { id, decreaseBy }) {
+    // to use after a requisition
+    const material = getters.getMaterial(id);
+    commit('SET_MATERIAL', { ...material, stock: material.stock - decreaseBy });
   },
 };
 

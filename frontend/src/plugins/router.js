@@ -4,7 +4,7 @@ import or const
 import { getAuthToken } from '@/api/httpClient';
 import Dashboard from '@/components/pages/Dashboard.vue';
 import Login from '@/components/pages/Login.vue';
-import MyRequests from '@/components/pages/MyRequests.vue';
+import Request from '@/components/pages/Request.vue';
 import Locations from '@/components/pages/Locations.vue';
 import Materials from '@/components/pages/Materials.vue';
 import Members from '@/components/pages/Members.vue';
@@ -22,9 +22,9 @@ const routes = [
     meta: { title: 'Dashboard', layoutNav: NavBar },
   },
   {
-    path: '/test',
+    path: '/request',
     name: 'requisitions',
-    component: MyRequests,
+    component: Request,
     meta: { layoutNav: NavBar },
   },
   {

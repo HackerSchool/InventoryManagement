@@ -46,6 +46,9 @@ module.exports = {
       return res.sendStatus(400);
     }
 
+    // Force self-create if not admin, or set default
+    if (!data.id_member || !req.user?.hasPermission('admin')) data.id_member = req.user.id;
+
     const requisition = await controller.create(req.db, { ...data, state: 'pending' });
 
     // Key constraints failed
