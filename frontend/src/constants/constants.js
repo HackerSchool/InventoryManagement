@@ -18,3 +18,13 @@ export const materialStates = [
   { text: 'Damaged', value: 'damaged' },
   { text: 'Retired', value: 'retired' },
 ];
+export const stateColors = {
+  good: 'green',
+  damaged: 'orange',
+  retired: 'red',
+};
+export const typeColors = {
+  item: 'teal',
+  tool: 'indigo',
+  other: 'grey',
+};

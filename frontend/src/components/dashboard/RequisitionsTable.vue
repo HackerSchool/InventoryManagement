@@ -47,8 +47,9 @@ export default {
       { id: 3, name: 'Active' },
       { id: 4, name: 'Archived' },
     ],
-    activeTab: 1,
+    activeTab: null,
   }),
+
   computed: {
     ...mapState('requisitions', ['requisitions']),
     inProgress() {
@@ -68,6 +69,9 @@ export default {
         );
       });
     },
+  },
+  mounted() {
+    this.activeTab = this.inProgress.length > 0 ? 1 : 0; //if there are items inProgress it defaults to that tab, otherwise to All
   },
 };
 </script>
