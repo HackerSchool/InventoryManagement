@@ -3,7 +3,7 @@
     <v-card elevation="2">
       <v-list three line>
         <v-list-item>
-          <v-list-item-avatar tile> <img src="material.image.src" /></v-list-item-avatar>
+          <v-list-item-avatar tile> <img :src="material.image.src" /></v-list-item-avatar>
           <v-divider vertical class="mr-3"></v-divider>
           <v-list-item-content>
             <v-list-item-title>
@@ -18,8 +18,8 @@
         </v-list-item>
       </v-list>
     </v-card>
-    <v-dialog v-model="Description">
-      <v-card max-width="600">
+    <v-dialog v-model="Description" max-width="600">
+      <v-card>
         <v-card-title>{{ material.name }}</v-card-title>
         <v-card-text>
           <v-chip-group>
