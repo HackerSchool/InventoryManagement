@@ -4,8 +4,12 @@
       <v-list three line>
         <v-list-item>
           <v-list-item-avatar tile>
-            <img :src="material.image.src" @click="Image = true"
-          /></v-list-item-avatar>
+            <img v-if="material.image" :src="material.image.src" @click="Image = true" />
+            <img
+              v-else
+              src="https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png"
+            />
+          </v-list-item-avatar>
           <v-divider vertical class="mr-3"></v-divider>
           <v-list-item-content>
             <v-list-item-title>
@@ -48,17 +52,8 @@
     </v-dialog>
     <v-dialog v-model="Image" max-width="600">
       <v-card>
-        <v-img v-if="material.image.src" max-height="600" max-width="600" :src="material.image.src">
+        <v-img v-if="material.image" max-height="600" max-width="600" :src="material.image.src">
         </v-img>
-        <v-else v-else>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="12" md="6"> There is no image for this material. </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-        </v-else>
       </v-card>
     </v-dialog>
   </v-container>
