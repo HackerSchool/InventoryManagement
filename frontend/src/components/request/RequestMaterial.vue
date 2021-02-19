@@ -3,7 +3,9 @@
     <v-card elevation="2">
       <v-list three line>
         <v-list-item>
-          <v-list-item-avatar tile> <img :src="material.image.src" /></v-list-item-avatar>
+          <v-list-item-avatar tile>
+            <img :src="material.image.src" @click="Image = true"
+          /></v-list-item-avatar>
           <v-divider vertical class="mr-3"></v-divider>
           <v-list-item-content>
             <v-list-item-title>
@@ -11,7 +13,7 @@
             </v-list-item-title>
             <v-list-item-subtitle> {{ material.stock }} available </v-list-item-subtitle>
           </v-list-item-content>
-          <v-icon class="mx-2" @click.stop="Description = true">mdi-information</v-icon>
+          <v-icon class="mx-2" @click="Description = true">mdi-information</v-icon>
           <v-btn :disabled="material.stock === 0" @click="openRequest">
             {{ material.stock === 0 ? 'Out of stock ' : 'Request' }}
           </v-btn>
@@ -33,11 +35,30 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="12" md="6">
-                {{ material.description }}
+                {{
+                  material.description
+                    ? `${material.description}`
+                    : 'There is no description for this material.'
+                }}
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="Image" max-width="600">
+      <v-card>
+        <v-img v-if="material.image.src" max-height="600" max-width="600" :src="material.image.src">
+        </v-img>
+        <v-else v-else>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="12" md="6"> There is no image for this material. </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+        </v-else>
       </v-card>
     </v-dialog>
   </v-container>
@@ -56,6 +77,7 @@ export default {
     typeColors,
     stateColors,
     Description: null,
+    Image: null,
   }),
   methods: {
     openRequest() {
