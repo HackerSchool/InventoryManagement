@@ -1,43 +1,51 @@
 <template>
-  <v-container class="mb-4">
-    <v-row>
-      <v-col cols="12" sm="12" md="6">
-        <v-text-field
-          v-model="search"
-          label="Search"
-          prepend-inner-icon="mdi-magnify"
-          filled
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <v-select
-          v-model="state"
-          :items="materialStates"
-          label="State"
-          multiple
-          filled
-          clearable
-        ></v-select>
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <v-select
-          v-model="type"
-          :items="materialTypes"
-          label="Type"
-          multiple
-          filled
-          clearable
-        ></v-select>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-btn @click="fetchSearch">Search</v-btn>
-    </v-row>
-    <v-row v-for="material in materials" :key="material.id">
-      <request-material v-model="requestingMaterial" :material="material"></request-material>
-    </v-row>
-    <request-modal v-model="requestingMaterial" />
-  </v-container>
+  <div>
+    <v-container class="mb-4">
+      <v-row>
+        <v-col cols="12" sm="12" md="6">
+          <v-text-field
+            v-model="search"
+            label="Search"
+            append-icon="mdi-magnify"
+            filled
+            @keyup="fetchSearch"
+            @click:append="fetchSearch"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-select
+            v-model="state"
+            :items="materialStates"
+            label="State"
+            multiple
+            filled
+            clearable
+            @change="fetchSearch"
+          ></v-select>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <v-select
+            v-model="type"
+            :items="materialTypes"
+            label="Type"
+            multiple
+            filled
+            clearable
+            @change="fetchSearch"
+          ></v-select>
+        </v-col>
+      </v-row>
+      <div v-if="!loading">
+        <v-row v-for="material in materials" :key="material.id">
+          <request-material v-model="requestingMaterial" :material="material"></request-material>
+        </v-row>
+        <request-modal v-model="requestingMaterial" />
+        <v-row v-if="materials.length == 0 && !loading">
+          <v-col cols="12" sm="6" md="3">There are no results for this search! </v-col>
+        </v-row>
+      </div>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -63,8 +71,24 @@ export default {
   computed: {
     ...mapState('materials', ['materials']),
   },
+  async mounted() {
+    if (this.materials.length == 0) {
+      this.loading = true;
+      await Promise.all([this.fetchLocations(), this.fetchMaterials()]);
+      await this.fetchFilteredMaterials({
+        _q: this.search || undefined,
+        _sort: this.sort,
+        _limit: this.limit,
+        _start: 0,
+        state: this.state.join(',') || undefined,
+        type: this.type.join(',') || undefined,
+      });
+      this.loading = false;
+    }
+  },
   methods: {
-    ...mapActions('materials', ['fetchFilteredMaterials']),
+    ...mapActions('locations', ['fetchLocations']),
+    ...mapActions('materials', ['fetchMaterials', 'fetchFilteredMaterials']),
     async fetchSearch() {
       if (this.loading) return;
       this.loading = true;
