@@ -88,6 +88,12 @@ export default {
           link: '/members',
           permission: 1, //admin only
         },
+        {
+          text: 'Manage Requisitions',
+          icon: 'mdi-check-all',
+          link: '/requisitions-admin',
+          permission: 1,
+        },
       ],
     };
   },
