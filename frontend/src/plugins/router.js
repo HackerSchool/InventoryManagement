@@ -9,6 +9,7 @@ import Locations from '@/components/pages/Locations.vue';
 import Materials from '@/components/pages/Materials.vue';
 import Members from '@/components/pages/Members.vue';
 import NavBar from '@/components/navbar/NavBar.vue';
+import Projects from '@/components/pages/Projects.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -25,7 +26,7 @@ const routes = [
     path: '/request',
     name: 'requisitions',
     component: Request,
-    meta: { layoutNav: NavBar },
+    meta: { title: 'Requisitions', layoutNav: NavBar },
   },
   {
     path: '/locations',
@@ -44,6 +45,12 @@ const routes = [
     name: 'members',
     component: Members,
     meta: { title: 'Members', layoutNav: NavBar },
+  },
+  {
+    path: '/projects',
+    name: 'projects',
+    component: Projects,
+    meta: { title: 'Projects', layoutNav: NavBar },
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];

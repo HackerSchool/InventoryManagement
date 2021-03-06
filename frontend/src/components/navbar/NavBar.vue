@@ -88,6 +88,12 @@ export default {
           link: '/members',
           permission: 1, //admin only
         },
+        {
+          text: 'Projects',
+          icon: 'mdi-lan',
+          link: 'Projects',
+          permission: 1, //admin only
+        },
       ],
     };
   },
