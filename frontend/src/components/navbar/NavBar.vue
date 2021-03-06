@@ -47,7 +47,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import logoSrc from '@/assets/logo_navbar.png';
+import logoSrc from '@/assets/logo_navbar.svg';
 import NavBarAvatar from './NavBarAvatar.vue';
 
 export default {
