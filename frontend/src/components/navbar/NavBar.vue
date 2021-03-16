@@ -89,10 +89,16 @@ export default {
           permission: 1, //admin only
         },
         {
+          text: 'Projects',
+          icon: 'mdi-lan',
+          link: 'Projects',
+          permission: 1, //admin only
+        },
+        {
           text: 'Manage Requisitions',
           icon: 'mdi-check-all',
           link: '/requisitions-admin',
-          permission: 1,
+          permission: 1, //admin only
         },
       ],
     };

@@ -1,14 +1,14 @@
 <template>
-  <v-data-table :headers="headers" :items="locations" sort-by="name" class="elevation-1">
+  <v-data-table :headers="headers" :items="projects" sort-by="name" class="elevation-1">
     <template #top>
       <v-toolbar flat>
-        <v-toolbar-title>Locations</v-toolbar-title>
+        <v-toolbar-title>Projects</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ on, attrs }">
             <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
-              New Location
+              New Project
             </v-btn>
           </template>
           <v-card>
@@ -23,7 +23,7 @@
                       <v-text-field
                         v-model="editedItem.name"
                         filled
-                        :rules="[(v) => !!v || 'Location name is required']"
+                        :rules="[(v) => !!v || 'Project name is required']"
                         label="Name"
                         required
                       ></v-text-field>
@@ -74,7 +74,7 @@ export default {
     dialog: false,
     dialogDelete: false,
     headers: [
-      { text: 'Location', value: 'name' },
+      { text: 'Project', value: 'name' },
       { text: 'Description', value: 'description', sortable: false },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
@@ -91,9 +91,9 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Location' : 'Edit Location';
+      return this.editedIndex === -1 ? 'New Project' : 'Edit Project';
     },
-    ...mapState('locations', ['locations']),
+    ...mapState('projects', ['projects']),
   },
 
   watch: {
@@ -107,23 +107,23 @@ export default {
 
   methods: {
     editItem(item) {
-      this.editedIndex = this.locations.indexOf(item);
+      this.editedIndex = this.projects.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.locations.indexOf(item);
+      this.editedIndex = this.projects.indexOf(item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.deleteLocation(this.locations[this.editedIndex].id).catch((e) => {
+      this.deleteProject(this.projects[this.editedIndex].id).catch((e) => {
         if (e.response.status === 403)
           this.$notify({
             type: 'error',
-            title: 'Cannot delete location',
-            text: 'It is not possible to delete locations that have linked items',
+            title: 'Cannot delete projects',
+            text: 'It is not possible to delete projects that have linked items',
           });
       });
       this.closeDelete();
@@ -151,17 +151,17 @@ export default {
       if (!this.$refs.form.validate()) return;
 
       if (this.editedIndex > -1) {
-        this.updateLocation({
-          id: this.locations[this.editedIndex].id,
+        this.updateProject({
+          id: this.projects[this.editedIndex].id,
           data: this.editedItem,
         });
       } else {
-        this.createLocation(this.editedItem);
+        this.createProject(this.editedItem);
       }
       this.close();
     },
 
-    ...mapActions('locations', ['updateLocation', 'createLocation', 'deleteLocation']),
+    ...mapActions('projects', ['updateProject', 'createProject', 'deleteProject']),
   },
 };
 </script>

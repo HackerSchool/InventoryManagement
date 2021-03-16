@@ -16,11 +16,38 @@ const actions = {
     const response = await projectsApi.getAllProjects();
     commit('SET_PROJECTS', response.data);
   },
+  async fetchProject({ commit }, id) {
+    const response = await projectsApi.getProject(id);
+    commit('SET_PROJECT', response.data);
+  },
+  async createProject({ commit }, data) {
+    const response = await projectsApi.addProject(data);
+    commit('SET_PROJECT', response.data);
+  },
+  async deleteProject({ commit }, id) {
+    await projectsApi.deleteProject(id);
+    commit('REMOVE_PROJECT', id);
+  },
+  async updateProject({ commit }, { id, data }) {
+    const response = await projectsApi.updateProject(id, data);
+    commit('SET_PROJECT', { ...response.data, id });
+  },
 };
 
 const mutations = {
   SET_PROJECTS(state, data) {
     state.projects = data;
+  },
+  SET_PROJECT(state, data) {
+    const index = state.projects.findIndex((project) => project.id == data.id);
+
+    if (index === -1) state.projects.push(data);
+    // editing the array doesn't trigger DOM refresh, but splice does
+    else state.projects.splice(index, 1, data);
+  },
+  REMOVE_PROJECT(state, id) {
+    const index = state.projects.findIndex((project) => project.id == id);
+    state.projects.splice(index, 1); // removes element from array and shifts the others
   },
 };
 

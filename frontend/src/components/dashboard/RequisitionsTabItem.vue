@@ -16,7 +16,16 @@
                 : 'There is no project linked to this requisition'
             }}
             <v-list-item-subtitle>
+              <v-icon left small>mdi-clock</v-icon>
               {{ new Date(item.createdAt).toLocaleString('pt-PT') }}
+              <div v-if="item.dateOut">
+                <v-icon left small>mdi-clock-start</v-icon>
+                Picked up on {{ new Date(item.dateOut).toLocaleString() }}
+              </div>
+              <div v-if="item.dateIn">
+                <v-icon left small>mdi-clock-end</v-icon>
+                Returned on {{ new Date(item.dateIn).toLocaleString() }}
+              </div>
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-chip small :color="requisitionStates[item.state].color">

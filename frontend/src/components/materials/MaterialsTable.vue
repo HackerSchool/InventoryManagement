@@ -7,7 +7,9 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ on, attrs }">
-            <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on"> New Item </v-btn>
+            <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on">
+              New Material
+            </v-btn>
           </template>
           <v-card>
             <v-form ref="form" lazy-validation @submit.prevent="save">
@@ -139,8 +141,8 @@ export default {
       { text: 'Material', value: 'name' },
       { text: 'Description', value: 'description', sortable: false },
       { text: 'Stock', value: 'stock' },
-      { text: 'State', value: 'state', sortable: false },
-      { text: 'Type', value: 'type', sortable: false },
+      { text: 'State', value: 'state' },
+      { text: 'Type', value: 'type' },
       { text: 'Location', value: 'location.name', sortable: false },
       { text: 'Value (€)', value: 'value' },
       { text: 'Actions', value: 'actions', sortable: false },
