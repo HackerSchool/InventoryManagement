@@ -9,7 +9,7 @@ module.exports = {
     app.post('/project', asyncHandler(create));
     app.delete('/project/:id', asyncHandler(remove));
     app.post('/project/:id', asyncHandler(update));
-    app.post('/projects/:projectId/addMember/:memberId', asyncHandler(addMember));
-    app.delete('/projects/:projectId/addMember/:memberId', asyncHandler(removeMember));
+    app.post('/project/:projectId/member/:memberId', asyncHandler(addMember));
+    app.delete('/project/:projectId/member/:memberId', asyncHandler(removeMember));
   },
 };

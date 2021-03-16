@@ -98,6 +98,6 @@ module.exports = {
       return res.sendStatus(400); // invalid object
     }
 
-    res.json(await controller.addMember(req.db, projectId, memberId));
+    res.json(await controller.removeMember(req.db, projectId, memberId));
   },
 };

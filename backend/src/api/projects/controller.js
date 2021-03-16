@@ -1,5 +1,3 @@
-const { addMember } = require('@/api/members.api');
-
 module.exports = {
   async findAll(database) {
     const result = await database.select('id', 'name', 'description').from('projects');
@@ -46,6 +44,14 @@ module.exports = {
   },
 
   async addMember(database, member_id, project_id) {
+    // Prevent duplicate entries
+    const hasMember = await database('project_members')
+      .count({ count: 'member_id' })
+      .where('member_id', member_id)
+      .andWhere('project_id', project_id);
+
+    if (hasMember[0].count > 0) return true;
+
     const result = await database('project_members').insert({ project_id, member_id });
     return result.length > 0;
   },
