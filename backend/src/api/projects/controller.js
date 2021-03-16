@@ -42,4 +42,26 @@ module.exports = {
     if (affectedRows > 0) return this.findOne(database, id);
     // else return undefined
   },
+
+  async addMember(database, member_id, project_id) {
+    // Prevent duplicate entries
+    const hasMember = await database('project_members')
+      .count({ count: 'member_id' })
+      .where('member_id', member_id)
+      .andWhere('project_id', project_id);
+
+    if (hasMember[0].count > 0) return true;
+
+    const result = await database('project_members').insert({ project_id, member_id });
+    return result.length > 0;
+  },
+
+  async removeMember(database, member_id, project_id) {
+    const affectedRows = await database
+      .where('member_id', member_id)
+      .andWhere('project_id', project_id)
+      .from('project_members')
+      .delete();
+    return affectedRows.length > 0;
+  },
 };

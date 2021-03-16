@@ -72,4 +72,32 @@ module.exports = {
     if (!project) return res.sendStatus(404);
     res.json(project);
   },
+
+  addMember: async (req, res) => {
+    if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
+
+    let memberId, projectId;
+    try {
+      memberId = await models.memberId.validateAsync(req.params.memberId);
+      projectId = await models.projectId.validateAsync(req.params.projectId);
+    } catch (e) {
+      return res.sendStatus(400); // invalid object
+    }
+
+    res.json(await controller.addMember(req.db, memberId, projectId));
+  },
+
+  removeMember: async (req, res) => {
+    if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
+
+    let memberId, projectId;
+    try {
+      memberId = await models.memberId.validateAsync(req.params.memberId);
+      projectId = await models.projectId.validateAsync(req.params.projectId);
+    } catch (e) {
+      return res.sendStatus(400); // invalid object
+    }
+
+    res.json(await controller.removeMember(req.db, projectId, memberId));
+  },
 };

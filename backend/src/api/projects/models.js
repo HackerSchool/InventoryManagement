@@ -18,4 +18,5 @@ module.exports = {
   projectId,
   projectCreate,
   projectUpdate,
+  memberId: projectId,
 };
