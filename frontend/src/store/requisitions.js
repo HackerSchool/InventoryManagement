@@ -8,6 +8,10 @@ const state = {
 const getters = {};
 
 const actions = {
+  async fetchAllRequisitions({ commit }) {
+    const response = await requisitionApi.getAllRequisitions();
+    commit('SET_REQUISITIONS', response.data);
+  },
   async fetchSelfRequisitions({ commit }) {
     const response = await requisitionApi.getSelfRequisitions();
     commit('SET_REQUISITIONS', response.data);
@@ -15,6 +19,10 @@ const actions = {
   async createRequisition({ commit }, data) {
     const response = await requisitionApi.createRequisition(data);
     commit('SET_REQUISITION', response.data);
+  },
+  async updateRequisition({ commit }, { id, data }) {
+    const response = await requisitionApi.updateRequisition(id, data);
+    commit('SET_REQUISITION', { ...response.data, id });
   },
 };
 

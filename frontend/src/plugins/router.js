@@ -2,14 +2,15 @@
 import or const 
 */
 import { getAuthToken } from '@/api/httpClient';
+import NavBar from '@/components/navbar/NavBar.vue';
 import Dashboard from '@/components/pages/Dashboard.vue';
-import Login from '@/components/pages/Login.vue';
-import Request from '@/components/pages/Request.vue';
 import Locations from '@/components/pages/Locations.vue';
+import Login from '@/components/pages/Login.vue';
 import Materials from '@/components/pages/Materials.vue';
 import Members from '@/components/pages/Members.vue';
-import NavBar from '@/components/navbar/NavBar.vue';
 import Projects from '@/components/pages/Projects.vue';
+import Request from '@/components/pages/Request.vue';
+import RequestManagement from '@/components/pages/RequestManagement.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -51,6 +52,12 @@ const routes = [
     name: 'projects',
     component: Projects,
     meta: { title: 'Projects', layoutNav: NavBar },
+  },
+  {
+    path: '/requisitions-admin',
+    name: 'requisitions-admin',
+    component: RequestManagement,
+    meta: { title: 'Manage Requisitions', layoutNav: NavBar },
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];
