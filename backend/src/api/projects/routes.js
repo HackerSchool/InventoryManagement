@@ -76,26 +76,28 @@ module.exports = {
   addMember: async (req, res) => {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
-    let data;
+    let memberId, projectId;
     try {
-      data = await models.memberAdd.validateAsync(req.body, { stripUnknown: true });
+      memberId = await models.memberId.validateAsync(req.params.memberId);
+      projectId = await models.projectId.validateAsync(req.params.projectId);
     } catch (e) {
-      return res.sendStatus(400); // invalid member object
+      return res.sendStatus(400); // invalid object
     }
 
-    res.json(await controller.addMember(req.db, data.member_id, data.project_id));
+    res.json(await controller.addMember(req.db, memberId, projectId));
   },
 
   removeMember: async (req, res) => {
     if (!req.user?.hasPermission('admin')) return res.sendStatus(401);
 
-    let data;
+    let memberId, projectId;
     try {
-      data = await models.memberRemove.validateAsync(req.body, { stripUnknown: true });
+      memberId = await models.memberId.validateAsync(req.params.memberId);
+      projectId = await models.projectId.validateAsync(req.params.projectId);
     } catch (e) {
-      return res.sendStatus(400); // invalid member object
+      return res.sendStatus(400); // invalid object
     }
 
-    res.json(await controller.addMember(req.db, data.member_id, data.project_id));
+    res.json(await controller.addMember(req.db, projectId, memberId));
   },
 };
