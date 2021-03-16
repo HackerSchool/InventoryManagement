@@ -4,13 +4,13 @@
     <v-container class="mt-6">
       <h1>Pending Requisitions</h1>
       <RequestItem v-for="item in pendingRequisitions" :key="item.id" :item="item" />
-      <p v-if="pendingRequisitions.length === 0">None</p>
+      <p v-if="pendingRequisitions.length === 0"><no-requisitions /></p>
       <h1>Active Requisitions</h1>
       <RequestItem v-for="item in activeRequisitions" :key="item.id" :item="item" />
-      <p v-if="activeRequisitions.length === 0">None</p>
+      <p v-if="activeRequisitions.length === 0"><no-requisitions /></p>
       <h1>Archived Requisitions</h1>
       <RequestItem v-for="item in archivedRequisitions" :key="item.id" :item="item" />
-      <p v-if="archivedRequisitions.length === 0">None</p>
+      <p v-if="archivedRequisitions.length === 0"><no-requisitions /></p>
     </v-container>
   </div>
 </template>
@@ -18,10 +18,12 @@
 <script>
 import RequestItem from '@/components/request/AdminRequestItem';
 import { mapState, mapActions } from 'vuex';
+import NoRequisitions from '../request/NoRequisitions.vue';
 export default {
   name: 'RequestManagementPage',
   components: {
     RequestItem,
+    NoRequisitions,
   },
 
   data() {

@@ -20,6 +20,10 @@ const actions = {
     const response = await requisitionApi.createRequisition(data);
     commit('SET_REQUISITION', response.data);
   },
+  async updateRequisition({ commit }, { id, data }) {
+    const response = await requisitionApi.updateRequisition(id, data);
+    commit('SET_REQUISITION', { ...response.data, id });
+  },
 };
 
 const mutations = {

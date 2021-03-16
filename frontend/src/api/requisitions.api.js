@@ -8,3 +8,6 @@ export const getAllRequisitions = () => httpClient.get(`${ENDPOINT}s`);
 
 export const createRequisition = ({ materialId, memberId, projectId, quantity }) =>
   httpClient.post(ENDPOINT, { materialId, memberId, projectId, quantity });
+
+export const updateRequisition = (id, { state, projectId }) =>
+  httpClient.post(`${ENDPOINT}/${id}`, { state, projectId });
