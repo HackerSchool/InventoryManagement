@@ -24,10 +24,27 @@ module.exports = {
       .from('members')
       .leftJoin('project_members', 'members.id', 'project_members.member_id');
 
+    const cost = (await this.getProjectPurchases(database, id)).reduce(
+      (acc, { value, quantity }) => acc + value * quantity,
+      0
+    );
+
     return {
       ...result[0],
+      cost: parseFloat(cost.toFixed(2)), // fix floating point errors
       members: members.map(({ id, name, ist_id }) => ({ id, name, istId: ist_id })),
     };
+  },
+
+  async getProjectPurchases(database, id) {
+    const purchases = await database
+      .select('materials.value', 'requisitions.quantity')
+      .whereIn('requisitions.state', ['can_pickup', 'active', 'not_returning'])
+      .where('id_project', id)
+      .from('requisitions')
+      .leftJoin('materials', 'materials.id', 'requisitions.id_material');
+
+    return [...purchases];
   },
 
   async create(database, { name, description, state = 'active' }) {
