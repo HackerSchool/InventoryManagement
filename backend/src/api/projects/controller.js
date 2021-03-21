@@ -9,15 +9,24 @@ module.exports = {
     }));
   },
 
-  async findOne(database, id, memberId) {
+  async findOne(database, id) {
     const result = await database
       .select('id', 'name', 'description')
       .where('id', id)
-      .where('memberId', memberId)
       .from('projects');
 
     if (result.length === 0) return;
-    return result[0];
+
+    const members = await database
+      .select('id', 'name', 'ist_id')
+      .where('project_id', id)
+      .from('members')
+      .leftJoin('project_members', 'members.id', 'project_members.member_id');
+
+    return {
+      ...result[0],
+      members: members.map(({ id, name, ist_id }) => ({ id, name, istId: ist_id })),
+    };
   },
 
   async create(database, { name, description }) {
