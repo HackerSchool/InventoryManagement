@@ -1,4 +1,13 @@
-const { findAll, findOne, create, remove, update, addMember, removeMember } = require('./routes');
+const {
+  findAll,
+  findOne,
+  create,
+  remove,
+  update,
+  addMember,
+  removeMember,
+  findOneMember,
+} = require('./routes');
 const { asyncHandler } = require('../../middleware/error');
 
 module.exports = {
@@ -11,5 +20,6 @@ module.exports = {
     app.post('/project/:id', asyncHandler(update));
     app.post('/project/:projectId/member/:memberId', asyncHandler(addMember));
     app.delete('/project/:projectId/member/:memberId', asyncHandler(removeMember));
+    app.get('/project/:projectId/member/:memberId', asyncHandler(findOneMember));
   },
 };
