@@ -9,10 +9,11 @@ module.exports = {
     }));
   },
 
-  async findOne(database, id) {
+  async findOne(database, id, memberId) {
     const result = await database
       .select('id', 'name', 'description')
       .where('id', id)
+      .where('memberId', memberId)
       .from('projects');
 
     if (result.length === 0) return;

@@ -11,15 +11,20 @@ module.exports = {
   findOne: async (req, res) => {
     if (!req.user?.hasPermission('user')) return res.sendStatus(401);
 
-    let id;
+    let id, memberId;
     try {
       id = await models.projectId.validateAsync(req.params.id);
+      memberId = await models.memberId.validateAsync(req.params.memberId);
     } catch (e) {
       return res.sendStatus(400); // invalid ID format
     }
 
     const project = await controller.findOne(req.db, id);
+    const member = await controller.findOne(req.db, memberId);
 
+    // If member doesn't exist, return 404
+    if (!member) return res.sendStatus(404);
+    res.json(member);
     // If project doesn't exist, return 404
     if (!project) return res.sendStatus(404);
     res.json(project);
