@@ -84,7 +84,11 @@ module.exports = {
       return res.sendStatus(400); // invalid object
     }
 
-    res.json(await controller.addMember(req.db, memberId, projectId));
+    const project = await controller.addMember(req.db, memberId, projectId);
+
+    if (!project) return res.sendStatus(400); // member or project don't exist
+
+    res.json(project);
   },
 
   removeMember: async (req, res) => {
@@ -98,6 +102,10 @@ module.exports = {
       return res.sendStatus(400); // invalid object
     }
 
-    res.json(await controller.removeMember(req.db, projectId, memberId));
+    const project = await controller.removeMember(req.db, memberId, projectId);
+
+    if (!project) return res.sendStatus(400); // member or project don't exist
+
+    res.json(project);
   },
 };

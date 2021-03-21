@@ -1,4 +1,5 @@
 // import the api endpoints
+import { deleteMember } from '@/api/members.api';
 import * as projectsApi from '@/api/projects.api';
 
 const state = {
@@ -30,6 +31,14 @@ const actions = {
   },
   async updateProject({ commit }, { id, data }) {
     const response = await projectsApi.updateProject(id, data);
+    commit('SET_PROJECT', { ...response.data, id });
+  },
+  async addMember({ commit }, { id, memberId }) {
+    const response = await projectsApi.addMember(id, memberId);
+    commit('SET_PROJECT', { ...response.data, id });
+  },
+  async deleteMember({ commit }, { id, memberId }) {
+    const response = await projectsApi.deleteMember(id, memberId);
     commit('SET_PROJECT', { ...response.data, id });
   },
 };
