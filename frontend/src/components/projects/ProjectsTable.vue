@@ -29,6 +29,16 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
+                      <v-select
+                        v-model="editedItem.state"
+                        filled
+                        :rules="[(v) => !!v || 'Project state is required']"
+                        :items="projectStates"
+                        label="State"
+                        required
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12">
                       <v-textarea
                         v-model="editedItem.description"
                         filled
@@ -63,6 +73,11 @@
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
+    <template #[`item.state`]="{ item }">
+      <v-chip :color="stateColors[item.state]" dark class="capitalized">
+        {{ item.state }}
+      </v-chip>
+    </template>
   </v-data-table>
 </template>
 
@@ -76,17 +91,30 @@ export default {
     headers: [
       { text: 'Project', value: 'name' },
       { text: 'Description', value: 'description', sortable: false },
+      { text: 'State', value: 'state' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     editedIndex: -1,
     editedItem: {
       name: '',
       description: '',
+      state: '',
     },
     defaultItem: {
       name: '',
       description: '',
+      state: '',
     },
+    stateColors: {
+      active: 'green',
+      finished: 'blue',
+      abandoned: 'red',
+    },
+    projectStates: [
+      { text: 'Active', value: 'active' },
+      { text: 'Finished', value: 'finished' },
+      { text: 'Abandoned', value: 'abandoned' },
+    ],
   }),
 
   computed: {
