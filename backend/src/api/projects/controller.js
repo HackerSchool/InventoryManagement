@@ -1,17 +1,18 @@
 module.exports = {
   async findAll(database) {
-    const result = await database.select('id', 'name', 'description').from('projects');
+    const result = await database.select('id', 'name', 'description', 'state').from('projects');
 
     return result.map((project) => ({
       id: project.id,
       name: project.name,
       description: project.description,
+      state: project.state,
     }));
   },
 
   async findOne(database, id) {
     const result = await database
-      .select('id', 'name', 'description')
+      .select('id', 'name', 'description', 'state')
       .where('id', id)
       .from('projects');
 
@@ -29,8 +30,8 @@ module.exports = {
     };
   },
 
-  async create(database, { name, description }) {
-    const result = await database.insert({ name, description }).into('projects');
+  async create(database, { name, description, state = 'active' }) {
+    const result = await database.insert({ name, description, state }).into('projects');
 
     // Knex returns the inserted id, so we get the object from the database.
     return this.findOne(database, result[0]);
