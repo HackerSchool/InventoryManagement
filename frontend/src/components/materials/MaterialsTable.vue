@@ -218,7 +218,7 @@ export default {
           this.$notify({
             type: 'error',
             title: 'Cannot delete material',
-            text: 'It is not possible to delete materials that have linked requisitions',
+            text: 'It is not possible to delete materials that have linked requests',
           });
       });
       this.closeDelete();

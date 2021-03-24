@@ -95,9 +95,9 @@ export default {
           permission: 1, //admin only
         },
         {
-          text: 'Manage Requisitions',
+          text: 'Manage Requests',
           icon: 'mdi-check-all',
-          link: '/requisitions-admin',
+          link: '/requests-admin',
           permission: 1, //admin only
         },
       ],

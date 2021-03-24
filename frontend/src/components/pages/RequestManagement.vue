@@ -2,13 +2,13 @@
   <div>
     <v-progress-linear v-if="loading" indeterminate />
     <v-container class="mt-6">
-      <h1>Pending Requisitions</h1>
+      <h1>Pending Requests</h1>
       <RequestItem v-for="item in pendingRequisitions" :key="item.id" :item="item" />
       <p v-if="pendingRequisitions.length === 0"><no-requisitions /></p>
-      <h1>Active Requisitions</h1>
+      <h1>Active Requests</h1>
       <RequestItem v-for="item in activeRequisitions" :key="item.id" :item="item" />
       <p v-if="activeRequisitions.length === 0"><no-requisitions /></p>
-      <h1>Archived Requisitions</h1>
+      <h1>Archived Requests</h1>
       <RequestItem v-for="item in archivedRequisitions" :key="item.id" :item="item" />
       <p v-if="archivedRequisitions.length === 0"><no-requisitions /></p>
     </v-container>

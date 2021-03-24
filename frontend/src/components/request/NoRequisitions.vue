@@ -3,6 +3,6 @@
     <div>
       <v-icon x-large color="primary">mdi-check-decagram</v-icon>
     </div>
-    <h4 class="primary--text">There are no requisitions here</h4>
+    <h4 class="primary--text">There are no requests here</h4>
   </div>
 </template>
