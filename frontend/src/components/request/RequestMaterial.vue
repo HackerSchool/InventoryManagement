@@ -5,10 +5,7 @@
         <v-list-item>
           <v-list-item-avatar tile>
             <img v-if="material.image" :src="material.image.src" @click="Image = true" />
-            <img
-              v-else
-              src="https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png"
-            />
+            <v-icon v-else>mdi-image-off</v-icon>
           </v-list-item-avatar>
           <v-divider vertical class="mr-3"></v-divider>
           <v-list-item-content>
