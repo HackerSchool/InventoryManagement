@@ -26,11 +26,9 @@ export default {
   },
 
   async mounted() {
-    if (this.materials.length == 0) {
-      this.loading = true;
-      await Promise.all([this.fetchLocations(), this.fetchMaterials()]);
-      this.loading = false;
-    }
+    this.loading = true;
+    await Promise.all([this.fetchLocations(), this.fetchMaterials()]);
+    this.loading = false;
   },
 
   methods: {

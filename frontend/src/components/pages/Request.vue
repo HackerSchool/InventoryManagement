@@ -72,19 +72,19 @@ export default {
     ...mapState('materials', ['materials']),
   },
   async mounted() {
-    if (this.materials.length == 0) {
-      this.loading = true;
-      await Promise.all([this.fetchLocations(), this.fetchMaterials()]);
-      await this.fetchFilteredMaterials({
+    this.loading = true;
+    await Promise.all([
+      this.fetchLocations(),
+      this.fetchFilteredMaterials({
         _q: this.search || undefined,
         _sort: this.sort,
         _limit: this.limit,
         _start: 0,
         state: this.state.join(',') || undefined,
         type: this.type.join(',') || undefined,
-      });
-      this.loading = false;
-    }
+      }),
+    ]);
+    this.loading = false;
   },
   methods: {
     ...mapActions('locations', ['fetchLocations']),
