@@ -16,5 +16,5 @@ export const updateProject = (id, { name, description }) =>
 
 export const addMember = (id, memberId) => httpClient.post(`${ENDPOINT}/${id}/member/${memberId}`);
 
-export const removeMember = (id, memberId) =>
+export const deleteMember = (id, memberId) =>
   httpClient.delete(`${ENDPOINT}/${id}/member/${memberId}`);

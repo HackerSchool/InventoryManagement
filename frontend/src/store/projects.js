@@ -1,5 +1,4 @@
 // import the api endpoints
-import { deleteMember } from '@/api/members.api';
 import * as projectsApi from '@/api/projects.api';
 
 const state = {
