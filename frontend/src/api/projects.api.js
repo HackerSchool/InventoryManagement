@@ -11,8 +11,8 @@ export const addProject = ({ name, description }) =>
 
 export const deleteProject = (id) => httpClient.delete(`${ENDPOINT}/${id}`);
 
-export const updateProject = (id, { name, description }) =>
-  httpClient.post(`${ENDPOINT}/${id}`, { name, description });
+export const updateProject = (id, { name, state, description }) =>
+  httpClient.post(`${ENDPOINT}/${id}`, { name, state, description });
 
 export const addMember = (id, memberId) => httpClient.post(`${ENDPOINT}/${id}/member/${memberId}`);
 

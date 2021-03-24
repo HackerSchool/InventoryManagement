@@ -37,7 +37,7 @@ const actions = {
     commit('SET_PROJECT', { ...response.data, id });
   },
   async deleteMember({ commit }, { id, memberId }) {
-    const response = await projectsApi.deleteMember(id, memberId);
+    const response = await projectsApi.removeMember(id, memberId);
     commit('SET_PROJECT', { ...response.data, id });
   },
 };
