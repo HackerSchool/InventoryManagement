@@ -1,33 +1,13 @@
 <template>
-  <v-card class="d-flex justify-space-between mt-4 mb-4 pa-4">
-    <div>
+  <v-expansion-panel>
+    <v-expansion-panel-header>
       <h3>
         <span>{{ item.quantity }}x</span> <strong>{{ item.material.name }}</strong>
         <v-chip small :color="requisitionStates[item.state].color" class="ml-4">
           {{ requisitionStates[item.state].name }}
         </v-chip>
       </h3>
-      <div>
-        <v-icon left small>mdi-account</v-icon>
-        {{ item.member.name }}
-      </div>
-      <div v-if="item.project">
-        For <strong>{{ item.project.name }}</strong> project
-      </div>
-      <div>
-        <v-icon left small>mdi-clock</v-icon>
-        Created on {{ new Date(item.createdAt).toLocaleString() }}
-      </div>
-      <div v-if="item.dateOut">
-        <v-icon left small>mdi-clock-start</v-icon>
-        Picked up on {{ new Date(item.dateOut).toLocaleString() }}
-      </div>
-      <div v-if="item.dateIn">
-        <v-icon left small>mdi-clock-end</v-icon>
-        Returned on {{ new Date(item.dateIn).toLocaleString() }}
-      </div>
-    </div>
-    <div>
+      <v-spacer></v-spacer>
       <v-btn
         v-if="['pending', 'can_pickup'].indexOf(item.state) !== -1"
         outlined
@@ -72,8 +52,29 @@
       >
         Not Returning <v-icon right>mdi-grave-stone</v-icon>
       </v-btn>
-    </div>
-  </v-card>
+    </v-expansion-panel-header>
+    <v-expansion-panel-content>
+      <div>
+        <v-icon left small>mdi-account</v-icon>
+        {{ item.member.name }}
+      </div>
+      <div v-if="item.project">
+        For <strong>{{ item.project.name }}</strong> project
+      </div>
+      <div>
+        <v-icon left small>mdi-clock</v-icon>
+        Created on {{ new Date(item.createdAt).toLocaleString() }}
+      </div>
+      <div v-if="item.dateOut">
+        <v-icon left small>mdi-clock-start</v-icon>
+        Picked up on {{ new Date(item.dateOut).toLocaleString() }}
+      </div>
+      <div v-if="item.dateIn">
+        <v-icon left small>mdi-clock-end</v-icon>
+        Returned on {{ new Date(item.dateIn).toLocaleString() }}
+      </div>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
