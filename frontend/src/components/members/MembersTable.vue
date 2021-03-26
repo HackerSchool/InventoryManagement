@@ -1,9 +1,21 @@
 <template>
-  <v-data-table :headers="headers" :items="members" sort-by="name" class="elevation-1">
+  <v-data-table
+    :headers="headers"
+    :items="members"
+    :search="search"
+    sort-by="name"
+    class="elevation-1"
+  >
     <template #top>
       <v-toolbar flat>
         <v-toolbar-title>Members</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          hide-details
+        ></v-text-field>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ on, attrs }">
@@ -99,12 +111,13 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    search: '',
     headers: [
       { text: 'Member', value: 'name' },
-      { text: 'IST Id', value: 'istId' },
-      { text: 'Role', value: 'role' },
-      { text: 'State', value: 'active' },
-      { text: 'Actions', value: 'actions', sortable: false },
+      { text: 'IST Id', value: 'istId', filterable: false },
+      { text: 'Role', value: 'role', filterable: false },
+      { text: 'State', value: 'active', filterable: false },
+      { text: 'Actions', value: 'actions', sortable: false, filterable: false },
     ],
     editedIndex: -1,
     editedItem: {

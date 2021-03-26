@@ -1,9 +1,21 @@
 <template>
-  <v-data-table :headers="headers" :items="materials" sort-by="name" class="elevation-1">
+  <v-data-table
+    :headers="headers"
+    :items="materials"
+    :search="search"
+    sort-by="name"
+    class="elevation-1"
+  >
     <template #top>
       <v-toolbar flat>
         <v-toolbar-title>Materials</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          hide-details
+        ></v-text-field>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ on, attrs }">
@@ -136,16 +148,17 @@ export default {
     dialog: false,
     dialogDelete: false,
     requisitionId: null,
+    search: '',
     headers: [
-      { text: 'Image', value: 'image.src', sortable: false },
+      { text: 'Image', value: 'image.src', filterable: false, sortable: false },
       { text: 'Material', value: 'name' },
-      { text: 'Description', value: 'description', sortable: false },
-      { text: 'Stock', value: 'stock' },
-      { text: 'State', value: 'state' },
-      { text: 'Type', value: 'type' },
-      { text: 'Location', value: 'location.name', sortable: false },
-      { text: 'Value (€)', value: 'value' },
-      { text: 'Actions', value: 'actions', sortable: false },
+      { text: 'Description', value: 'description', filterable: false, sortable: false },
+      { text: 'Stock', value: 'stock', filterable: false },
+      { text: 'State', value: 'state', filterable: false },
+      { text: 'Type', value: 'type', filterable: false },
+      { text: 'Location', value: 'location.name', filterable: false, sortable: false },
+      { text: 'Value (€)', value: 'value', filterable: false },
+      { text: 'Actions', value: 'actions', filterable: false, sortable: false },
     ],
     editedIndex: -1,
     editedItem: {
