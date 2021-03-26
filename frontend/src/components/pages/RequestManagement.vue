@@ -4,11 +4,11 @@
     <v-container class="mt-6">
       <v-tabs>
         <v-tab>
-          <v-avatar primary small>{{ pendingRequisitions.length }}</v-avatar>
+          <span class="mr-3">{{ pendingRequisitions.length }}</span>
           Pending Requests
         </v-tab>
         <v-tab>
-          <v-avatar primary small>{{ activeRequisitions.length }}</v-avatar>
+          <span class="mr-3">{{ activeRequisitions.length }}</span>
           Active Requests
         </v-tab>
         <v-tab> Archived Requests </v-tab>

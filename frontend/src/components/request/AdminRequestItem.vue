@@ -1,57 +1,70 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>
+    <v-expansion-panel-header v-slot="{ open }">
       <h3>
         <span>{{ item.quantity }}x</span> <strong>{{ item.material.name }}</strong>
         <v-chip small :color="requisitionStates[item.state].color" class="ml-4">
           {{ requisitionStates[item.state].name }}
         </v-chip>
       </h3>
+      <v-fade-transition leave-absolute>
+        <div v-if="!open">
+          <div v-if="item.project">
+            For <strong>{{ item.project.name }}</strong> project
+          </div>
+          <div v-else>
+            <v-icon left small>mdi-account</v-icon>
+            {{ item.member.name }}
+          </div>
+        </div>
+      </v-fade-transition>
       <v-spacer></v-spacer>
-      <v-btn
-        v-if="['pending', 'can_pickup'].indexOf(item.state) !== -1"
-        outlined
-        color="red"
-        @click="() => updateState('cancelled')"
-      >
-        {{ item.state === 'pending' ? 'Reject' : 'Cancel' }} <v-icon right>mdi-close</v-icon>
-      </v-btn>
-      <v-btn
-        v-if="item.state == 'pending'"
-        outlined
-        class="ml-2"
-        color="green"
-        @click="() => updateState('can_pickup')"
-      >
-        Accept <v-icon right>mdi-check</v-icon>
-      </v-btn>
-      <v-btn
-        v-if="item.state == 'can_pickup'"
-        outlined
-        class="ml-2"
-        color="blue"
-        @click="() => updateState('active')"
-      >
-        Mark as Picked Up <v-icon right>mdi-truck-check</v-icon>
-      </v-btn>
-      <v-btn
-        v-if="item.state == 'active'"
-        outlined
-        class="ml-2"
-        color="green"
-        @click="() => updateState('returned')"
-      >
-        Mark as Returned <v-icon right>mdi-clipboard-arrow-left</v-icon>
-      </v-btn>
-      <v-btn
-        v-if="item.state == 'active'"
-        outlined
-        class="ml-2"
-        color="grey"
-        @click="() => updateState('not_returning')"
-      >
-        Not Returning <v-icon right>mdi-grave-stone</v-icon>
-      </v-btn>
+      <div class="mr-4 flex-grow-0">
+        <v-btn
+          v-if="['pending', 'can_pickup'].indexOf(item.state) !== -1"
+          outlined
+          color="red"
+          @click="() => updateState('cancelled')"
+        >
+          {{ item.state === 'pending' ? 'Reject' : 'Cancel' }} <v-icon right>mdi-close</v-icon>
+        </v-btn>
+        <v-btn
+          v-if="item.state == 'pending'"
+          outlined
+          class="ml-2"
+          color="green"
+          @click="() => updateState('can_pickup')"
+        >
+          Accept <v-icon right>mdi-check</v-icon>
+        </v-btn>
+        <v-btn
+          v-if="item.state == 'can_pickup'"
+          outlined
+          class="ml-2"
+          color="blue"
+          @click="() => updateState('active')"
+        >
+          Mark as Picked Up <v-icon right>mdi-truck-check</v-icon>
+        </v-btn>
+        <v-btn
+          v-if="item.state == 'active'"
+          outlined
+          class="ml-2"
+          color="green"
+          @click="() => updateState('returned')"
+        >
+          Mark as Returned <v-icon right>mdi-clipboard-arrow-left</v-icon>
+        </v-btn>
+        <v-btn
+          v-if="item.state == 'active'"
+          outlined
+          class="ml-2"
+          color="grey"
+          @click="() => updateState('not_returning')"
+        >
+          Not Returning <v-icon right>mdi-grave-stone</v-icon>
+        </v-btn>
+      </div>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
       <div>
