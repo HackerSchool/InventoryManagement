@@ -10,7 +10,8 @@
       <v-fade-transition leave-absolute>
         <div v-if="!open">
           <div v-if="item.project">
-            For <strong>{{ item.project.name }}</strong> project
+            <v-icon left small>mdi-lan</v-icon>
+            {{ item.project.name }}
           </div>
           <div v-else>
             <v-icon left small>mdi-account</v-icon>
@@ -72,7 +73,8 @@
         {{ item.member.name }}
       </div>
       <div v-if="item.project">
-        For <strong>{{ item.project.name }}</strong> project
+        <v-icon left small>mdi-lan</v-icon>
+        {{ item.project.name }}
       </div>
       <div>
         <v-icon left small>mdi-clock</v-icon>
