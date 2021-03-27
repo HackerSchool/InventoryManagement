@@ -9,6 +9,7 @@ const getters = {
   getProjectsSelect: (state) => {
     return state.projects.map((project) => ({ text: project.name, value: project.id }));
   },
+  getProjectMembers: (state) => (id) => state.projects.find((project) => project.id == id),
 };
 
 const actions = {
