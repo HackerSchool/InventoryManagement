@@ -2,6 +2,19 @@
   <div>
     <v-progress-linear v-if="loading" indeterminate />
     <v-container class="mt-6">
+      <v-row>
+        <v-col sm="12" offset-md="6" md="6" offset-lg="9" lg="3">
+          <v-select
+            v-model="project"
+            :items="getProjectsSelect"
+            label="Project"
+            placeholder="Filter by Project..."
+            :menu-props="{ offsetY: true }"
+            clearable
+            solo
+          ></v-select>
+        </v-col>
+      </v-row>
       <v-tabs>
         <v-tab>
           <span class="mr-3">{{ pendingRequisitions.length }}</span>
@@ -40,7 +53,7 @@
 
 <script>
 import RequestItem from '@/components/request/AdminRequestItem';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import NoRequisitions from '../request/NoRequisitions.vue';
 export default {
   name: 'RequestManagementPage',
@@ -52,19 +65,31 @@ export default {
   data() {
     return {
       loading: false,
+      project: null,
     };
   },
   computed: {
+    ...mapGetters('projects', ['getProjectsSelect']),
     ...mapState('requisitions', ['requisitions']),
     pendingRequisitions() {
-      return this.requisitions.filter((req) => req.state === 'pending');
+      return this.requisitions.filter(
+        (req) =>
+          req.state === 'pending' &&
+          (!this.project || this.project === (req.project && req.project.id))
+      );
     },
     activeRequisitions() {
-      return this.requisitions.filter((req) => ['active', 'can_pickup'].indexOf(req.state) !== -1);
+      return this.requisitions.filter(
+        (req) =>
+          ['active', 'can_pickup'].indexOf(req.state) !== -1 &&
+          (!this.project || this.project === (req.project && req.project.id))
+      );
     },
     archivedRequisitions() {
       return this.requisitions.filter(
-        (req) => ['cancelled', 'returned', 'not_returning'].indexOf(req.state) !== -1
+        (req) =>
+          ['cancelled', 'returned', 'not_returning'].indexOf(req.state) !== -1 &&
+          (!this.project || this.project === (req.project && req.project.id))
       );
     },
   },
@@ -72,12 +97,13 @@ export default {
     if (this.requisitions.length == 0) {
       //needs a better solution for this, otherwise i think it'll bug for someone without requisitions
       this.loading = true;
-      await this.fetchAllRequisitions();
+      await Promise.all([this.fetchAllRequisitions(), this.fetchProjects()]);
       this.loading = false;
     }
   },
   methods: {
     ...mapActions('requisitions', ['fetchAllRequisitions']),
+    ...mapActions('projects', ['fetchProjects']),
   },
 };
 </script>
