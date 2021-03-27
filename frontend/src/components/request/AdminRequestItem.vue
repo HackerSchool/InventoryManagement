@@ -1,14 +1,14 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header v-slot="{ open }">
-      <h3>
+    <v-expansion-panel-header v-slot="{ open }" class="flex-wrap">
+      <h3 class="my-1">
         <span>{{ item.quantity }}x</span> <strong>{{ item.material.name }}</strong>
         <v-chip small :color="requisitionStates[item.state].color" class="ml-4">
           {{ requisitionStates[item.state].name }}
         </v-chip>
       </h3>
       <v-fade-transition leave-absolute>
-        <div v-if="!open">
+        <div v-if="!open" class="my-1">
           <div v-if="item.project">
             <v-icon left small>mdi-lan</v-icon>
             {{ item.project.name }}
@@ -20,7 +20,7 @@
         </div>
       </v-fade-transition>
       <v-spacer></v-spacer>
-      <div class="mr-4 flex-grow-0">
+      <div class="mr-4 flex-grow-0 my-1">
         <v-btn
           v-if="['pending', 'can_pickup'].indexOf(item.state) !== -1"
           outlined
