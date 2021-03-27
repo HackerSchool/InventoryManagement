@@ -94,12 +94,9 @@ export default {
     },
   },
   async mounted() {
-    if (this.requisitions.length == 0) {
-      //needs a better solution for this, otherwise i think it'll bug for someone without requisitions
-      this.loading = true;
-      await Promise.all([this.fetchAllRequisitions(), this.fetchProjects()]);
-      this.loading = false;
-    }
+    this.loading = true;
+    await Promise.all([this.fetchAllRequisitions(), this.fetchProjects()]);
+    this.loading = false;
   },
   methods: {
     ...mapActions('requisitions', ['fetchAllRequisitions']),
