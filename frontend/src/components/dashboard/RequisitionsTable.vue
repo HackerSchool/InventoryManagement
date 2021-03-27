@@ -5,30 +5,24 @@
     </v-tab>
 
     <v-tab-item>
-      <requisitions-tab-item
-        :items="requisitions"
-        empty-message="You don't have any requisitions."
-      />
+      <requisitions-tab-item :items="requisitions" empty-message="You don't have any requests." />
     </v-tab-item>
 
     <v-tab-item>
       <requisitions-tab-item
         :items="inProgress"
-        empty-message="You don't have any requisitions in progress."
+        empty-message="You don't have any requests in progress."
       />
     </v-tab-item>
 
     <v-tab-item>
-      <requisitions-tab-item
-        :items="active"
-        empty-message="You don't have any active requisitions."
-      />
+      <requisitions-tab-item :items="active" empty-message="You don't have any active requests." />
     </v-tab-item>
 
     <v-tab-item>
       <requisitions-tab-item
         :items="archived"
-        empty-message="You don't have any archived requisitions."
+        empty-message="You don't have any archived requests."
       />
     </v-tab-item>
   </v-tabs>

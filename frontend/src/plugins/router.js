@@ -25,9 +25,9 @@ const routes = [
   },
   {
     path: '/request',
-    name: 'requisitions',
+    name: 'requests',
     component: Request,
-    meta: { title: 'Requisitions', layoutNav: NavBar },
+    meta: { title: 'Request', layoutNav: NavBar },
   },
   {
     path: '/locations',
@@ -54,10 +54,10 @@ const routes = [
     meta: { title: 'Projects', layoutNav: NavBar },
   },
   {
-    path: '/requisitions-admin',
-    name: 'requisitions-admin',
+    path: '/requests-admin',
+    name: 'requests-admin',
     component: RequestManagement,
-    meta: { title: 'Manage Requisitions', layoutNav: NavBar },
+    meta: { title: 'Manage Requests', layoutNav: NavBar },
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];

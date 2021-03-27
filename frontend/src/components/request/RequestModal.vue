@@ -22,6 +22,7 @@
               </v-col>
               <v-col cols="12" sm="12" md="6">
                 <v-select
+                  v-model="project"
                   :items="getProjectsSelect"
                   clearable
                   label="Project"
