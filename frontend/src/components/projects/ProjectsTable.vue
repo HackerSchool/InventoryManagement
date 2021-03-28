@@ -79,9 +79,11 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <project-modal v-model="projectMembers" />
       </v-toolbar>
     </template>
     <template #[`item.actions`]="{ item }">
+      <v-icon small class="mr-2" @click="editMembers(item)"> mdi-account-multiple </v-icon>
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
@@ -95,11 +97,14 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import ProjectModal from './ProjectModal.vue';
 
 export default {
+  components: { ProjectModal },
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    projectMembers: null,
     search: '',
     headers: [
       { text: 'Project', value: 'name' },
@@ -201,7 +206,9 @@ export default {
       }
       this.close();
     },
-
+    editMembers(item) {
+      this.projectMembers = item.id;
+    },
     ...mapActions('projects', ['updateProject', 'createProject', 'deleteProject']),
   },
 };
