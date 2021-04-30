@@ -135,7 +135,7 @@ module.exports = {
 
     const image = await imageController.upload(req.db, req.files.img);
 
-    material = await controller.update(req.db, id, { image_id: image.id });
+    material = await controller.update(req.db, id, { image_id: image });
 
     res.json(material);
   },

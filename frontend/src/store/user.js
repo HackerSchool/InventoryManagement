@@ -1,3 +1,5 @@
+import { getImageSrc } from '@/utils/image';
+
 const roles = {
   user: 0,
   admin: 1,
@@ -13,7 +15,7 @@ const state = {
 
 const getters = {
   getPermissionLevel: (state) => roles[state.role] || 0,
-  getAvatarUrl: (state) => state.avatar && state.avatar.src,
+  getAvatarUrl: (state) => getImageSrc(state.avatar),
   getName: (state) => state.name,
 };
 

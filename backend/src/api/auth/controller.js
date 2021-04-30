@@ -17,11 +17,9 @@ module.exports = {
         'members.ist_id',
         'members.active',
         'members.role',
-        { imageId: 'image_id' },
-        { imageSrc: 'images.src' }
+        'image_id'
       )
       .from('members')
-      .leftJoin('images', 'members.image_id', 'images.id')
       .where({ ist_id: fenixUsername, active: true });
     // User does not belong to HackerSchool
     if (result.length !== 1) return {};
@@ -32,18 +30,15 @@ module.exports = {
       istId: result[0].ist_id,
       active: result[0].active,
       role: result[0].role,
-      avatar:
-        result[0].imageId === null
-          ? null
-          : { id: result[0].imageId, src: await imagesController.buildSrc(result[0].imageSrc) },
+      avatar: result[0].image_id,
     };
 
-    if (result[0].imageId === null && photo) {
+    if (result[0].image_id === null && photo) {
       user.avatar = await imagesController.upload(database, {
         data: Buffer.from(photo.data, 'base64'),
         name: fenixUsername,
       });
-      await membersController.update(database, user.id, { image_id: user.avatar.id });
+      await membersController.update(database, user.id, { image_id: user.avatar });
     }
 
     const jwt = generateJWT(user);

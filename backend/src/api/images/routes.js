@@ -24,4 +24,19 @@ module.exports = {
     if (!image) return res.sendStatus(404);
     res.json(image);
   },
+
+  findBuffer: async (req, res) => {
+    let id;
+    try {
+      id = await models.imageId.validateAsync(req.params.id);
+    } catch (e) {
+      return res.sendStatus(404); // invalid ID format
+    }
+    const image = await controller.findBuffer(req.db, id);
+
+    // If image doesn't exist, return 404
+    if (!image) return res.sendStatus(404);
+    res.set('Content-Type', 'image/webp');
+    res.send(image);
+  },
 };

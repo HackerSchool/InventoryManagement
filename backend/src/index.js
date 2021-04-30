@@ -3,9 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-const path = require('path');
-
-process.env.UPLOAD_PATH = path.join(__dirname, '..', 'upload');
 
 const { authenticateJWT } = require('./middleware/authentication');
 const { knexMiddleware } = require('./middleware/database'); // Init database
@@ -24,9 +21,6 @@ app.use(bodyParser.json());
 
 // Initiate all API routes
 api.init(app);
-
-// Handle static files (in production might be handled by reverse proxy)
-app.use('/upload', express.static(process.env.UPLOAD_PATH));
 
 // Handler any non-handled errors
 app.use(errorHandler);

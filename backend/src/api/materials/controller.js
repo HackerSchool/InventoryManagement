@@ -12,8 +12,7 @@ const fields = [
   { locationId: 'location_id' },
   { locationName: 'locations.name' },
   { locationDesc: 'locations.description' },
-  { imageId: 'image_id' },
-  { imageSrc: 'images.src' },
+  'image_id',
 ];
 
 const formatResponse = async (response) => ({
@@ -29,13 +28,7 @@ const formatResponse = async (response) => ({
     name: response.locationName,
     description: response.locationDesc,
   },
-  image:
-    response.imageId === null
-      ? null
-      : {
-          id: response.imageId,
-          src: await imageController.buildSrc(response.imageSrc),
-        },
+  image: response.image_id,
 });
 
 module.exports = {
@@ -84,7 +77,6 @@ module.exports = {
       .select(...fields)
       .where('materials.id', id)
       .leftJoin('locations', 'materials.location_id', 'locations.id')
-      .leftJoin('images', 'materials.image_id', 'images.id')
       .from('materials');
 
     if (result.length === 0) return;

@@ -1,4 +1,4 @@
-const { findAll, findOne } = require('./routes');
+const { findAll, findBuffer, findOne } = require('./routes');
 const { asyncHandler } = require('../../middleware/error');
 
 module.exports = {
@@ -6,5 +6,6 @@ module.exports = {
   init: (app) => {
     app.get('/images', asyncHandler(findAll));
     app.get('/image/:id', asyncHandler(findOne));
+    app.get('/image/src/:id', asyncHandler(findBuffer));
   },
 };

@@ -4,7 +4,7 @@
       <v-list three line>
         <v-list-item>
           <v-list-item-avatar tile>
-            <img v-if="material.image" :src="material.image.src" @click="Image = true" />
+            <img v-if="material.image" :src="getImageSrc(material.image)" @click="Image = true" />
             <v-icon v-else>mdi-image-off</v-icon>
           </v-list-item-avatar>
           <v-divider vertical class="mr-3"></v-divider>
@@ -49,7 +49,12 @@
     </v-dialog>
     <v-dialog v-model="Image" max-width="600">
       <v-card>
-        <v-img v-if="material.image" max-height="600" max-width="600" :src="material.image.src">
+        <v-img
+          v-if="material.image"
+          max-height="600"
+          max-width="600"
+          :src="getImageSrc(material.image)"
+        >
         </v-img>
       </v-card>
     </v-dialog>
@@ -58,6 +63,7 @@
 
 <script>
 import { typeColors, stateColors } from '@/constants/constants';
+import { getImageSrc } from '@/utils/image';
 export default {
   model: {
     event: 'change',
@@ -75,6 +81,7 @@ export default {
     openRequest() {
       this.$emit('change', this.material.id);
     },
+    getImageSrc,
   },
 };
 </script>

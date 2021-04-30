@@ -1,5 +1,4 @@
 const sharp = require('sharp');
-const { v4: uuid } = require('uuid');
 const path = require('path');
 
 const fields = ['id', 'src'];
@@ -15,17 +14,14 @@ const formatResponse = async (response) => ({
 
 module.exports = {
   async upload(database, img) {
-    const saveLocation = path.join(
-      process.env.UPLOAD_PATH,
-      `${path.parse(img.name).name}-${uuid()}.webp`
-    );
-    const src = path.basename(saveLocation);
+    const imageBuffer = await sharp(img.data)
+      .webp()
+      .resize(600, 600, { withoutEnlargement: true, fit: 'inside' })
+      .toBuffer();
 
-    await sharp(img.data).webp().toFile(saveLocation);
+    const ids = await database.insert({ image: imageBuffer }).into('images');
 
-    const ids = await database.insert({ src }).into('images');
-
-    return { id: ids[0], src: await buildSrc(src) };
+    return ids[0];
   },
 
   async findAll(database) {
@@ -42,6 +38,12 @@ module.exports = {
 
     if (result.length === 0) return;
     return formatResponse(result[0]);
+  },
+
+  async findBuffer(database, id) {
+    const result = await database.select('image').from('images').where('id', id);
+
+    return result[0]?.image;
   },
 
   buildSrc,

@@ -133,7 +133,7 @@
       </v-chip>
     </template>
     <template #[`item.image.src`]="{ item }">
-      <img v-if="item.image" :src="item.image.src" class="image py-1" />
+      <img v-if="item.image" :src="getImageSrc(item.image)" class="image py-1" />
     </template>
   </v-data-table>
 </template>
@@ -141,6 +141,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
 import MaterialInfo from './MaterialInfo.vue';
+import { getImageSrc } from '@/utils/image';
 
 export default {
   components: { MaterialInfo },
@@ -287,6 +288,8 @@ export default {
       'deleteMaterial',
       'updateMaterialImage',
     ]),
+
+    getImageSrc,
   },
 };
 </script>
