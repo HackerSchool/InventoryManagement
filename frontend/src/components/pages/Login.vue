@@ -52,7 +52,7 @@ export default {
 
         if (data.jwt) {
           localStorage.setItem('token', data.jwt);
-          this.loginUser(data.jwt);
+          this.loginUser(data.user);
           this.$router.push('/');
         }
       } catch (e) {

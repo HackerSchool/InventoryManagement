@@ -20,8 +20,8 @@ const getters = {
 };
 
 const actions = {
-  loginUser({ commit }, jwt) {
-    const { id, istId, name, role, exp, avatar } = JSON.parse(atob(jwt.split('.')[1]));
+  loginUser({ commit }, user) {
+    const { id, istId, name, role, exp, avatar } = user;
     commit('SET_USER', { userId: id, istId, name, role, expiresAt: exp, avatar });
   },
   logoutUser({ commit }) {

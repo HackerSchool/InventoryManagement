@@ -9,6 +9,7 @@ module.exports = {
 
     const { username: fenixUsername, photo } = await getFenixAbout(fenixAccessToken);
     if (!fenixAccessToken) return {};
+    if (!fenixUsername) return {};
 
     const result = await database
       .select(
