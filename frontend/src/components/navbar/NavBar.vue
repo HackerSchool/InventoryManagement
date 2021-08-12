@@ -8,6 +8,13 @@
       ></v-app-bar-nav-icon>
       <img :src="logoSrc" style="height: 100%" />
       <v-spacer />
+      <v-progress-linear
+        :active="isLoading"
+        :indeterminate="isLoading"
+        absolute
+        bottom
+        color="primary"
+      ></v-progress-linear>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" clipped :permanent="$vuetify.breakpoint.lgAndUp" app>
       <v-list nav>
@@ -109,6 +116,7 @@ export default {
       return this.$route.meta.title || 'Inventory';
     },
     ...mapGetters('user', ['getPermissionLevel']),
+    ...mapGetters(['isLoading']),
   },
 
   watch: {

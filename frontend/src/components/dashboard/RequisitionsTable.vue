@@ -29,11 +29,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import RequisitionsTabItem from './RequisitionsTabItem.vue';
 
 export default {
   components: { RequisitionsTabItem },
+  props: {
+    requisitions: {
+      type: Array,
+      required: true,
+    },
+  },
   data: () => ({
     tabs: [
       { id: 1, name: 'All' },
@@ -43,9 +48,7 @@ export default {
     ],
     activeTab: null,
   }),
-
   computed: {
-    ...mapState('requisitions', ['requisitions']),
     inProgress() {
       return this.requisitions.filter((item) => {
         return item.state == 'can_pickup' || item.state == 'pending';

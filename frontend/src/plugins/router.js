@@ -1,7 +1,6 @@
-/*
-import or const 
-*/
 import { getAuthToken } from '@/api/httpClient';
+import * as requisitionsApi from '@/api/requisitions.api';
+import * as projectsApi from '@/api/projects.api';
 import NavBar from '@/components/navbar/NavBar.vue';
 import Dashboard from '@/components/pages/Dashboard.vue';
 import Locations from '@/components/pages/Locations.vue';
@@ -11,6 +10,7 @@ import Members from '@/components/pages/Members.vue';
 import Projects from '@/components/pages/Projects.vue';
 import Request from '@/components/pages/Request.vue';
 import RequestManagement from '@/components/pages/RequestManagement.vue';
+import store from '@/plugins/store';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -22,6 +22,11 @@ const routes = [
     name: 'dashboard',
     component: Dashboard,
     meta: { title: 'Dashboard', layoutNav: NavBar },
+    props: (route) => ({ requisitions: route.params.requisitions }),
+    beforeEnter: async (to, from, next) => {
+      to.params.requisitions = await requisitionsApi.getSelfRequisitions();
+      next();
+    },
   },
   {
     path: '/request',
@@ -58,6 +63,19 @@ const routes = [
     name: 'requests-admin',
     component: RequestManagement,
     meta: { title: 'Manage Requests', layoutNav: NavBar },
+    props: (route) => ({
+      requisitions: route.params.requisitions,
+      projects: route.params.projects,
+    }),
+    beforeEnter: async (to, from, next) => {
+      const [requisitions, projects] = await Promise.all([
+        requisitionsApi.getAllRequisitions(),
+        projectsApi.getAllProjects(),
+      ]);
+      to.params.requisitions = requisitions;
+      to.params.projects = projects;
+      next();
+    },
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];
@@ -69,14 +87,16 @@ const router = new Router({
   routes: routes,
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach(async (to, _from, next) => {
   // Change the document title
   const nearestWithTitle = to.matched
     .slice()
     .reverse()
     .find((r) => r.meta && r.meta.title);
-  if (nearestWithTitle) document.title = `${nearestWithTitle.meta.title} | Hackerschool Inventory`;
-  else document.title = 'Hackerschool Inventory';
+
+  document.title = `${
+    nearestWithTitle ? `${nearestWithTitle.meta.title} | ` : ``
+  }Hackerschool Inventory`;
 
   if (to.matched.some((record) => !record.meta.noAuth) && !getAuthToken()) {
     next({
@@ -91,7 +111,13 @@ router.beforeEach((to, _from, next) => {
     return;
   }
 
+  store.dispatch('showLoadingBar');
+
   next();
+});
+
+router.afterEach(() => {
+  store.dispatch('hideLoadingBar');
 });
 
 export default router;

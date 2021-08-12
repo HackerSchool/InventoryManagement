@@ -1,8 +1,9 @@
+import { handleData } from '@/utils/api';
 import httpClient from './httpClient';
 
 const ENDPOINT = '/project';
 
-export const getAllProjects = () => httpClient.get(`${ENDPOINT}s`);
+export const getAllProjects = handleData(() => httpClient.get(`${ENDPOINT}s`));
 
 export const getProject = (id) => httpClient.get(`${ENDPOINT}/${id}`);
 

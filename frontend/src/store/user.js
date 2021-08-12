@@ -15,7 +15,7 @@ const state = {
 
 const getters = {
   getPermissionLevel: (state) => roles[state.role] || 0,
-  getAvatarUrl: (state) => getImageSrc(state.avatar),
+  getAvatarUrl: (state) => state.avatar && getImageSrc(state.avatar),
   getName: (state) => state.name,
 };
 

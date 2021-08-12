@@ -15,7 +15,7 @@ const getters = {
 const actions = {
   async fetchProjects({ commit }) {
     const response = await projectsApi.getAllProjects();
-    commit('SET_PROJECTS', response.data);
+    commit('SET_PROJECTS', response);
   },
   async fetchProject({ commit }, id) {
     const response = await projectsApi.getProject(id);

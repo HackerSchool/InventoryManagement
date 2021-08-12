@@ -10,13 +10,17 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getProfile } from './api/auth.api';
 
 export default {
   name: 'App',
 
-  mounted() {
+  async mounted() {
     const jwt = localStorage.getItem('token');
-    if (jwt) this.loginUser(jwt);
+    if (jwt) {
+      const profile = await getProfile();
+      this.loginUser(profile);
+    }
   },
 
   methods: {
