@@ -118,7 +118,7 @@ export default {
     search: '',
     headers: [
       { text: 'Member', value: 'name' },
-      { text: 'IST Id', value: 'istId', filterable: false },
+      { text: 'IST Id', value: 'istId' },
       { text: 'Role', value: 'role', filterable: false },
       { text: 'State', value: 'active', filterable: false },
       { text: 'Actions', value: 'actions', sortable: false, filterable: false },

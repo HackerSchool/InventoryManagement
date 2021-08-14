@@ -153,7 +153,7 @@ export default {
     headers: [
       { text: 'Image', value: 'image.src', filterable: false, sortable: false },
       { text: 'Material', value: 'name' },
-      { text: 'Description', value: 'description', filterable: false, sortable: false },
+      { text: 'Description', value: 'description', sortable: false },
       { text: 'Stock', value: 'stock', filterable: false },
       { text: 'State', value: 'state', filterable: false },
       { text: 'Type', value: 'type', filterable: false },

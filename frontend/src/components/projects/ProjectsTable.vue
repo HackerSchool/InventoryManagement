@@ -108,7 +108,7 @@ export default {
     search: '',
     headers: [
       { text: 'Project', value: 'name' },
-      { text: 'Description', value: 'description', sortable: false, filterable: false },
+      { text: 'Description', value: 'description', sortable: false },
       { text: 'State', value: 'state', filterable: false },
       { text: 'Actions', value: 'actions', sortable: false, filterable: false },
     ],

@@ -88,7 +88,7 @@ export default {
     search: '',
     headers: [
       { text: 'Location', value: 'name' },
-      { text: 'Description', value: 'description', filterable: false, sortable: false },
+      { text: 'Description', value: 'description', sortable: false },
       { text: 'Actions', value: 'actions', filterable: false, sortable: false },
     ],
     editedIndex: -1,
