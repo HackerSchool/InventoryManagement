@@ -25,7 +25,7 @@
           v-if="['pending', 'can_pickup'].indexOf(item.state) !== -1"
           outlined
           color="red"
-          @click="() => updateState('cancelled')"
+          @click.stop="() => updateState('cancelled')"
         >
           {{ item.state === 'pending' ? 'Reject' : 'Cancel' }} <v-icon right>mdi-close</v-icon>
         </v-btn>
@@ -34,7 +34,7 @@
           outlined
           class="ml-2"
           color="green"
-          @click="() => updateState('can_pickup')"
+          @click.stop="() => updateState('can_pickup')"
         >
           Accept <v-icon right>mdi-check</v-icon>
         </v-btn>
@@ -43,7 +43,7 @@
           outlined
           class="ml-2"
           color="blue"
-          @click="() => updateState('active')"
+          @click.stop="() => updateState('active')"
         >
           Mark as Picked Up <v-icon right>mdi-truck-check</v-icon>
         </v-btn>
@@ -52,7 +52,7 @@
           outlined
           class="ml-2"
           color="green"
-          @click="() => updateState('returned')"
+          @click.stop="() => updateState('returned')"
         >
           Mark as Returned <v-icon right>mdi-clipboard-arrow-left</v-icon>
         </v-btn>
@@ -61,7 +61,7 @@
           outlined
           class="ml-2"
           color="grey"
-          @click="() => updateState('not_returning')"
+          @click.stop="() => updateState('not_returning')"
         >
           Not Returning <v-icon right>mdi-grave-stone</v-icon>
         </v-btn>
