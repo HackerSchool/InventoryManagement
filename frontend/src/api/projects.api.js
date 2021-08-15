@@ -6,8 +6,8 @@ export const getAllProjects = () => httpClient.get(`${ENDPOINT}s`);
 
 export const getProject = (id) => httpClient.get(`${ENDPOINT}/${id}`);
 
-export const addProject = ({ name, description }) =>
-  httpClient.post(ENDPOINT, { name, description });
+export const addProject = ({ name, state, description }) =>
+  httpClient.post(ENDPOINT, { name, state, description });
 
 export const deleteProject = (id) => httpClient.delete(`${ENDPOINT}/${id}`);
 

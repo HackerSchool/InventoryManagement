@@ -51,19 +51,19 @@
           v-if="item.state == 'active'"
           outlined
           class="ml-2"
-          color="green"
-          @click.stop="() => updateState('returned')"
+          color="grey"
+          @click.stop="() => updateState('not_returning')"
         >
-          Mark as Returned <v-icon right>mdi-clipboard-arrow-left</v-icon>
+          Not Returning <v-icon right>mdi-grave-stone</v-icon>
         </v-btn>
         <v-btn
           v-if="item.state == 'active'"
           outlined
           class="ml-2"
-          color="grey"
-          @click.stop="() => updateState('not_returning')"
+          color="green"
+          @click.stop="() => updateState('returned')"
         >
-          Not Returning <v-icon right>mdi-grave-stone</v-icon>
+          Mark as Returned <v-icon right>mdi-clipboard-arrow-left</v-icon>
         </v-btn>
       </div>
     </v-expansion-panel-header>
