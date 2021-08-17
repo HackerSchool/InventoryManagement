@@ -1,40 +1,35 @@
 <template>
-  <div>
-    <v-progress-linear v-if="loading" indeterminate />
-    <v-container class="mt-6">
-      <!-- TODO Add refresh button that triggers the refresh function -->
-      <LocationTable v-if="!loading" />
-    </v-container>
-  </div>
+  <v-container v-if="locations" class="mt-6">
+    <!-- TODO Add refresh button that triggers the refresh function -->
+    <LocationTable :locations="locations" @refresh="loadData" />
+  </v-container>
 </template>
 
 <script>
 import LocationTable from '@/components/locations/LocationTable';
-import { mapActions, mapState } from 'vuex';
+import { getAllLocations } from '@/api/locations.api';
 
 export default {
-  components: { LocationTable },
+  components: {
+    LocationTable,
+  },
 
   data() {
     return {
-      loading: false,
+      locations: null,
     };
   },
 
-  computed: {
-    ...mapState('locations', ['locations']),
-  },
-
   async mounted() {
-    if (this.locations.length == 0) {
-      this.loading = true;
-      await this.fetchLocations();
-      this.loading = false;
-    }
+    await this.loadData();
   },
 
   methods: {
-    ...mapActions('locations', ['fetchLocations']),
+    async loadData() {
+      this.$loading.show();
+      this.locations = await getAllLocations();
+      this.$loading.hide();
+    },
   },
 };
 </script>

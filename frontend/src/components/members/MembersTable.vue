@@ -74,7 +74,7 @@
             </v-form>
           </v-card>
         </v-dialog>
-        <members-csv-import v-model="csvImport" />
+        <members-csv-import v-model="csvImport" @refresh="$emit('refresh')" />
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
@@ -106,11 +106,21 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { addMember, deleteMember, updateMember } from '@/api/members.api';
 import MembersCsvImport from './MembersCsvImport.vue';
 
 export default {
-  components: { MembersCsvImport },
+  components: {
+    MembersCsvImport,
+  },
+
+  props: {
+    members: {
+      type: Array,
+      required: true,
+    },
+  },
+
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -126,12 +136,15 @@ export default {
     editedIndex: -1,
     editedItem: {
       name: '',
+      istId: '',
+      role: 'user',
+      active: true,
     },
     defaultItem: {
       name: '',
       istId: '',
-      role: '',
-      active: '',
+      role: 'user',
+      active: true,
     },
     roleColors: {
       admin: 'blue',
@@ -155,7 +168,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'New Member' : 'Edit Member';
     },
-    ...mapState('members', ['members']),
   },
 
   watch: {
@@ -179,9 +191,24 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.deleteMember(this.members[this.editedIndex].id);
+    async deleteItemConfirm() {
+      try {
+        this.$loading.show();
+        await deleteMember(this.members[this.editedIndex].id);
+      } catch (error) {
+        if (error.response.status === 403) {
+          this.$notify({
+            type: 'error',
+            title: 'Cannot delete member',
+            text: 'It is not possible to delete members that have linked requests',
+          });
+        }
+      } finally {
+        this.$loading.hide();
+      }
+
       this.closeDelete();
+      this.$emit('refresh');
     },
 
     close() {
@@ -201,22 +228,21 @@ export default {
       });
     },
 
-    save() {
+    async save() {
       // Don't save if validation is unsuccessful
       if (!this.$refs.form.validate()) return;
 
-      if (this.editedIndex > -1) {
-        this.updateMember({
-          id: this.members[this.editedIndex].id,
-          data: this.editedItem,
-        });
-      } else {
-        this.createMember(this.editedItem);
+      try {
+        if (this.editedIndex > -1) {
+          await updateMember(this.members[this.editedIndex].id, this.editedItem);
+        } else {
+          await addMember(this.editedItem);
+        }
+      } finally {
+        this.close();
+        this.$emit('refresh');
       }
-      this.close();
     },
-
-    ...mapActions('members', ['updateMember', 'createMember', 'deleteMember']),
   },
 };
 </script>

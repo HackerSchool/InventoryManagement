@@ -5,6 +5,15 @@ import router from './plugins/router';
 import store from './plugins/store';
 import vuetify from './plugins/vuetify';
 
+Vue.prototype.$loading = {
+  show: function () {
+    store.dispatch('showLoadingBar');
+  },
+  hide: function () {
+    store.dispatch('hideLoadingBar');
+  },
+};
+
 new Vue({
   vuetify,
   router,

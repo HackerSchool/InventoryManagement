@@ -20,4 +20,10 @@ module.exports = {
 
     res.json({ user, jwt });
   },
+
+  userProfile: async (req, res) => {
+    if (!req.user) return res.sendStatus(401);
+
+    res.json(req.user);
+  },
 };

@@ -9,12 +9,13 @@ const roles = {
 
 const hasPermission = (role) => (level) => (roles[role] || 0) >= (roles[level] || 0);
 
-const buildUser = ({ id, istId, name, role }) => ({
+const buildUser = ({ id, istId, name, role, ...props }) => ({
   hasPermission: hasPermission(role),
   id,
   istId,
   name,
   role,
+  ...props,
 });
 
 const authenticateJWT = (req, _res, next) => {

@@ -1,15 +1,36 @@
-import locations from './locations';
-import materials from './materials';
-import members from './members';
 import user from './user';
-import projects from './projects';
-import requisitions from './requisitions';
+
+const state = {
+  loadingBar: false,
+};
+
+const getters = {
+  isLoading(state) {
+    return state.loadingBar;
+  },
+};
+
+const actions = {
+  async showLoadingBar({ commit }) {
+    commit('SET_LOADING_BAR', true);
+  },
+  async hideLoadingBar({ commit }) {
+    commit('SET_LOADING_BAR', false);
+  },
+};
+
+const mutations = {
+  SET_LOADING_BAR(state, visible) {
+    state.loadingBar = visible;
+  },
+};
 
 export default {
-  locations,
-  materials,
-  members,
-  user,
-  projects,
-  requisitions,
+  state,
+  getters,
+  actions,
+  mutations,
+  modules: {
+    user,
+  },
 };

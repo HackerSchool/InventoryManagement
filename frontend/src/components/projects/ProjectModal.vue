@@ -46,7 +46,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { addMember, deleteMember, getProject } from '@/api/projects.api';
+import { getAllMembers } from '@/api/members.api';
+
 export default {
   model: {
     prop: 'projectId',
@@ -59,11 +61,11 @@ export default {
     return {
       search: '',
       selected: [],
+      project: null,
+      members: [],
     };
   },
   computed: {
-    ...mapState('members', ['members']),
-    ...mapGetters('projects', ['getProjectMembers']),
     openDialog: {
       get: function () {
         return this.projectId !== null;
@@ -71,14 +73,6 @@ export default {
       set: function (newValue) {
         this.$emit('change', newValue ? newValue : null);
       },
-    },
-    project() {
-      if (!this.projectId) return null;
-      const project = this.getProjectMembers(this.projectId);
-      // Fetch full project data if data is not in Vuex store
-      if (!project.members) this.fetchProject(this.projectId);
-      this.sel(project);
-      return project;
     },
     allSelected() {
       return this.selected.length === this.members.length;
@@ -108,25 +102,37 @@ export default {
     selected() {
       this.search = '';
     },
+    projectId: 'fetchProject',
+  },
+  async mounted() {
+    this.members = await getAllMembers();
   },
   methods: {
-    ...mapActions('projects', ['fetchProject', 'addMember', 'deleteMember']),
+    async fetchProject() {
+      if (this.projectId === null) {
+        this.project = null;
+        return;
+      }
+
+      this.$loading.show();
+      this.project = await getProject(this.projectId);
+      this.$loading.hide();
+
+      this.sel(this.project);
+    },
+
     sel(data) {
       this.selected = data.members;
     },
-    removeProjectMember(memberId, i) {
-      this.deleteMember({
-        id: this.project.id,
-        memberId,
-      });
+
+    async removeProjectMember(memberId, i) {
+      await deleteMember(this.project.id, memberId);
       this.selected.splice(i, 1);
     },
-    addProjectMember(memberId, item) {
+
+    async addProjectMember(memberId, item) {
+      await addMember(this.project.id, memberId);
       this.selected.push(item);
-      this.addMember({
-        id: this.project.id,
-        memberId,
-      });
     },
   },
 };

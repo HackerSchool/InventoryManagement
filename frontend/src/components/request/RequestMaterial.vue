@@ -14,14 +14,14 @@
             </v-list-item-title>
             <v-list-item-subtitle> {{ material.stock }} available </v-list-item-subtitle>
           </v-list-item-content>
-          <v-icon class="mx-2" @click="Description = true">mdi-information</v-icon>
+          <v-icon class="mx-2" @click="isDescriptionModalOpen = true">mdi-information</v-icon>
           <v-btn :disabled="material.stock === 0" @click="openRequest">
             {{ material.stock === 0 ? 'Out of stock ' : 'Request' }}
           </v-btn>
         </v-list-item>
       </v-list>
     </v-card>
-    <v-dialog v-model="Description" max-width="600">
+    <v-dialog v-model="isDescriptionModalOpen" max-width="600">
       <v-card>
         <v-card-title>{{ material.name }}</v-card-title>
         <v-card-text>
@@ -65,21 +65,21 @@
 import { typeColors, stateColors } from '@/constants/constants';
 import { getImageSrc } from '@/utils/image';
 export default {
-  model: {
-    event: 'change',
-  },
   props: {
-    material: { type: Object, default: () => {} },
+    material: {
+      type: Object,
+      required: true,
+    },
   },
   data: () => ({
     typeColors,
     stateColors,
-    Description: null,
+    isDescriptionModalOpen: null,
     Image: null,
   }),
   methods: {
     openRequest() {
-      this.$emit('change', this.material.id);
+      this.$emit('request', this.material.id);
     },
     getImageSrc,
   },

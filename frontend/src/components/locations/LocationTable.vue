@@ -79,9 +79,16 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { addLocation, deleteLocation, updateLocation } from '@/api/locations.api';
 
 export default {
+  props: {
+    locations: {
+      type: Array,
+      required: true,
+    },
+  },
+
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -106,7 +113,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'New Location' : 'Edit Location';
     },
-    ...mapState('locations', ['locations']),
   },
 
   watch: {
@@ -130,16 +136,24 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.deleteLocation(this.locations[this.editedIndex].id).catch((e) => {
-        if (e.response.status === 403)
+    async deleteItemConfirm() {
+      try {
+        this.$loading.show();
+        await deleteLocation(this.locations[this.editedIndex].id);
+      } catch (error) {
+        if (error.response.status === 403) {
           this.$notify({
             type: 'error',
             title: 'Cannot delete location',
             text: 'It is not possible to delete locations that have linked items',
           });
-      });
+        }
+      } finally {
+        this.$loading.hide();
+      }
+
       this.closeDelete();
+      this.$emit('refresh');
     },
 
     close() {
@@ -159,22 +173,21 @@ export default {
       });
     },
 
-    save() {
+    async save() {
       // Don't save if validation is unsuccessful
       if (!this.$refs.form.validate()) return;
 
-      if (this.editedIndex > -1) {
-        this.updateLocation({
-          id: this.locations[this.editedIndex].id,
-          data: this.editedItem,
-        });
-      } else {
-        this.createLocation(this.editedItem);
+      try {
+        if (this.editedIndex > -1) {
+          await updateLocation(this.locations[this.editedIndex].id, this.editedItem);
+        } else {
+          await addLocation(this.editedItem);
+        }
+      } finally {
+        this.close();
+        this.$emit('refresh');
       }
-      this.close();
     },
-
-    ...mapActions('locations', ['updateLocation', 'createLocation', 'deleteLocation']),
   },
 };
 </script>

@@ -93,8 +93,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { requisitionStates } from '@/constants/constants';
+import { updateRequisition } from '@/api/requisitions.api';
 
 export default {
   props: { item: { type: Object, default: () => ({}) } },
@@ -107,10 +107,12 @@ export default {
   },
 
   methods: {
-    ...mapActions('requisitions', ['updateRequisition']),
-    updateState(state) {
-      console.log(state);
-      this.updateRequisition({ id: this.item.id, data: { state } });
+    async updateState(state) {
+      this.$loading.show();
+      const updatedRequisition = await updateRequisition({ requisitionId: this.item.id, state });
+      this.$loading.hide();
+
+      this.$emit('updateItem', updatedRequisition);
     },
   },
 };
