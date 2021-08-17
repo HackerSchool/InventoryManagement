@@ -96,11 +96,21 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { addProject, deleteProject, updateProject } from '@/api/projects.api';
 import ProjectModal from './ProjectModal.vue';
 
 export default {
-  components: { ProjectModal },
+  components: {
+    ProjectModal,
+  },
+
+  props: {
+    projects: {
+      type: Array,
+      required: true,
+    },
+  },
+
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -116,12 +126,12 @@ export default {
     editedItem: {
       name: '',
       description: '',
-      state: '',
+      state: 'active',
     },
     defaultItem: {
       name: '',
       description: '',
-      state: '',
+      state: 'active',
     },
     stateColors: {
       active: 'green',
@@ -139,7 +149,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'New Project' : 'Edit Project';
     },
-    ...mapState('projects', ['projects']),
   },
 
   watch: {
@@ -163,16 +172,24 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.deleteProject(this.projects[this.editedIndex].id).catch((e) => {
-        if (e.response.status === 403)
+    async deleteItemConfirm() {
+      try {
+        this.$loading.show();
+        await deleteProject(this.projects[this.editedIndex].id);
+      } catch (error) {
+        if (error.response.status === 403) {
           this.$notify({
             type: 'error',
-            title: 'Cannot delete projects',
-            text: 'It is not possible to delete projects that have linked items',
+            title: 'Cannot delete project',
+            text: 'It is not possible to delete projects that have linked requests',
           });
-      });
+        }
+      } finally {
+        this.$loading.hide();
+      }
+
       this.closeDelete();
+      this.$emit('refresh');
     },
 
     close() {
@@ -192,24 +209,25 @@ export default {
       });
     },
 
-    save() {
+    async save() {
       // Don't save if validation is unsuccessful
       if (!this.$refs.form.validate()) return;
 
-      if (this.editedIndex > -1) {
-        this.updateProject({
-          id: this.projects[this.editedIndex].id,
-          data: this.editedItem,
-        });
-      } else {
-        this.createProject(this.editedItem);
+      try {
+        if (this.editedIndex > -1) {
+          await updateProject(this.projects[this.editedIndex].id, this.editedItem);
+        } else {
+          await addProject(this.editedItem);
+        }
+      } finally {
+        this.close();
+        this.$emit('refresh');
       }
-      this.close();
     },
+
     editMembers(item) {
       this.projectMembers = item.id;
     },
-    ...mapActions('projects', ['updateProject', 'createProject', 'deleteProject']),
   },
 };
 </script>

@@ -1,41 +1,36 @@
 <template>
-  <div>
-    <v-progress-linear v-if="loading" indeterminate />
-    <v-container class="mt-6">
-      <ProjectTable v-if="!loading" />
-    </v-container>
-  </div>
+  <v-container v-if="projects" class="mt-6">
+    <ProjectTable :projects="projects" @refresh="loadData" />
+  </v-container>
 </template>
 
 <script>
 import ProjectTable from '@/components/projects/ProjectsTable';
-import { mapActions, mapState } from 'vuex';
+import { getAllProjects } from '@/api/projects.api';
 
 export default {
-  components: { ProjectTable },
+  name: 'ProjectsPage',
+
+  components: {
+    ProjectTable,
+  },
 
   data() {
     return {
-      loading: false,
+      projects: null,
     };
   },
 
-  computed: {
-    ...mapState('projects', ['projects']),
-    ...mapState('members', ['members']),
-  },
-
   async mounted() {
-    if (this.projects.length == 0) {
-      this.loading = true;
-      await Promise.all([this.fetchProjects(), this.fetchMembers()]);
-      this.loading = false;
-    }
+    await this.loadData();
   },
 
   methods: {
-    ...mapActions('projects', ['fetchProjects']),
-    ...mapActions('members', ['fetchMembers']),
+    async loadData() {
+      this.$loading.show();
+      this.projects = await getAllProjects();
+      this.$loading.hide();
+    },
   },
 };
 </script>
