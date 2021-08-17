@@ -195,6 +195,11 @@ export default {
       try {
         this.$loading.show();
         await deleteMember(this.members[this.editedIndex].id);
+        this.$notify({
+          type: 'success',
+          title: 'Member deleted',
+          text: `Member ${this.members[this.editedIndex].name} successfully deleted`,
+        });
       } catch (error) {
         if (error.response.status === 403) {
           this.$notify({
@@ -235,8 +240,18 @@ export default {
       try {
         if (this.editedIndex > -1) {
           await updateMember(this.members[this.editedIndex].id, this.editedItem);
+          this.$notify({
+            type: 'success',
+            title: 'Member updated',
+            text: `Member ${this.editedItem.name} successfully updated`,
+          });
         } else {
           await addMember(this.editedItem);
+          this.$notify({
+            type: 'success',
+            title: 'Member created',
+            text: `Member ${this.editedItem.name} successfully created`,
+          });
         }
       } finally {
         this.close();

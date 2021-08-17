@@ -176,6 +176,11 @@ export default {
       try {
         this.$loading.show();
         await deleteProject(this.projects[this.editedIndex].id);
+        this.$notify({
+          type: 'success',
+          title: 'Project deleted',
+          text: `Project ${this.projects[this.editedIndex].name} successfully deleted`,
+        });
       } catch (error) {
         if (error.response.status === 403) {
           this.$notify({
@@ -216,8 +221,18 @@ export default {
       try {
         if (this.editedIndex > -1) {
           await updateProject(this.projects[this.editedIndex].id, this.editedItem);
+          this.$notify({
+            type: 'success',
+            title: 'Project updated',
+            text: `Project ${this.editedItem.name} successfully updated`,
+          });
         } else {
           await addProject(this.editedItem);
+          this.$notify({
+            type: 'success',
+            title: 'Project created',
+            text: `Project ${this.editedItem.name} successfully created`,
+          });
         }
       } finally {
         this.close();

@@ -250,6 +250,11 @@ export default {
       try {
         this.$loading.show();
         await deleteMaterial(this.materials[this.editedIndex].id);
+        this.$notify({
+          type: 'success',
+          title: 'Material deleted',
+          text: `Material ${this.materials[this.editedIndex].name} successfully deleted`,
+        });
       } catch (error) {
         if (error.response.status === 403) {
           this.$notify({
@@ -295,8 +300,18 @@ export default {
             this.materials[this.editedIndex].id,
             this.editedItem
           );
+          this.$notify({
+            type: 'success',
+            title: 'Material updated',
+            text: `Material ${this.editedItem.name} successfully updated`,
+          });
         } else {
           updatedMaterial = await addMaterial(this.editedItem);
+          this.$notify({
+            type: 'success',
+            title: 'Material created',
+            text: `Material ${this.editedItem.name} successfully created`,
+          });
         }
         await this.saveImage(updatedMaterial.id, image);
       } finally {
