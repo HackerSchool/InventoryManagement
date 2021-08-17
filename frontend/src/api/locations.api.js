@@ -1,15 +1,18 @@
+import { handleData } from '@/utils/api';
 import httpClient from './httpClient';
 
 const ENDPOINT = '/location';
 
-export const getAllLocations = () => httpClient.get(`${ENDPOINT}s`);
+export const getAllLocations = handleData(() => httpClient.get(`${ENDPOINT}s`));
 
-export const getLocation = (id) => httpClient.get(`${ENDPOINT}/${id}`);
+export const getLocation = handleData((id) => httpClient.get(`${ENDPOINT}/${id}`));
 
-export const addLocation = ({ name, description }) =>
-  httpClient.post(ENDPOINT, { name, description });
+export const addLocation = handleData(({ name, description }) =>
+  httpClient.post(ENDPOINT, { name, description })
+);
 
-export const deleteLocation = (id) => httpClient.delete(`${ENDPOINT}/${id}`);
+export const deleteLocation = handleData((id) => httpClient.delete(`${ENDPOINT}/${id}`));
 
-export const updateLocation = (id, { name, description }) =>
-  httpClient.post(`${ENDPOINT}/${id}`, { name, description });
+export const updateLocation = handleData((id, { name, description }) =>
+  httpClient.post(`${ENDPOINT}/${id}`, { name, description })
+);
