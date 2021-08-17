@@ -40,41 +40,47 @@
 
 <script>
 import { requisitionStates } from '@/constants/constants';
-import { mapActions, mapGetters } from 'vuex';
+import { getMaterial } from '@/api/materials.api';
+
 export default {
-  model: {
-    prop: 'materialId',
-    event: 'change',
-  },
   props: {
     materialId: { type: Number, default: null },
   },
   data: function () {
     return {
       requisitionStates,
+      material: null,
     };
   },
   computed: {
-    ...mapGetters('materials', ['getMaterial']),
     openDialog: {
       get: function () {
         return this.materialId !== null;
       },
       set: function (newValue) {
-        this.$emit('change', newValue ? newValue : null);
+        if (!newValue) {
+          this.$emit('close');
+        }
       },
     },
-    material: function () {
-      if (!this.materialId) return null;
-      const material = this.getMaterial(this.materialId);
-      // Fetch full material data if data is not in Vuex store
-      if (!material.requisitions) this.fetchMaterial(this.materialId);
-
-      return material;
-    },
+  },
+  watch: {
+    materialId: 'fetchMaterial',
+  },
+  async mounted() {
+    await this.fetchMaterial();
   },
   methods: {
-    ...mapActions('materials', ['fetchMaterial']),
+    async fetchMaterial() {
+      if (this.materialId === null) {
+        this.material = null;
+        return;
+      }
+
+      this.$loading.show();
+      this.material = await getMaterial(this.materialId);
+      this.$loading.hide();
+    },
   },
 };
 </script>

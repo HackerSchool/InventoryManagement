@@ -10,7 +10,9 @@ import LocationTable from '@/components/locations/LocationTable';
 import { getAllLocations } from '@/api/locations.api';
 
 export default {
-  components: { LocationTable },
+  components: {
+    LocationTable,
+  },
 
   data() {
     return {

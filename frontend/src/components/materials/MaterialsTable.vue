@@ -114,7 +114,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <material-info v-model="requisitionId" />
+        <material-info :material-id="openDetailsId" @close="openDetailsId = null" />
       </v-toolbar>
     </template>
     <template #[`item.actions`]="{ item }">
@@ -134,21 +134,34 @@
     </template>
     <template #[`item.image.src`]="{ item }">
       <img v-if="item.image" :src="getImageSrc(item.image)" class="image py-1" />
+      <v-icon v-else>mdi-image-off</v-icon>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
 import MaterialInfo from './MaterialInfo.vue';
 import { getImageSrc } from '@/utils/image';
+import { addMaterial, deleteMaterial, updateMaterial, uploadImage } from '@/api/materials.api';
+import { getAllLocations } from '@/api/locations.api';
 
 export default {
-  components: { MaterialInfo },
+  components: {
+    MaterialInfo,
+  },
+
+  props: {
+    materials: {
+      type: Array,
+      required: true,
+    },
+  },
+
   data: () => ({
+    locations: [],
     dialog: false,
     dialogDelete: false,
-    requisitionId: null,
+    openDetailsId: null,
     search: '',
     headers: [
       { text: 'Image', value: 'image.src', filterable: false, sortable: false },
@@ -200,9 +213,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'New Material' : 'Edit Material';
     },
-    ...mapState('locations', ['locations']),
-    ...mapState('materials', ['materials']),
-    ...mapGetters('materials', ['getMaterial']),
   },
 
   watch: {
@@ -212,6 +222,10 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+  },
+
+  async mounted() {
+    this.locations = await getAllLocations();
   },
 
   methods: {
@@ -226,16 +240,24 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.deleteMaterial(this.materials[this.editedIndex].id).catch((e) => {
-        if (e.response.status === 403)
+    async deleteItemConfirm() {
+      try {
+        this.$loading.show();
+        await deleteMaterial(this.materials[this.editedIndex].id);
+      } catch (error) {
+        if (error.response.status === 403) {
           this.$notify({
             type: 'error',
             title: 'Cannot delete material',
             text: 'It is not possible to delete materials that have linked requests',
           });
-      });
+        }
+      } finally {
+        this.$loading.hide();
+      }
+
       this.closeDelete();
+      this.$emit('refresh');
     },
 
     close() {
@@ -255,39 +277,39 @@ export default {
       });
     },
 
-    save() {
+    async save() {
       // Don't save if validation is unsuccessful
       if (!this.$refs.form.validate()) return;
-      const image = this.editedItem.imageUpload;
-      if (this.editedIndex > -1) {
-        this.updateMaterial({
-          id: this.materials[this.editedIndex].id,
-          data: this.editedItem,
-        }).then((v) => this.saveImage(v.data.id, image));
-      } else {
-        this.createMaterial(this.editedItem).then((v) => this.saveImage(v.data.id, image));
+
+      try {
+        const image = this.editedItem.imageUpload;
+        let updatedMaterial;
+        if (this.editedIndex > -1) {
+          updatedMaterial = await updateMaterial(
+            this.materials[this.editedIndex].id,
+            this.editedItem
+          );
+        } else {
+          updatedMaterial = await addMaterial(this.editedItem);
+        }
+        await this.saveImage(updatedMaterial.id, image);
+      } finally {
+        this.$emit('refresh');
+        this.close();
       }
-      this.close();
     },
-    saveImage(id, image) {
+
+    async saveImage(id, image) {
       if (image) {
         const formData = new FormData();
         formData.append('img', image);
-        this.updateMaterialImage({
-          id,
-          data: formData,
-        });
+        await uploadImage(id, formData);
       }
     },
+
     seeHistory(item) {
-      this.requisitionId = item.id;
+      this.openDetailsId = item.id;
     },
-    ...mapActions('materials', [
-      'updateMaterial',
-      'createMaterial',
-      'deleteMaterial',
-      'updateMaterialImage',
-    ]),
 
     getImageSrc,
   },

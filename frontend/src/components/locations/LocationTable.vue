@@ -138,15 +138,20 @@ export default {
 
     async deleteItemConfirm() {
       try {
+        this.$loading.show();
         await deleteLocation(this.locations[this.editedIndex].id);
       } catch (error) {
-        if (error.response.status === 403)
+        if (error.response.status === 403) {
           this.$notify({
             type: 'error',
             title: 'Cannot delete location',
             text: 'It is not possible to delete locations that have linked items',
           });
+        }
+      } finally {
+        this.$loading.hide();
       }
+
       this.closeDelete();
       this.$emit('refresh');
     },
