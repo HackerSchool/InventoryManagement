@@ -1,40 +1,37 @@
 <template>
-  <div>
-    <v-progress-linear v-if="loading" indeterminate />
-    <v-container class="mt-6">
-      <!-- TODO Add refresh button that triggers the refresh function -->
-      <MembersTable v-if="!loading" />
-    </v-container>
-  </div>
+  <v-container v-if="members" class="mt-6">
+    <!-- TODO Add refresh button that triggers the refresh function -->
+    <MembersTable :members="members" @refresh="loadData" />
+  </v-container>
 </template>
 
 <script>
 import MembersTable from '@/components/members/MembersTable';
-import { mapActions, mapState } from 'vuex';
+import { getAllMembers } from '@/api/members.api';
 
 export default {
-  components: { MembersTable },
+  name: 'MembersPage',
+
+  components: {
+    MembersTable,
+  },
 
   data() {
     return {
-      loading: false,
+      members: null,
     };
   },
 
-  computed: {
-    ...mapState('members', ['members']),
-  },
-
   async mounted() {
-    if (this.members.length == 0) {
-      this.loading = true;
-      await Promise.all([this.fetchMembers()]);
-      this.loading = false;
-    }
+    await this.loadData();
   },
 
   methods: {
-    ...mapActions('members', ['fetchMembers']),
+    async loadData() {
+      this.$loading.show();
+      this.members = await getAllMembers();
+      this.$loading.hide();
+    },
   },
 };
 </script>

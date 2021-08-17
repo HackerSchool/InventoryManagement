@@ -25,7 +25,12 @@
         placeholder="Name,ist111111,admin"
       ></v-textarea>
 
-      <v-progress-linear :value="(progressDone / progressTotal) * 100" color="primary" height="25">
+      <v-progress-linear
+        v-if="progressTotal > 0"
+        :value="(progressDone / progressTotal) * 100"
+        color="primary"
+        height="25"
+      >
         <template #default="{ value: v }">
           <strong>{{ Math.ceil(v) }}%</strong>
         </template>
@@ -47,7 +52,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { addMember } from '@/api/members.api';
+
 export default {
   props: {
     value: {
@@ -91,7 +97,7 @@ export default {
           if (user.length >= 3) {
             const [name, istId, role] = user;
             try {
-              await this.createMember({ name, istId, role });
+              await addMember({ name, istId, role });
             } catch (e) {
               this.result.push(`Member ${name} already existed. Skipped.`);
             }
@@ -101,9 +107,8 @@ export default {
       );
 
       this.loading = false;
+      this.$emit('refresh');
     },
-
-    ...mapActions('members', ['createMember']),
   },
 };
 </script>

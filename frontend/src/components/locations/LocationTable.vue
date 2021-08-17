@@ -177,13 +177,16 @@ export default {
       // Don't save if validation is unsuccessful
       if (!this.$refs.form.validate()) return;
 
-      if (this.editedIndex > -1) {
-        await updateLocation(this.locations[this.editedIndex].id, this.editedItem);
-      } else {
-        await addLocation(this.editedItem);
+      try {
+        if (this.editedIndex > -1) {
+          await updateLocation(this.locations[this.editedIndex].id, this.editedItem);
+        } else {
+          await addLocation(this.editedItem);
+        }
+      } finally {
+        this.close();
+        this.$emit('refresh');
       }
-      this.close();
-      this.$emit('refresh');
     },
   },
 };
