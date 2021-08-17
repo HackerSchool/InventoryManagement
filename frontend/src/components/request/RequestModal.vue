@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row v-if="material" justify="center">
     <v-dialog v-model="openDialog" persistent max-width="750">
       <v-card>
         <v-card-title>
@@ -20,10 +20,10 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="12" md="6">
+              <v-col v-if="projects" cols="12" sm="12" md="6">
                 <v-select
                   v-model="project"
-                  :items="getProjectsSelect"
+                  :items="projectsSelect"
                   clearable
                   label="Project"
                   hint="You can leave this empty"
@@ -53,14 +53,16 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { createRequisition } from '@/api/requisitions.api';
+import { getAllProjects } from '@/api/projects.api';
+
 export default {
-  model: {
-    prop: 'materialId',
-    event: 'change',
-  },
   props: {
-    materialId: { type: Number, default: null },
+    material: {
+      type: Object,
+      default: () => null,
+      required: false,
+    },
   },
   data() {
     return {
@@ -68,6 +70,7 @@ export default {
       quantity: 1,
       project: null,
       loading: false,
+      projects: null,
       rules: {
         required: (v) => !!v || 'Required.',
         inStock: (v) => (v >= 1 && v <= this.material.stock) || 'Quantity not available.',
@@ -75,50 +78,43 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('projects', ['getProjectsSelect']),
-    ...mapGetters('materials', ['getMaterial']),
+    projectsSelect() {
+      return this.projects.map((project) => ({ text: project.name, value: project.id }));
+    },
     openDialog: {
       get: function () {
-        return this.materialId !== null;
+        return this.material !== null;
       },
       set: function (newValue) {
-        this.$emit('change', newValue ? newValue : null);
         if (!newValue) {
+          this.$emit('close');
           this.quantity = 1;
           this.project = null;
         }
       },
     },
-    material: function () {
-      if (!this.materialId) return {};
-      const material = this.getMaterial(this.materialId);
-      return material;
-    },
   },
   async mounted() {
-    if (this.getProjectsSelect.length == 0) {
-      await this.fetchProjects();
-    }
+    this.projects = await getAllProjects();
   },
   methods: {
-    ...mapActions('projects', ['fetchProjects']),
-    ...mapActions('requisitions', ['createRequisition']),
-    ...mapActions('materials', ['decreaseStock']),
     async request() {
-      this.loading = true;
-      await this.createRequisition({
+      this.$loading.show();
+      await createRequisition({
         materialId: this.material.id,
         projectId: this.project,
         quantity: this.quantity,
       });
-      this.loading = false;
+      this.$loading.hide();
+
       this.$notify({
         type: 'success',
         title: 'Item requested!',
         text: `You've requested ${this.quantity} of ${this.material.name}`,
       });
-      this.decreaseStock({ id: this.material.id, decreaseBy: this.quantity });
+
       this.openDialog = false;
+      this.$emit('requested');
     },
   },
 };

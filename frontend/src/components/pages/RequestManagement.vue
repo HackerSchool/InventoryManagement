@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-6">
+  <v-container v-if="requisitions" class="mt-6">
     <v-row>
       <v-col sm="12" offset-md="6" md="6" offset-lg="9" lg="3">
         <v-select
@@ -26,21 +26,36 @@
 
       <v-tab-item>
         <v-expansion-panels accordion>
-          <RequestItem v-for="item in pendingRequisitions" :key="item.id" :item="item" />
+          <RequestItem
+            v-for="item in pendingRequisitions"
+            :key="item.id"
+            :item="item"
+            @updateItem="updateItem"
+          />
         </v-expansion-panels>
         <p v-if="pendingRequisitions.length === 0"><no-requisitions /></p>
       </v-tab-item>
 
       <v-tab-item>
         <v-expansion-panels accordion>
-          <RequestItem v-for="item in activeRequisitions" :key="item.id" :item="item" />
+          <RequestItem
+            v-for="item in activeRequisitions"
+            :key="item.id"
+            :item="item"
+            @updateItem="updateItem"
+          />
         </v-expansion-panels>
         <p v-if="activeRequisitions.length === 0"><no-requisitions /></p>
       </v-tab-item>
 
       <v-tab-item>
         <v-expansion-panels accordion>
-          <RequestItem v-for="item in archivedRequisitions" :key="item.id" :item="item" />
+          <RequestItem
+            v-for="item in archivedRequisitions"
+            :key="item.id"
+            :item="item"
+            @updateItem="updateItem"
+          />
         </v-expansion-panels>
         <p v-if="archivedRequisitions.length === 0"><no-requisitions /></p>
       </v-tab-item>
@@ -51,25 +66,20 @@
 <script>
 import RequestItem from '@/components/request/AdminRequestItem';
 import NoRequisitions from '../request/NoRequisitions.vue';
+import { getAllRequisitions } from '@/api/requisitions.api';
+import { getAllProjects } from '@/api/projects.api';
+
 export default {
   name: 'RequestManagementPage',
   components: {
     RequestItem,
     NoRequisitions,
   },
-  props: {
-    projects: {
-      type: Array,
-      required: true,
-    },
-    requisitions: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
       project: null,
+      projects: [],
+      requisitions: null,
     };
   },
   computed: {
@@ -96,6 +106,22 @@ export default {
           ['cancelled', 'returned', 'not_returning'].indexOf(req.state) !== -1 &&
           (!this.project || this.project === (req.project && req.project.id))
       );
+    },
+  },
+  async mounted() {
+    this.$loading.show();
+    const [requisitions, projects] = await Promise.all([getAllRequisitions(), getAllProjects()]);
+    this.requisitions = requisitions;
+    this.projects = projects;
+    this.$loading.hide();
+  },
+  methods: {
+    async updateItem(data) {
+      const index = this.requisitions.findIndex((requisition) => requisition.id == data.id);
+
+      if (index >= 0) {
+        this.requisitions.splice(index, 1, data);
+      }
     },
   },
 };

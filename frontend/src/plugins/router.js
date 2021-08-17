@@ -1,6 +1,4 @@
 import { getAuthToken } from '@/api/httpClient';
-import * as requisitionsApi from '@/api/requisitions.api';
-import * as projectsApi from '@/api/projects.api';
 import NavBar from '@/components/navbar/NavBar.vue';
 import Dashboard from '@/components/pages/Dashboard.vue';
 import Locations from '@/components/pages/Locations.vue';
@@ -22,11 +20,6 @@ const routes = [
     name: 'dashboard',
     component: Dashboard,
     meta: { title: 'Dashboard', layoutNav: NavBar },
-    props: (route) => ({ requisitions: route.params.requisitions }),
-    beforeEnter: async (to, from, next) => {
-      to.params.requisitions = await requisitionsApi.getSelfRequisitions();
-      next();
-    },
   },
   {
     path: '/request',
@@ -63,19 +56,6 @@ const routes = [
     name: 'requests-admin',
     component: RequestManagement,
     meta: { title: 'Manage Requests', layoutNav: NavBar },
-    props: (route) => ({
-      requisitions: route.params.requisitions,
-      projects: route.params.projects,
-    }),
-    beforeEnter: async (to, from, next) => {
-      const [requisitions, projects] = await Promise.all([
-        requisitionsApi.getAllRequisitions(),
-        projectsApi.getAllProjects(),
-      ]);
-      to.params.requisitions = requisitions;
-      to.params.projects = projects;
-      next();
-    },
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login', noAuth: true } },
 ];

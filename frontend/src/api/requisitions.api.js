@@ -11,6 +11,6 @@ export const createRequisition = handleData(({ materialId, memberId, projectId, 
   httpClient.post(ENDPOINT, { materialId, memberId, projectId, quantity })
 );
 
-export const updateRequisition = handleData((id, { state, projectId }) =>
-  httpClient.post(`${ENDPOINT}/${id}`, { state, projectId })
+export const updateRequisition = handleData(({ requisitionId, state, projectId }) =>
+  httpClient.post(`${ENDPOINT}/${requisitionId}`, { state, projectId })
 );

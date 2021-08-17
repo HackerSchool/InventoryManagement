@@ -10,19 +10,19 @@ const getters = {};
 const actions = {
   async fetchAllRequisitions({ commit }) {
     const response = await requisitionApi.getAllRequisitions();
-    commit('SET_REQUISITIONS', response.data);
+    commit('SET_REQUISITIONS', response);
   },
   async fetchSelfRequisitions({ commit }) {
     const response = await requisitionApi.getSelfRequisitions();
-    commit('SET_REQUISITIONS', response.data);
+    commit('SET_REQUISITIONS', response);
   },
   async createRequisition({ commit }, data) {
     const response = await requisitionApi.createRequisition(data);
-    commit('SET_REQUISITION', response.data);
+    commit('SET_REQUISITION', response);
   },
   async updateRequisition({ commit }, { id, data }) {
     const response = await requisitionApi.updateRequisition(id, data);
-    commit('SET_REQUISITION', { ...response.data, id });
+    commit('SET_REQUISITION', { ...response, id });
   },
 };
 

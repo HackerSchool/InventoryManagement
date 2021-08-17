@@ -68,7 +68,8 @@ export default {
     },
   },
   mounted() {
-    this.activeTab = this.inProgress.length > 0 ? 1 : 0; //if there are items inProgress it defaults to that tab, otherwise to All
+    // if there are items inProgress it defaults to that tab, otherwise to All
+    this.activeTab = this.inProgress.length > 0 ? 1 : 0;
   },
 };
 </script>
