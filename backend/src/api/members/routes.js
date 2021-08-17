@@ -36,7 +36,7 @@ module.exports = {
 
     const member = await controller.create(req.db, data);
 
-    if (!member) return res.sendStatus(400); // Duplicate user
+    if (!member) return res.sendStatus(409); // Duplicate user
     res.json(member);
   },
 
@@ -67,10 +67,13 @@ module.exports = {
     } catch (e) {
       return res.sendStatus(400);
     }
-
-    const member = await controller.update(req.db, id, data);
-
-    if (!member) return res.sendStatus(404);
-    res.json(member);
+    try {
+      const member = await controller.update(req.db, id, data);
+      if (!member) return res.sendStatus(404);
+      res.json(member);
+    } catch (e) {
+      if (e.code === 'ER_DUP_ENTRY') return res.sendStatus(409);
+      else throw e;
+    }
   },
 };
