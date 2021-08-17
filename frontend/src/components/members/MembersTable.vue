@@ -17,6 +17,7 @@
           hide-details
         ></v-text-field>
         <v-spacer></v-spacer>
+        <v-icon left @click="$emit('refresh')">mdi-refresh</v-icon>
         <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ on, attrs }">
             <v-btn color="secondary" dark class="mb-2" v-bind="attrs" v-on="on"> New Member </v-btn>
