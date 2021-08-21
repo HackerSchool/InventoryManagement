@@ -42,7 +42,10 @@
           </v-btn>
           <div class="py-2 grey--text text--lighten-2 text-center">
             Created with
-            <v-icon color="primary">mdi-heart</v-icon> by <strong>Hackerschool</strong> <br />
+            <v-icon color="primary">mdi-heart</v-icon> by
+            <a href="http://hackerschool.tecnico.ulisboa.pt/" target="_blank"
+              ><strong>HackerSchool</strong></a
+            ><br />
             <v-icon x-small>mdi-copyright</v-icon>
             {{ new Date().getFullYear() }} - v{{ version }}
           </div>
