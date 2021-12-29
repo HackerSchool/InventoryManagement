@@ -26,5 +26,5 @@ api.init(app);
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`HS Inventory listening at http://localhost:${port}`);
 });
