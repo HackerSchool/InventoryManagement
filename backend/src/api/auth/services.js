@@ -18,6 +18,36 @@ module.exports = {
     return token;
   },
 
+  getDemoAuthMethodInfo: () => {
+    if (process.env.INVENTORY_DEMO_MODE == 'true') {
+      return [
+        {
+          buttonColor: '#585858',
+          buttonText: 'Demo Login (User)',
+          type: 'demo',
+          apiUrl: '/auth/demo/user',
+        },
+        {
+          buttonColor: '#585858',
+          buttonText: 'Demo Login (Admin)',
+          type: 'demo',
+          apiUrl: '/auth/demo/admin',
+        },
+      ];
+    }
+  },
+
+  getFenixAuthMethodInfo: () => {
+    if (FENIX_CLIENT_ID) {
+      return {
+        buttonRedirect: `${FENIX_BASE_URL}oauth/userdialog?client_id=${FENIX_CLIENT_ID}&redirect_uri=${FENIX_REDIRECT_URL}`,
+        buttonColor: '#009de0',
+        buttonText: 'Login with Fénix',
+        type: 'fenix',
+      };
+    }
+  },
+
   /**
    * Finalize login flow for the Fenix API by getting an access token
    */

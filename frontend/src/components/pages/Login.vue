@@ -7,12 +7,18 @@
         <h1 class="mb-1">Login | HS-Inventory</h1>
         <p class="mb-8">This is an internal application that requires logging in.</p>
         <v-btn
-          id="btn"
+          v-for="(method, i) in authMethods"
+          :id="`login-btn-${i}`"
+          :key="method.buttonText"
+          :data-apiUrl="method.apiUrl"
+          class="login-btn"
+          :href="method.buttonRedirect"
+          :style="{ backgroundColor: method.buttonColor }"
           elevation="2"
           :loading="loading"
           :disabled="loading"
-          @click="handleButtonClick"
-          >Login With Fénix</v-btn
+          @click="handleButtonClick(method.apiUrl)"
+          >{{ method.buttonText }}</v-btn
         >
       </v-sheet>
       <v-spacer />
@@ -21,7 +27,7 @@
 </template>
 
 <script>
-import { fenixLogin } from '@/api/auth.api';
+import { customAuthEndpoint, fenixLogin, getAuthMethods } from '@/api/auth.api';
 import logoSrc from '@/assets/logo_hs.svg';
 import { mapActions } from 'vuex';
 
@@ -32,22 +38,27 @@ export default {
     return {
       loading: false,
       logoSrc,
+      authMethods: [],
     };
   },
 
   mounted() {
     const fenixCode = this.$route.query.code;
-    if (fenixCode) this.authWithBackend(fenixCode);
+    if (fenixCode) this.authWithBackend(() => fenixLogin(fenixCode));
+
+    getAuthMethods().then((methods) => (this.authMethods = methods));
   },
 
   methods: {
-    handleButtonClick: function () {
-      window.location = `${process.env.VUE_APP_FENIX_BASE_URL}oauth/userdialog?client_id=${process.env.VUE_APP_FENIX_CLIENT_ID}&redirect_uri=${process.env.VUE_APP_FENIX_REDIRECT_URL}`;
+    handleButtonClick: function (apiUrl) {
+      if (apiUrl) {
+        this.authWithBackend(() => customAuthEndpoint(apiUrl));
+      }
     },
-    authWithBackend: async function (code) {
+    authWithBackend: async function (apiFunction) {
       try {
         this.loading = true;
-        const { data } = await fenixLogin(code);
+        const data = await apiFunction();
         this.loading = false;
 
         if (data.jwt) {
@@ -56,6 +67,7 @@ export default {
           this.$router.push('/');
         }
       } catch (e) {
+        console.error(e);
         // user not allowed to access the app
         this.$notify({
           type: 'error',
@@ -73,8 +85,8 @@ export default {
 </script>
 
 <style>
-#btn {
-  background: #009de0;
+.login-btn {
   color: white;
+  margin: 5px 0;
 }
 </style>

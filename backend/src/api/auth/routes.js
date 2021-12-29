@@ -1,6 +1,24 @@
 const controller = require('./controller');
 
 module.exports = {
+  availableAuth: async (req, res) => {
+    res.json(controller.getAvailableAuthMethods());
+  },
+
+  demoLogin: async (req, res) => {
+    const { role } = req.params;
+
+    const { user, jwt } = await controller.demoLogin(role);
+
+    if (!user || !jwt) {
+      // user is not authorized to login or fenix login failed
+      res.sendStatus(401);
+      return;
+    }
+
+    res.json({ user, jwt });
+  },
+
   fenixLogin: async (req, res) => {
     const { code } = req.query;
 

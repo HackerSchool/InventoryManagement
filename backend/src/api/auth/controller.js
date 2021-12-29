@@ -1,8 +1,37 @@
-const { generateJWT, fenixLogin, getFenixAbout } = require('./services');
+const {
+  generateJWT,
+  getDemoAuthMethodInfo,
+  getFenixAuthMethodInfo,
+  fenixLogin,
+  getFenixAbout,
+} = require('./services');
 const imagesController = require('../images/controller');
 const membersController = require('../members/controller');
 
 module.exports = {
+  getAvailableAuthMethods: () => {
+    const methods = [getFenixAuthMethodInfo(), getDemoAuthMethodInfo()];
+
+    return methods.filter((method) => !!method).flat();
+  },
+
+  demoLogin: async (role) => {
+    if (process.env.INVENTORY_DEMO_MODE != 'true') return {};
+
+    const user = {
+      id: 1,
+      name: 'Demo User',
+      istId: 'ist11',
+      active: true,
+      role,
+      avatar: null,
+    };
+
+    const jwt = generateJWT(user);
+
+    return { user, jwt };
+  },
+
   fenixLogin: async (database, code) => {
     const fenixAccessToken = await fenixLogin(code);
     if (!fenixAccessToken) return {};
